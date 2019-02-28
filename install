@@ -11,6 +11,11 @@ for rc in *rc tmux.conf; do
   ln -sfv "$BASE/$rc" ~/."$rc"
 done
 
+# git-prompt
+if [ ! -e ~/.git-prompt.sh ]; then
+  curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
+fi
+
 git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
 
