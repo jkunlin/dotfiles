@@ -17,10 +17,12 @@ git config --global user.name "jkunlin"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source-file ~/.tmux.conf
 
+mkdir -p ~/bin
+
 # neovim
 curl --insecure -fLo ~/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
 chmod u+x ~/bin/nvim
-./install-vim
+./vim/install-vim
 
 # install rg
 mkdir -p $BASE/tmp
@@ -31,3 +33,4 @@ rm -r $BASE/tmp
 
 # parallel
 curl --insecure -f http://pi.dk/3/ | bash
+rm parallel* -r
