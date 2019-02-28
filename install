@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# RC files
+
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+
+BASE=$(pwd)
+for rc in *rc tmux.conf; do
+  mkdir -pv bak
+  [ -e ~/."$rc" ] && mv -v ~/."$rc" bak/."$rc"
+  ln -sfv "$BASE/$rc" ~/."$rc"
+done
+
+git config --global user.email "jkunlin@gmail.com"
+git config --global user.name "jkunlin"
+
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+tmux source-file ~/.tmux.conf
+
+# neovim
+curl --insecure -fLo ~/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+chmod u+x ~/bin/nvim
+./install-vim
+
+# install rg
+mkdir -p $BASE/tmp
+curl --insecure -fLo $BASE/tmp/ripgrep_0.10.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
+dpkg -x $BASE/tmp/ripgrep_0.10.0_amd64.deb $BASE/tmp
+cp $BASE/tmp/usr/bin/rg ~/bin
+rm -r $BASE/tmp
+
+# parallel
+curl --insecure -f http://pi.dk/3/ | bash
