@@ -20,8 +20,6 @@ tmux source-file ~/.tmux.conf
 mkdir -p ~/bin
 
 # neovim
-curl --insecure -fLo ~/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-chmod u+x ~/bin/nvim
 ./vim/install-vim
 
 # install rg

@@ -25,4 +25,4 @@ ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 pip2 install --user --upgrade neovim
 pip3 install neovim-remote
 
-vim +PlugInstall +qall
+~/bin/nvim +PlugInstall +qall
