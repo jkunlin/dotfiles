@@ -110,4 +110,3 @@ zz() {
 alias j=z
 alias jj=zz
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

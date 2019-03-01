@@ -19,21 +19,38 @@ done
 git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
 
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-tmux source-file ~/.tmux.conf
+if [ ! -e ~/.tmux/plugins/tpm ]; then
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  tmux source-file ~/.tmux.conf
+fi
 
 mkdir -p ~/bin
 
 # neovim
 ./vim/install-vim
 
-# install rg
+# install softwares
+#######################################################################
 mkdir -p $BASE/tmp
-curl --insecure -fLo $BASE/tmp/ripgrep_0.10.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
-dpkg -x $BASE/tmp/ripgrep_0.10.0_amd64.deb $BASE/tmp
-cp $BASE/tmp/usr/bin/rg ~/bin
-rm -r $BASE/tmp
+
+# fd
+if ! command -v fd 2>/dev/null; then
+  curl --insecure -fLo $BASE/tmp/fd_7.3.0_amd64.deb https://github.com/sharkdp/fd/releases/download/v7.3.0/fd_7.3.0_amd64.deb
+  dpkg -x $BASE/tmp/fd_7.3.0_amd64.deb $BASE/tmp
+  cp $BASE/tmp/usr/bin/fd ~/bin
+fi
+
+# rg
+if ! command -v rg 2>/dev/null; then
+  curl --insecure -fLo $BASE/tmp/ripgrep_0.10.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
+  dpkg -x $BASE/tmp/ripgrep_0.10.0_amd64.deb $BASE/tmp
+  cp $BASE/tmp/usr/bin/rg ~/bin
+fi
 
 # parallel
-curl --insecure -f http://pi.dk/3/ | bash
-rm parallel* -r
+if ! command -v parallel 2>/dev/null; then
+  curl --insecure -f http://pi.dk/3/ | bash
+  rm parallel* -r
+fi
+
+rm -r $BASE/tmp

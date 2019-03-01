@@ -15,8 +15,10 @@ ln -sf $BASE/vale.ini ~/.vim/.vale.ini
 ln -sf $BASE/ycm_extra_conf.py ~/.vim/.ycm_extra_conf
 
 # nvim
-curl --insecure -fLo ~/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-chmod u+x ~/bin/nvim
+if ! command -v nvim 2>/dev/null; then
+  curl --insecure -fLo ~/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+  chmod u+x ~/bin/nvim
+fi
 mkdir -p ~/.config/nvim/autoload
 ln -sf $BASE/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/

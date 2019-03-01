@@ -547,4 +547,7 @@ if [[ $- =~ i ]]; then
   bind '"\C-g\C-s": "$(gs)\e\C-e\er"'
 fi
 
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+MANPATH=$MANPATH:$HOME/share/man
+MANPATH=$MANPATH:$HOME/share/man
