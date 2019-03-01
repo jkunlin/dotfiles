@@ -10,7 +10,7 @@ if [ ! -e ~/.git-prompt.sh ]; then
 fi
 
 BASE=$(pwd)
-for rc in *rc tmux.conf; do
+for rc in *rc tmux.conf alacritty.yml; do
   mkdir -pv bak
   [ -e ~/."$rc" ] && mv -v ~/."$rc" bak/."$rc"
   ln -sfv "$BASE/$rc" ~/."$rc"

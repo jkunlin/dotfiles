@@ -107,6 +107,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'sk1418/HowMuch'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'justinmk/vim-gtfo'
+Plug 'wellle/tmux-complete.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -659,3 +660,6 @@ set timeoutlen=500
 
 " vim-gtfo
 let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
+
+" tmux-complete.vim
+let g:tmuxcomplete#trigger = 'omnifunc'
