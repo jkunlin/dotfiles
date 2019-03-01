@@ -24,13 +24,10 @@ if [ ! -e ~/.tmux/plugins/tpm ]; then
   tmux source-file ~/.tmux.conf
 fi
 
-mkdir -p ~/bin
-
-# neovim
-./vim/install-vim
 
 # install softwares
 #######################################################################
+mkdir -p ~/bin
 mkdir -p $BASE/tmp
 
 # fd
@@ -53,4 +50,18 @@ if ! command -v parallel 2>/dev/null; then
   rm parallel* -r
 fi
 
+# pip
+if ! command -v pip 2>/dev/null; then
+  if command -v python3 2>/dev/null; then
+    curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
+    python3 $BASE/tmp/get-pip.py --user
+  elif command -v python2 2>/dev/null; then
+    curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
+    python $BASE/tmp/get-pip.py --user
+  fi
+fi
+
 rm -r $BASE/tmp
+
+# neovim
+./vim/install-vim

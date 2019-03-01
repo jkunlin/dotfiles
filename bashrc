@@ -43,7 +43,7 @@ export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
 ### Global
 export GOPATH=~/gosrc
 mkdir -p $GOPATH
-export PATH=~/bin:$PATH
+export PATH=~/bin:~/.local/bin:$PATH
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -61,8 +61,8 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias cd.='cd ..'
 alias cd..='cd ..'
-alias l='ls -alF'
-alias ll='ls -l'
+alias l='ls'
+alias ll='ls -alF'
 alias vi='vim'
 alias vi2='vi -O2 '
 alias nv='nvim'
@@ -370,7 +370,7 @@ ftags() {
 fe() {
   local file
   file=$(fzf-tmux --query="$1" --select-1 --exit-0)
-  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+  [ -n "$file" ] && ${EDITOR:-nvim} "$file"
 }
 
 # Modified version where you can press
