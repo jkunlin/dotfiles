@@ -550,4 +550,5 @@ fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 MANPATH=$MANPATH:$HOME/share/man
-MANPATH=$MANPATH:$HOME/share/man
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

@@ -50,6 +50,12 @@ if ! command -v parallel 2>/dev/null; then
   rm parallel* -r
 fi
 
+# cmake
+if [ ! -e ~/.local/bin/cmake ]; then
+  curl --insecure -fLo $BASE/tmp/cmake-3.14.0-rc3-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v3.14.0-rc3/cmake-3.14.0-rc3-Linux-x86_64.sh
+  sh $BASE/tmp/cmake-3.14.0-rc3-Linux-x86_64.sh --prefix=$HOME/.local
+fi
+
 # pip
 if ! command -v pip 2>/dev/null; then
   if command -v python3 2>/dev/null; then
