@@ -112,7 +112,7 @@ fi
 if [ ! -e ~/.local/include/zlib.h ]; then
   cd tmp
   wget https://www.zlib.net/zlib-1.2.11.tar.gz
-  tar xjf zlib-1.2.11.tar.gz
+  tar xzf zlib-1.2.11.tar.gz
   cd zlib-1.2.11
   ./configure --prefix=$HOME/.local
   make -j
