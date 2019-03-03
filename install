@@ -27,7 +27,13 @@ fi
 
 # install softwares
 #######################################################################
+if [ ! -e ~/bin ]; then
 mkdir -p ~/bin
+fi
+
+if [ ! -e ~/.local ]; then
+	mkdir -p ~/.local
+fi
 mkdir -p $BASE/tmp
 
 # fd
