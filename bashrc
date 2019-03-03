@@ -6,7 +6,7 @@
 # System default
 # --------------------------------------------------------------------
 
-export PLATFORM=$(uname -s)
+# export PLATFORM=$(uname -s)
 [ -f /etc/bashrc ] && . /etc/bashrc
 
 BASE=$(dirname $(readlink $BASH_SOURCE))
@@ -552,3 +552,4 @@ fi
 MANPATH=$MANPATH:$HOME/share/man
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+MANPATH=$MANPATH:$HOME/share/man

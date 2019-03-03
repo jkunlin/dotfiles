@@ -142,6 +142,10 @@ if ! command -v pip 2>/dev/null; then
   fi
 fi
 
+if ! command -v node 2>/dev/null; then
+ curl -sL install-node.now.sh/lts | sh -s -- --prefix=$HOME/.local
+fi
+
 rm -rf $BASE/tmp
 
 # neovim
