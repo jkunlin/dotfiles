@@ -56,6 +56,75 @@ if [ ! -e ~/.local/bin/cmake ]; then
   sh $BASE/tmp/cmake-3.14.0-rc3-Linux-x86_64.sh --prefix=$HOME/.local
 fi
 
+# llvm + clang
+if [ ! -e ~/.local/bin/clang ]; then
+  wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+  tar xf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+  if [ ! -d ~/.local/bin ]; then
+    mkdir ~/.local/bin
+  fi
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/bin/* ~/.local/bin
+
+  if [ ! -d ~/.local/include  ]; then
+    mkdir ~/.local/include
+  fi
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/include/* ~/.local/include
+
+  if [ ! -d ~/.local/lib ]; then
+    mkdir ~/.local/include
+  fi
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/lib/* ~/.local/lib
+
+
+  if [ ! -d ~/.local/libexec ]; then
+    mkdir ~/.local/libexec
+  fi
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/libexec ~/.local/libexec
+
+  if [ ! -d ~/.local/shar ]; then
+    mkdir ~/.local/share
+  fi
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/share ~/.local/share
+  rm -r clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04
+  rm clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+fi
+
+# ncurse
+if [ ! -e ~/.local/include/ncurses ]; then
+  cd tmp
+  wget ftp://ftp.invisible-island.net/ncurses/ncurses.tar.gz
+  tar xzf ncurses.tar.gz
+  cd  $(fd --maxdepth 1 ncur -t d)
+  ./configure --prefix=$HOME/.local/
+  make -j
+  make install
+  cd ../..
+  rm -r ncurse*
+fi
+
+# zlib
+if [ ! -e ~/.local/include/zlib.h ]; then
+  cd tmp
+  wget https://www.zlib.net/zlib-1.2.11.tar.gz
+  tar xjf zlib-1.2.11.tar.gz
+  cd zlib-1.2.11
+  ./configure --prefix=$HOME/.local
+  make -j
+  make install
+  cd ../..
+fi
+
+# ccls
+if [ ! -e ~/.local/bin/ccls ]; then
+  cd tmp
+  git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+  cd ccls
+  cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME/.local
+  cmake --build Release
+  cmake --build Release --target install
+  cd ../..
+fi
+
 # pip
 if ! command -v pip 2>/dev/null; then
   if command -v python3 2>/dev/null; then
@@ -67,7 +136,7 @@ if ! command -v pip 2>/dev/null; then
   fi
 fi
 
-rm -r $BASE/tmp
+rm -rf $BASE/tmp
 
 # neovim
 ./vim/install-vim

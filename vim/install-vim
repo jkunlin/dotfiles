@@ -26,7 +26,7 @@ ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 # provider-python
 if command -v pip3 2>/dev/null; then 
   pip3 install --user --upgrade neovim
-  pip3 install neovim-remote
+  pip3 install --user neovim-remote
 elif command -v pip2 2>/dev/null; then
   pip2 install --user --upgrade neovim
 fi
