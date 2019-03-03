@@ -66,28 +66,28 @@ fi
 if [ ! -e ~/.local/bin/clang ]; then
   wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
   tar xf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
-  if [ ! -d ~/.local/bin ]; then
+  if [ ! -e ~/.local/bin ]; then
     mkdir ~/.local/bin
   fi
   mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/bin/* ~/.local/bin
 
-  if [ ! -d ~/.local/include  ]; then
+  if [ ! -e ~/.local/include  ]; then
     mkdir ~/.local/include
   fi
   mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/include/* ~/.local/include
 
-  if [ ! -d ~/.local/lib ]; then
+  if [ ! -e ~/.local/lib ]; then
     mkdir ~/.local/include
   fi
   mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/lib/* ~/.local/lib
 
 
-  if [ ! -d ~/.local/libexec ]; then
+  if [ ! -e ~/.local/libexec ]; then
     mkdir ~/.local/libexec
   fi
   mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/libexec ~/.local/libexec
 
-  if [ ! -d ~/.local/shar ]; then
+  if [ ! -e ~/.local/share ]; then
     mkdir ~/.local/share
   fi
   mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/share ~/.local/share
