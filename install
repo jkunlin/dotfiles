@@ -77,7 +77,7 @@ if [ ! -e ~/.local/bin/clang ]; then
   mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/include/* ~/.local/include
 
   if [ ! -e ~/.local/lib ]; then
-    mkdir ~/.local/include
+    mkdir ~/.local/lib
   fi
   mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/lib/* ~/.local/lib
 
@@ -101,7 +101,7 @@ if [ ! -e ~/.local/include/ncurses ]; then
   wget ftp://ftp.invisible-island.net/ncurses/ncurses.tar.gz
   tar xzf ncurses.tar.gz
   cd  $(fd --maxdepth 1 ncur -t d)
-  ./configure --prefix=$HOME/.local/
+  ./configure --prefix=$HOME/.local
   make -j
   make install
   cd ../..
@@ -142,9 +142,16 @@ if ! command -v pip 2>/dev/null; then
   fi
 fi
 
+# node
 if ! command -v node 2>/dev/null; then
- curl -sL install-node.now.sh/lts | sh -s -- --prefix=$HOME/.local
+  curl -sL install-node.now.sh/lts | sh -s -- --prefix=$HOME/.local
 fi
+
+# yarn
+if ! command -v yarn 2>/dev/null; then
+  curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+fi
+
 
 rm -rf $BASE/tmp
 
