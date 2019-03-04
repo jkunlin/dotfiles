@@ -123,7 +123,7 @@ if [ ! -e ~/.local/bin/ccls ]; then
   cd $BASE/tmp
   git clone --depth=1 --recursive https://github.com/MaskRay/ccls
   cd ccls
-  cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME/.local -DCURSES_LIBRARY=~/.local/lib/li /path/to/lib/libncurses.a -DCURSES_INCLUDE_PATH=/path/to/include/ .
+  cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME/.local
   cmake --build Release
   cmake --build Release --target install
   cd ../..

@@ -43,7 +43,7 @@ export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
 ### Global
 export GOPATH=~/gosrc
 mkdir -p $GOPATH
-export PATH=~/bin:~/.local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -549,7 +549,4 @@ fi
 
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-MANPATH=$MANPATH:$HOME/share/man
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 MANPATH=$MANPATH:$HOME/share/man
