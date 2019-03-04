@@ -58,10 +58,10 @@ if ! command -v parallel 2>/dev/null; then
   wget -c https://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2
   tar xjf parallel-latest.tar.bz2
   cd  $(fd --maxdepth 1 parallel -t d)
-  cd ../..
   ./configure --prefix=$HOME/.local
   make -j
   mkae install
+  cd ../..
   rm parallel* -r
 fi
 
