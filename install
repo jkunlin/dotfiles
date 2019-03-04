@@ -41,19 +41,26 @@ mkdir -p $BASE/tmp
 if ! command -v fd 2>/dev/null; then
   curl --insecure -fLo $BASE/tmp/fd_7.3.0_amd64.deb https://github.com/sharkdp/fd/releases/download/v7.3.0/fd_7.3.0_amd64.deb
   dpkg -x $BASE/tmp/fd_7.3.0_amd64.deb $BASE/tmp
-  cp $BASE/tmp/usr/bin/fd ~/bin
+  cp $BASE/tmp/usr/bin/fd ~/.local/bin
 fi
 
 # rg
 if ! command -v rg 2>/dev/null; then
   curl --insecure -fLo $BASE/tmp/ripgrep_0.10.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
   dpkg -x $BASE/tmp/ripgrep_0.10.0_amd64.deb $BASE/tmp
-  cp $BASE/tmp/usr/bin/rg ~/bin
+  cp $BASE/tmp/usr/bin/rg ~/.local/bin
 fi
 
 # parallel
 if ! command -v parallel 2>/dev/null; then
-  curl --insecure -f http://pi.dk/3/ | bash
+  cd $BASE/tmp
+  wget -c https://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2
+  tar xjf parallel-latest.tar.bz2
+  cd  $(fd --maxdepth 1 parallel -t d)
+  cd ../..
+  ./configure --prefix=$HOME/.local
+  make -j
+  mkae install
   rm parallel* -r
 fi
 
