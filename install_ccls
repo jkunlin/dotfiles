@@ -1,0 +1,65 @@
+#!/bin/bash
+[ ! -e ~/bin ] && mkdir -p ~/bin
+[ ! -e ~/.local ] && mkdir -p ~/.local
+[ ! -e ~/.local/bin ] && mkdir ~/.local/bin
+[ ! -e ~/.local/include  ] && mkdir ~/.local/include
+[ ! -e ~/.local/lib ] && mkdir ~/.local/lib
+[ ! -e ~/.local/libexec ] && mkdir ~/.local/libexec
+[ ! -e ~/.local/share ] && mkdir ~/.local/share
+source ~/.bashrc
+
+mkdir -p $BASE/tmp
+# cmake
+if [ ! -e ~/.local/bin/cmake ]; then
+  curl --insecure -fLo $BASE/tmp/cmake-3.14.0-rc3-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v3.14.0-rc3/cmake-3.14.0-rc3-Linux-x86_64.sh
+  sh $BASE/tmp/cmake-3.14.0-rc3-Linux-x86_64.sh --prefix=$HOME/.local
+fi
+
+# llvm + clang
+if [ ! -e ~/.local/bin/clang ]; then
+	cd $BASE/tmp
+  wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+  tar xf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/bin/* ~/.local/bin
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/include/* ~/.local/include
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/lib/* ~/.local/lib
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/libexec ~/.local/libexec
+  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/share ~/.local/share
+fi
+
+# ncurse
+if [ ! -e ~/.local/include/ncurses ]; then
+  cd $BASE/tmp
+  wget ftp://ftp.invisible-island.net/ncurses/ncurses.tar.gz
+  tar xzf ncurses.tar.gz
+  cd  $(fd --maxdepth 1 ncur -t d)
+  ./configure --prefix=$HOME/.local
+  make -j
+  make install
+  cd ../..
+fi
+
+# zlib
+if [ ! -e ~/.local/include/zlib.h ]; then
+  cd $BASE/tmp
+  wget https://www.zlib.net/zlib-1.2.11.tar.gz
+  tar xzf zlib-1.2.11.tar.gz
+  cd zlib-1.2.11
+  ./configure --prefix=$HOME/.local
+  make -j
+  make install
+  cd ../..
+fi
+
+# ccls
+if [ ! -e ~/.local/bin/ccls ]; then
+  cd $BASE/tmp
+  git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+  cd ccls
+  cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME/.local
+  cmake --build Release -j
+  cmake --build Release --target install
+  cd ../..
+fi
+
+rm -rf $BASE/tmp

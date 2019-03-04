@@ -23,6 +23,41 @@ mkdir -p ~/.config/nvim/autoload
 ln -sf $BASE/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 
+# dependence for plugins
+#####################################################
+[ ! -e ~/bin ] && mkdir -p ~/bin
+[ ! -e ~/.local ] && mkdir -p ~/.local
+[ ! -e ~/.local/bin ] && mkdir ~/.local/bin
+[ ! -e ~/.local/include  ] && mkdir ~/.local/include
+[ ! -e ~/.local/lib ] && mkdir ~/.local/lib
+[ ! -e ~/.local/libexec ] && mkdir ~/.local/libexec
+[ ! -e ~/.local/share ] && mkdir ~/.local/share
+source ~/.bashrc
+
+mkdir -p $BASE/tmp
+# pip
+if ! command -v pip 2>/dev/null; then
+  if command -v python3 2>/dev/null; then
+    curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
+    python3 $BASE/tmp/get-pip.py --user
+  elif command -v python2 2>/dev/null; then
+    curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
+    python $BASE/tmp/get-pip.py --user
+  fi
+fi
+
+# node
+if ! command -v node 2>/dev/null; then
+  curl -sL install-node.now.sh/lts | sh -s -- --prefix=$HOME/.local
+fi
+
+# yarn
+if ! command -v yarn 2>/dev/null; then
+  curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+fi
+
+rm -rf $BASE/tmp
+
 # provider-python
 if command -v pip3 2>/dev/null; then 
   pip3 install --user --upgrade neovim
