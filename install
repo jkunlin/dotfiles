@@ -15,6 +15,7 @@ for rc in *rc tmux.conf alacritty.yml; do
   [ -e ~/."$rc" ] && mv -v ~/."$rc" bak/."$rc"
   ln -sfv "$BASE/$rc" ~/."$rc"
 done
+source ~/.bashrc
 
 git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
