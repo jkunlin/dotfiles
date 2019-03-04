@@ -32,7 +32,6 @@ ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 [ ! -e ~/.local/lib ] && mkdir ~/.local/lib
 [ ! -e ~/.local/libexec ] && mkdir ~/.local/libexec
 [ ! -e ~/.local/share ] && mkdir ~/.local/share
-source ~/.bashrc
 
 mkdir -p $BASE/tmp
 # pip
@@ -66,4 +65,4 @@ elif command -v pip2 2>/dev/null; then
   pip2 install --user --upgrade neovim
 fi
 
-~/bin/nvim +PlugInstall +qall
+env PAHT=~/.local/bin:~/bin:$PATH ~/bin/nvim +PlugInstall +qall
