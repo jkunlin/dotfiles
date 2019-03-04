@@ -64,7 +64,7 @@ fi
 
 # llvm + clang
 if [ ! -e ~/.local/bin/clang ]; then
-	cd tmp
+	cd $BASE/tmp
   wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
   tar xf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
   if [ ! -e ~/.local/bin ]; then
@@ -96,7 +96,7 @@ fi
 
 # ncurse
 if [ ! -e ~/.local/include/ncurses ]; then
-  cd tmp
+  cd $BASE/tmp
   wget ftp://ftp.invisible-island.net/ncurses/ncurses.tar.gz
   tar xzf ncurses.tar.gz
   cd  $(fd --maxdepth 1 ncur -t d)
@@ -108,7 +108,7 @@ fi
 
 # zlib
 if [ ! -e ~/.local/include/zlib.h ]; then
-  cd tmp
+  cd $BASE/tmp
   wget https://www.zlib.net/zlib-1.2.11.tar.gz
   tar xzf zlib-1.2.11.tar.gz
   cd zlib-1.2.11
@@ -120,7 +120,7 @@ fi
 
 # ccls
 if [ ! -e ~/.local/bin/ccls ]; then
-  cd tmp
+  cd $BASE/tmp
   git clone --depth=1 --recursive https://github.com/MaskRay/ccls
   cd ccls
   cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME/.local -DCURSES_LIBRARY=~/.local/lib/li /path/to/lib/libncurses.a -DCURSES_INCLUDE_PATH=/path/to/include/ .
