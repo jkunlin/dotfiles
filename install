@@ -62,7 +62,6 @@ if ! command -v parallel 2>/dev/null; then
   make -j
   mkae install
   cd ../..
-  rm parallel* -r
 fi
 
 # cmake
