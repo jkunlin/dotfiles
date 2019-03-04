@@ -35,6 +35,27 @@ fi
 if [ ! -e ~/.local ]; then
 	mkdir -p ~/.local
 fi
+
+if [ ! -e ~/.local/bin ]; then
+	mkdir ~/.local/bin
+fi
+
+if [ ! -e ~/.local/include  ]; then
+	mkdir ~/.local/include
+fi
+
+if [ ! -e ~/.local/lib ]; then
+	mkdir ~/.local/lib
+fi
+
+
+if [ ! -e ~/.local/libexec ]; then
+	mkdir ~/.local/libexec
+fi
+
+if [ ! -e ~/.local/share ]; then
+	mkdir ~/.local/share
+fi
 mkdir -p $BASE/tmp
 
 # fd
