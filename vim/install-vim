@@ -21,6 +21,7 @@ if ! command -v nvim 2>/dev/null; then
 fi
 mkdir -p ~/.config/nvim/autoload
 ln -sf $BASE/vimrc ~/.config/nvim/init.vim
+ln -sf $BASE/coc-settings.json ~/.config/nvim/coc-settings.json
 ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 
 # dependence for plugins
