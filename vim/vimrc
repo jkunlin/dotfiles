@@ -26,7 +26,8 @@ endfunction
 " Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'tex', 'python', 'sh'], 'do': function('BuildYCM') }
 " Plug 'zxqfl/tabnine-vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' } "| Plug 'jistr/vim-nerdtree-tabs', { 'on': 'NERDTreeToggle' }
 Plug 'tomtom/tcomment_vim'
@@ -142,7 +143,7 @@ set showcmd
 set wildmenu
 set ttimeout
 set ttimeoutlen=100
-set foldmethod=marker
+" set foldmethod=marker
 set foldlevel=100
 set completeopt=longest,menu
 set scrolloff=1
@@ -150,6 +151,7 @@ set autoread
 set cursorline
 set hidden
 set clipboard=unnamed
+set shortmess+=c
 
 augroup fmt
  autocmd!
@@ -275,64 +277,6 @@ let g:deoplete#sources#clang#clang_header = "/usr/lib/llvm-3.8/lib/clang"
 " nvim-completion-manager
 let g:cm_matcher = {'module': 'cm_matchers.fuzzy_matcher', 'case': 'smartcase'}
 
-" YCM
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-""let g:ycm_add_preview_to_completeopt = 1
-""let g:ycm_autoclose_preview_window_after_completion = 1
-""let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_complete_in_comments = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-"let g:ycm_seed_identifiers_with_syntax = 1
-autocmd vimrc FileType c,cpp    nnoremap <buffer> gd :YcmCompleter GoTo<CR>
-autocmd vimrc FileType c,cpp    nnoremap <buffer> gf :YcmCompleter FixIt<CR>
-autocmd vimrc FileType c,cpp    nnoremap <buffer> K  :YcmCompleter GetType<CR>
-
-
-" ultisnip
-let g:UltiSnipsSnippetDirectories=["~/.vim/bundle/vim-snippets", "UltiSnips", "mysnippets"]
-function! g:UltiSnipsDocComment() abort
-  execute "normal! idh" . "\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
-endfunction
-autocmd BufNewFile *{.c,.cpp,.cc,.h} silent! call g:UltiSnipsDocComment()
-
-" default <tab> <c-j> <c-k>
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>" "<NL> or <c-j> is <c-enter> actually
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-function! g:UltiSnips_Complete()
-  if pumvisible()
-    return "\<c-n>"
-  else
-    call UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res == 0
-      return "\<tab>"
-    endif
-  endif
-  return ""
-endfunction
-autocmd InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-
-function! g:UltiSnips_Expand()
-  if pumvisible()
-    call UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res == 0
-      return "\<c-y>\<cr>"
-    endif
-    return ""
-  else
-    return "\<cr>"
-  endif
-endfunction
-inoremap <silent> <CR> <C-R>=g:UltiSnips_Expand()<cr>
-
-" quickfix
-noremap <silent> <F10> <Esc>:cprevious<CR>
-noremap <silent> <F12> <Esc>:cnext<CR>
-
 " Ack
 if executable('rg')
   " let g:ackprg = 'ag --nogroup --nocolor --column'
@@ -389,14 +333,7 @@ let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
 let g:sneak#s_next = 1
 
 " airline
-"set t_Co=256
 set laststatus=2 "show status line even when only single window is opened
-" let g:airline#extensions#whitespace = 0
-" let g:airline#extensions#tagbar#enabled = 0
-
-" tcomment
-" let g:tcomment#options_comments={'whitespace': 'left'}
-" let g:tcomment#options_commentstring={'whitespace': 'left'}
 
 " tagbar
 noremap <silent> <F7> :TagbarToggle<CR>
@@ -413,13 +350,6 @@ augroup END
 
 " vim-autoclose
 let g:autoclose_vim_commentmode = 1
-
-" Conque-GDB
-" let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
-" let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
-" let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly
-" let g:ConqueGdb_Leader = "<leader>g"
-" command! -complete=file -nargs=1 ConqueGdb call plug#load('Conque-GDB') | ConqueGdb <args>
 
 " tex-conceal
 set conceallevel=2
@@ -453,14 +383,6 @@ let g:ycm_semantic_triggers.tex = [
       \ 're!\\[A-Za-z]*',
       \ ]
 let g:vimtex_compiler_progname='nvr'
-
-" csapprox
-" IMPORTANT: Uncomment one of the following lines to force
-" using 256 colors (or 88 colors) if your terminal supports it,
-" but does not automatically use 256 colors by default.
-" set t_Co=256
-" set t_Co=88
-" let g:CSApprox_attr_map = { 'bold' : 'bold', 'italic' : '', 'sp' : '' }
 
 " gruvbox
 let g:gruvbox_italic=1
@@ -505,21 +427,6 @@ call textobj#user#plugin('number', {
       \   }
       \ })
 
-"autocmd BufNewFile,BufRead *.c,*.cpp,*.h,*.cc :syn match comment "\v(^\s*//.*\n)+" fold
-
-" lldb
-" nnoremap <leader><cr> :LL<space>
-" nmap <M-b> <Plug>LLBreakSwitch
-" nmap <M-n> :LL next<cr>
-" nmap <M-c> :LL continue<cr>
-" nnoremap <F5> :LLmode debug<cr>
-" nnoremap <leader><F5> :LLmode code<cr>
-
-" neogdb
-" nmap <M-b> :GdbToggleBreak<cr>
-" nmap <M-n> :GdbNext<cr>
-" nmap <M-c> :GdbContinue<cr>
-" command! -complete=file -nargs=1 Neogdb call plug#load('neogdb.vim') | GdbLocal confloc#me <args>
 
 " nvim-gdb
 command! -complete=file -nargs=1 Gdb call plug#load('nvim-gdb') | GdbStart gdb -q <args>
@@ -575,9 +482,6 @@ let g:startify_list_order = [
       \ 'sessions',
       \ ]
 
-" t9md/vim-choosewin
-" nmap  <c-w>  <Plug>(choosewin)
-" let g:choosewin_overlay_enable = 1
 
 " visual star
 function! s:VSetSearch()
@@ -662,5 +566,64 @@ set timeoutlen=500
 " vim-gtfo
 let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
 
-" tmux-complete.vim
-let g:tmuxcomplete#trigger = 'omnifunc'
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" snippet
+let g:coc_snippet_next = '<TAB>'
+let g:coc_snippet_prev = '<S-TAB>'
+
+" Use `[c` and `]c` for navigate diagnostics
+nmap <silent> [d <Plug>(coc-diagnostic-prev)
+nmap <silent> ]d <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gf <Plug>(coc-fix-current)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Using CocList
+" Find symbol of current document
+nnoremap <silent> <space>t  :<C-u>CocList outline<cr>
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+
+" coc_status for airline
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'

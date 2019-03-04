@@ -1,5 +1,8 @@
 {
-    "languageserver": {
+  "suggest.noselect": false,
+  "suggest.preferCompleteThanJumpPlaceholder": true,
+  "diagnostic.refreshOnInsertMode": true,
+  "languageserver": {
     "cquery": {
       "command": "cquery",
       "args": ["--log-file=/tmp/cq.log"],
