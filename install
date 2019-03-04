@@ -60,7 +60,7 @@ if ! command -v parallel 2>/dev/null; then
   cd  $(fd --maxdepth 1 parallel -t d)
   ./configure --prefix=$HOME/.local
   make -j
-  mkae install
+  make install
   cd ../..
 fi
 
