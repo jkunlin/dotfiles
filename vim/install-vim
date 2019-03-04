@@ -66,4 +66,14 @@ elif command -v pip2 2>/dev/null; then
   pip2 install --user --upgrade neovim
 fi
 
-env PAHT=~/.local/bin:~/bin:$PATH nvim +PlugInstall +'CocInstall coc-snippets'
+env PAHT=~/.local/bin:~/bin:$PATH nvim +PlugInstall +'qall'
+
+# coc extensions
+mkdir -p ~/.config/coc/extensions
+cd ~/.config/coc/extensions
+if [ ! -f package.json ]
+then
+  echo '{"dependencies":{}}'> package.json
+fi
+# Change arguments to extensions you need
+yarn add coc-json coc-snippets
