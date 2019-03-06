@@ -95,7 +95,7 @@ Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 " Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
 " Plug 'svermeulen/vim-easyclip'
 Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'sbdchd/neoformat'
+" Plug 'sbdchd/neoformat'
 " Plug 'justinmk/vim-dirvish'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -153,11 +153,11 @@ set hidden
 set clipboard=unnamed
 set shortmess+=c
 
-augroup fmt
- autocmd!
- " autocmd BufWritePre * undojoin | Neoformat
- autocmd BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
-augroup END
+" augroup fmt
+"  autocmd!
+"  " autocmd BufWritePre * undojoin | Neoformat
+"  autocmd BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
+" augroup END
 
 inoremap <silent> jk <esc>
 cnoremap <silent> jk <c-c>
@@ -623,6 +623,13 @@ nmap <leader>rn <Plug>(coc-rename)
 nnoremap <silent> <space>t  :<C-u>CocList outline<cr>
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+
+augroup fmt
+ autocmd!
+ autocmd BufWritePre * try | undojoin | :call CocAction('format') | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent :call CocAction('format') | endtry
+augroup END
+
+" command! -nargs=0 Format :call CocAction('format')
 
 " coc_status for airline
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
