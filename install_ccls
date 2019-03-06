@@ -8,6 +8,7 @@
 [ ! -e ~/.local/share ] && mkdir ~/.local/share
 source ~/.bashrc
 
+BASE=$(pwd)
 mkdir -p $BASE/tmp
 # cmake
 if [ ! -e ~/.local/bin/cmake ]; then

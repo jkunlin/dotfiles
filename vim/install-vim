@@ -76,4 +76,4 @@ then
   echo '{"dependencies":{}}'> package.json
 fi
 # Change arguments to extensions you need
-yarn add coc-json coc-snippets
+env PAHT=~/.local/bin:~/bin:$PATH yarn add coc-json coc-snippets
