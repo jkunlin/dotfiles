@@ -7,7 +7,6 @@
   "snippets.ultisnips.directories": [
     "/home/linjk/.vim/mysnippets/"
   ],
-  "suggest.noselect": false,
   "suggest.preferCompleteThanJumpPlaceholder": true,
   "diagnostic.refreshOnInsertMode": true,
   "languageserver": {
