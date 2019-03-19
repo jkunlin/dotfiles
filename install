@@ -64,5 +64,7 @@ if ! command -v parallel 2>/dev/null; then
   cd ../..
 fi
 
+rm -r $BASE/tmp
+
 # neovim
 ./vim/install-vim
