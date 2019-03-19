@@ -51,7 +51,7 @@ Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 " Plug 'spf13/vim-autoclose'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'terryma/vim-multiple-cursors'
-Plug 'mg979/vim-visual-multi'
+Plug 'mg979/vim-visual-multi', { 'branch': 'devel'}
 Plug 'tpope/vim-surround'
 Plug 'kana/vim-textobj-user'
 Plug 'tpope/vim-repeat'
@@ -579,8 +579,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " snippet
-let g:coc_snippet_next = '<TAB>'
-let g:coc_snippet_prev = '<S-TAB>'
+let g:coc_snippet_next = '<c-j>'
+let g:coc_snippet_prev = '<c-k>'
 
 " Use `[c` and `]c` for navigate diagnostics
 nmap <silent> [d <Plug>(coc-diagnostic-prev)

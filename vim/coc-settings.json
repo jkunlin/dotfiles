@@ -7,7 +7,6 @@
   "snippets.ultisnips.directories": [
     "~/.vim/mysnippets/"
   ],
-  "suggest.preferCompleteThanJumpPlaceholder": true,
   "diagnostic.refreshOnInsertMode": true,
   "languageserver": {
     "clangd": {
