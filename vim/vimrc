@@ -50,7 +50,8 @@ Plug 'andymass/vim-matchup'
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 " Plug 'spf13/vim-autoclose'
 Plug 'jiangmiao/auto-pairs'
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-surround'
 Plug 'kana/vim-textobj-user'
 Plug 'tpope/vim-repeat'
@@ -276,6 +277,13 @@ let g:deoplete#sources#clang#clang_header = "/usr/lib/llvm-3.8/lib/clang"
 
 " nvim-completion-manager
 let g:cm_matcher = {'module': 'cm_matchers.fuzzy_matcher', 'case': 'smartcase'}
+
+" vim-visual-multi
+let g:VM_default_mappings = 0
+let g:VM_maps = {}
+let g:VM_maps["Skip Region"] = '<C-x>'
+let g:VM_maps["Find Next"] = '<C-n>'
+let g:VM_maps["Find Prev"] = '<C-p>'
 
 " Ack
 if executable('rg')

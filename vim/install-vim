@@ -56,6 +56,13 @@ if ! command -v yarn 2>/dev/null; then
   curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 fi
 
+# vale
+if ! command -v vale 2>/dev/null; then
+  curl --insecure -fLo $BASE/tmp/vale_1.3.2_Linux_64-bit.tar.gz https://github.com/errata-ai/vale/releases/download/v1.3.2/vale_1.3.2_Linux_64-bit.tar.gz
+  tar xzf $BASE/tmp/vale_1.3.2_Linux_64-bit.tar.gz -C $BASE/tmp
+  mv $BASE/tmp/vale $HOME/.local/bin
+fi
+
 rm -rf $BASE/tmp
 
 # provider-python
