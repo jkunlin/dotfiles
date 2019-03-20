@@ -60,7 +60,7 @@ void fast_read(string file_name) {
 	while (*pos < '0' || *pos > '9') {
 		++pos;
 	}
-	while (*pos != ' ') {
+	while (*pos >= '0' && *pos <= '9') {
 		vertex_count = vertex_count * 10 +  *pos - '0';
 		++pos;
 	}
@@ -85,7 +85,7 @@ void fast_read(string file_name) {
 		while (*pos < '0' || *pos > '9') {
 			++pos;
 		}
-		while (*pos != ' ') {
+		while (*pos >= '0' && *pos <= '9') {
 			v1 = v1 * 10 +  *pos - '0';
 			++pos;
 		}
@@ -110,7 +110,7 @@ void fast_read(string file_name) {
 		while (*pos < '0' || *pos > '9') {
 			++pos;
 		}
-		while (*pos != ' ') {
+		while (*pos >= '0' && *pos <= '9') {
 			v1 = v1 * 10 +  *pos - '0';
 			++pos;
 		}
@@ -162,7 +162,7 @@ void fast_build(string file_name) {
 	while (*pos < '0' || *pos > '9') {
 		++pos;
 	}
-	while (*pos != ' ') {
+	while (*pos >= '0' && *pos <= '9') {
 		vertex_count = vertex_count * 10 +  *pos - '0';
 		++pos;
 	}
@@ -184,7 +184,7 @@ void fast_build(string file_name) {
 		while (*pos < '0' || *pos > '9') {
 			++pos;
 		}
-		while (*pos != ' ') {
+		while (*pos >= '0' && *pos <= '9') {
 			v = v * 10 +  *pos - '0';
 			++pos;
 		}
@@ -212,7 +212,7 @@ void fast_build(string file_name) {
 		while (*pos < '0' || *pos > '9') {
 			++pos;
 		}
-		while (*pos != ' ') {
+		while (*pos >= '0' && *pos <= '9') {
 			v1 = v1 * 10 +  *pos - '0';
 			++pos;
 		}
@@ -238,7 +238,7 @@ void fast_build(string file_name) {
 		while (*pos < '0' || *pos > '9') {
 			++pos;
 		}
-		while (*pos != ' ') {
+		while (*pos >= '0' && *pos <= '9') {
 			v1 = v1 * 10 +  *pos - '0';
 			++pos;
 		}
