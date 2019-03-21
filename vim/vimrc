@@ -42,7 +42,7 @@ Plug 'reedes/vim-lexical'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'mileszs/ack.vim' "need ack (now is ag instead) installed
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
-Plug 'vim-scripts/a.vim'
+" Plug 'vim-scripts/a.vim'
 " Plug 'vim-scripts/matchit.zip'
 Plug 'andymass/vim-matchup'
 " Plug 'vim-ctrlspace/vim-ctrlspace'
@@ -348,13 +348,39 @@ noremap <silent> <F7> :TagbarToggle<CR>
 let g:tagbar_sort = 0
 
 " a.vim
-nnoremap <leader>a :A<CR>
-augroup unmap_space
-  autocmd!
-  autocmd vimEnter * iunmap <leader>ihn
-  autocmd vimEnter * iunmap <leader>ih
-  autocmd vimEnter * iunmap <leader>is
-augroup END
+" nnoremap <leader>a :A<CR>
+" augroup unmap_space
+"   autocmd!
+"   autocmd vimEnter * iunmap <leader>ihn
+"   autocmd vimEnter * iunmap <leader>ih
+"   autocmd vimEnter * iunmap <leader>is
+" augroup END
+" ----------------------------------------------------------------------------
+" :A
+" ----------------------------------------------------------------------------
+function! s:a(cmd)
+  let name = expand('%:r')
+  let ext = tolower(expand('%:e'))
+  let sources = ['c', 'cc', 'cpp', 'cxx']
+  let headers = ['h', 'hh', 'hpp', 'hxx']
+  for pair in [[sources, headers], [headers, sources]]
+    let [set1, set2] = pair
+    if index(set1, ext) >= 0
+      for h in set2
+        let aname = name.'.'.h
+        for a in [aname, toupper(aname)]
+          if filereadable(a)
+            execute a:cmd a
+            return
+          end
+        endfor
+      endfor
+    endif
+  endfor
+endfunction
+command! A call s:a('e')
+command! AV call s:a('botright vertical split')
+nnoremap <silent> <leader>a :call <sid>a('e')<cr>
 
 " vim-autoclose
 let g:autoclose_vim_commentmode = 1
@@ -611,10 +637,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Using CocList
-" Find symbol of current document
-nnoremap <silent> <space>t  :<C-u>CocList outline<cr>
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> gt  :<C-u>CocList outline<cr>
+command! Coc CocList diagnostics
 
 augroup fmt
  autocmd!
