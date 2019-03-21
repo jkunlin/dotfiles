@@ -7,8 +7,9 @@
   "snippets.ultisnips.directories": [
     "~/.vim/mysnippets/"
   ],
+  "suggest.noselect": false,
   "suggest.detailField":"abbr",
- "diagnostic.virtualText": true,
+  "diagnostic.virtualText": true,
   "suggest.snippetIndicator": "🌟",
   "languageserver": {
     "clangd": {

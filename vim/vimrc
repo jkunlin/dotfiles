@@ -79,7 +79,7 @@ Plug 'sakhnik/nvim-gdb', { 'do': ':UpdateRemotePlugins' }
 " Plug 'simeji/winresizer'
 Plug 'mhinz/vim-startify'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 " Plug 'yuttie/hydrangea-vim'
 " Plug 't9md/vim-choosewin'
 " Plug 'zchee/clang-server'
