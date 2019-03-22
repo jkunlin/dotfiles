@@ -110,7 +110,7 @@ Plug 'sk1418/HowMuch'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'justinmk/vim-gtfo'
 Plug 'wellle/tmux-complete.vim'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
 
 " Initialize plugin system
 call plug#end()
