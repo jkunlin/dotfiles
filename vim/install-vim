@@ -50,7 +50,7 @@ fi
 
 # node
 if ! command -v node 2>/dev/null; then
-  curl -sL install-node.now.sh/lts | sh -s -- --prefix=$HOME/.local
+  curl -sL install-node.now.sh/lts | bash -s -- --prefix=$HOME/.local
 fi
 
 # yarn
