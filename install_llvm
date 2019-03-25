@@ -1,26 +1,17 @@
 #!/bin/bash
 [ ! -e ~/bin ] && mkdir -p ~/bin
 [ ! -e ~/.local ] && mkdir -p ~/.local
-[ ! -e ~/.local/bin ] && mkdir ~/.local/bin
-[ ! -e ~/.local/include  ] && mkdir ~/.local/include
-[ ! -e ~/.local/lib ] && mkdir ~/.local/lib
-[ ! -e ~/.local/libexec ] && mkdir ~/.local/libexec
-[ ! -e ~/.local/share ] && mkdir ~/.local/share
 source ~/.bashrc
 
 BASE=$(pwd)
 mkdir -p $BASE/tmp
 
 # llvm + clang
-if [ ! -e ~/.local/bin/clang ]; then
+if [ ! -e ~/.local/clang_llvm/bin/clang ]; then
 	cd $BASE/tmp
-  wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
-  tar xf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz
-  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/bin/* ~/.local/bin
-  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/include/* ~/.local/include
-  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/lib/* ~/.local/lib
-  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/libexec ~/.local/libexec
-  mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04/share ~/.local/share
+  wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+  tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+  mv clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04 ~/.local/clang_llvm
 fi
 
 rm -rf $BASE/tmp
