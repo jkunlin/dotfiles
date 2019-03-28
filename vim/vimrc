@@ -233,6 +233,9 @@ nnoremap [t :tabp<cr>
 nnoremap <tab>   <c-w>w
 nnoremap <S-tab> <c-w>W
 
+" Jump list (to newer position)
+nnoremap <C-p> <C-i>
+
 " ----------------------------------------------------------------------------
 " Help in new tabs
 " ----------------------------------------------------------------------------
