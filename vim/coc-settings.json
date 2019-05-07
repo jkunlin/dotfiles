@@ -8,7 +8,7 @@
     "~/.vim/mysnippets/"
   ],
   "suggest.noselect": false,
-  "suggest.detailField":"abbr",
+  "suggest.detailField": "abbr",
   "diagnostic.virtualText": true,
   "suggest.snippetIndicator": "🌟",
   "languageserver": {
@@ -28,5 +28,6 @@
         "objcpp"
       ]
     }
-  }
+  },
+  "coc.source.vimtex.enable": true
 }

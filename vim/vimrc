@@ -50,8 +50,8 @@ Plug 'andymass/vim-matchup'
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 " Plug 'spf13/vim-autoclose'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'terryma/vim-multiple-cursors'
-Plug 'mg979/vim-visual-multi', { 'branch': 'devel'}
+Plug 'terryma/vim-multiple-cursors'
+" Plug 'mg979/vim-visual-multi', { 'branch': 'devel'}
 Plug 'tpope/vim-surround'
 Plug 'kana/vim-textobj-user'
 Plug 'tpope/vim-repeat'
@@ -389,8 +389,8 @@ nnoremap <silent> <leader>a :call <sid>a('e')<cr>
 let g:autoclose_vim_commentmode = 1
 
 " tex-conceal
-set conceallevel=2
-let g:tex_conceal="abdgm"
+" set conceallevel=2
+" let g:tex_conceal="abdgm"
 
 " vimtex
 let g:tex_flavor = 'latex'
@@ -605,7 +605,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<c-r>=coc#on_enter()\<CR>\<C-g>u\<CR>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<c-r>=coc#on_enter()\<CR>\<C-g>u\<CR>"
 
 " snippet
 let g:coc_snippet_next = '<TAB>'
@@ -632,6 +633,13 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+augroup coc
+  autocmd!
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
 
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
