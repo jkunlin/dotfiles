@@ -50,8 +50,8 @@ Plug 'andymass/vim-matchup'
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 " Plug 'spf13/vim-autoclose'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'terryma/vim-multiple-cursors'
-Plug 'mg979/vim-visual-multi', { 'branch': 'devel'}
+Plug 'terryma/vim-multiple-cursors'
+" Plug 'mg979/vim-visual-multi', { 'branch': 'devel'}
 Plug 'tpope/vim-surround'
 Plug 'kana/vim-textobj-user'
 Plug 'tpope/vim-repeat'
@@ -345,6 +345,8 @@ let g:sneak#s_next = 1
 
 " airline
 set laststatus=2 "show status line even when only single window is opened
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " tagbar
 noremap <silent> <F7> :TagbarToggle<CR>
