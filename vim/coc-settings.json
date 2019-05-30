@@ -29,5 +29,6 @@
       ]
     }
   },
-  "python.jediEnabled": true
+  "python.jediEnabled": true,
+  "coc.source.vimtex.enable": true
 }
