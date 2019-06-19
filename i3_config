@@ -30,6 +30,11 @@ font pango:FantasqueSansMono Nerd Font Mono 15
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# volume
+bindsym XF86AudioRaiseVolume exec amixer -q set Master 2%+ unmute
+bindsym XF86AudioLowerVolume exec amixer -q set Master 2%- unmute
+bindsym XF86AudioMute exec amixer -q set Master toggle
+
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec alacritty
@@ -85,7 +90,7 @@ bindsym $mod+t layout tabbed
 bindsym $mod+s layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+f floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -109,16 +114,16 @@ bindsym $mod+Left workspace prev
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1  1:  
-set $ws2  2:  
-set $ws3  3:  
-set $ws4  4: 
-set $ws5  5:  
-set $ws6  6:  
-set $ws7  7:  
+set $ws1  1:  
+set $ws2  2:  
+set $ws3  3:  
+set $ws4  4:  
+set $ws5  5: 
+set $ws6  6:  
+set $ws7  7:  
 set $ws8  8:  
 set $ws9  9:  
-set $ws10  10:  
+set $ws10 10:  
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -146,7 +151,9 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 
 # open google-chrome on $ws2
 # for_window [class="Google-chrome"] fullscreen
-assign [class="Google-chrome"] $ws2
+assign [class="Google-chrome"] $ws1
+
+for_window [class="EasyConnect"] layout floating
 
 # system mode
 set $mode_system  lock(L) logout(O) reboot(R) shutdown(S) exit(Esc)
@@ -196,13 +203,41 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
+# bar {
+#   font pango:FantasqueSansMono Nerd Font Mono 20
+#   status_command i3blocks
+#   height 25
+#   # tray_output none
+#   position bottom
+#   strip_workspace_numbers yes
+# }
+
 bar {
   font pango:FantasqueSansMono Nerd Font Mono 20
-  status_command i3blocks
-  height 25
-  # tray_output none
+  i3bar_command i3bar -t
+  height 28
+  # i3bar调用
+  status_command ~/.config/i3/jconky
+  # 显示位置top/bottom
   position bottom
+  # 是否隐藏
+  #mode hide
+  # 拆解工作区名（隐藏前面的1:2:3:……）
   strip_workspace_numbers yes
+  # 定义分隔符∥
+  separator_symbol "  "
+
+  colors {
+      background #10101000
+      statusline #FFFFFF
+      separator  #3399FF
+      # 工作区颜色         边框    背景    文字
+      focused_workspace  #3297FD #11111100 #FFFFFF
+      active_workspace   #FFFFFF #FFFFFF00 #FFFFFF
+      inactive_workspace #111111 #11111100 #FFFFFF
+      urgent_workspace   #990000 #11111100 #FFFFFF
+      binding_mode       #990000 #99000000 #FFFFFF
+  }
 }
 
 
@@ -222,4 +257,5 @@ exec --no-startup-id system-config-printer-applet # Print Queue Applet
 exec --no-startup-id dropbox start -i             # Dropbox
 exec --no-startup-id alsactl restore -P           # reset volume
 exec --no-startup-id numlockx &                   # numlock on
+exec --no-startup-id xfce4-power-manager &        # brightnes
 
