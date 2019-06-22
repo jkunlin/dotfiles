@@ -41,7 +41,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+a exec gnome-screenshot -i -a
 
 # google-chrome
-bindsym $mod+w exec google-chrome
+bindsym $mod+w exec google-chrome --password-store=gnome
 
 # filemanager
 bindsym $mod+e exec nemo
@@ -222,4 +222,5 @@ exec --no-startup-id system-config-printer-applet # Print Queue Applet
 exec --no-startup-id dropbox start -i             # Dropbox
 exec --no-startup-id alsactl restore -P           # reset volume
 exec --no-startup-id numlockx &                   # numlock on
+exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
 
