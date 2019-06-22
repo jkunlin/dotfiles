@@ -1,116 +1,89 @@
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/bundle')
 
-function! BuildYCM(info)
-  if a:info.status == 'installed' || a:info.force
-    !./install.py --clang-completer
-  endif
-endfunction
 function! BuildMD(info)
   if a:info.status == 'installed' || a:info.force
     !sudo npm -g install instant-markdown-d
   endif
 endfunction
-" function! BuildVimtex(info)
-"   if a:info.status == 'installed' || a:info.force
-"     !pip3 install neovim-remote
-"   endif
-" endfunction
 " Make sure you use single quotes
-function! Cond(cond, ...)
-  let opts = get(a:000, 0, {})
-  return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
-endfunction
-" Plug 'roxma/nvim-completion-manager' | Plug 'roxma/ncm-clang'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } | Plug 'zchee/deoplete-clang'
-" Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'tex', 'python', 'sh'], 'do': function('BuildYCM') }
-" Plug 'zxqfl/tabnine-vim'
-" Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'honza/vim-snippets'
-Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' } "| Plug 'jistr/vim-nerdtree-tabs', { 'on': 'NERDTreeToggle' }
-Plug 'tomtom/tcomment_vim'
-Plug 'majutsushi/tagbar' "need exuberant ctag installed
-Plug 'bling/vim-airline'
-Plug 'rhysd/vim-grammarous'
-Plug 'reedes/vim-lexical'
-" Plug 'ConradIrwin/vim-bracketed-paste'
-" Plug 'junegunn/rainbow_parentheses.vim'
 
-" Plug 'justinmk/vim-sneak'
+" ----------------------------------------------------------------------------
+" appearance
+" ----------------------------------------------------------------------------
+Plug 'bling/vim-airline'
+Plug 'ryanoasis/vim-devicons'
+Plug 'morhetz/gruvbox'
+Plug 'mhinz/vim-startify'
+Plug 'machakann/vim-highlightedyank'
+Plug 'google/vim-searchindex'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'kshenoy/vim-signature'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
+
+" ----------------------------------------------------------------------------
+" navigation
+" ----------------------------------------------------------------------------
+Plug 'majutsushi/tagbar' "need exuberant ctag installed
 Plug 'Lokaltog/vim-easymotion'
 Plug 'mileszs/ack.vim' "need ack (now is ag instead) installed
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
-" Plug 'vim-scripts/a.vim'
-" Plug 'vim-scripts/matchit.zip'
 Plug 'andymass/vim-matchup'
-" Plug 'vim-ctrlspace/vim-ctrlspace'
-
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'justinmk/vim-gtfo'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
-" Plug 'spf13/vim-autoclose'
+
+
+" ----------------------------------------------------------------------------
+" writing
+" ----------------------------------------------------------------------------
+Plug 'rhysd/vim-grammarous'
+Plug 'reedes/vim-lexical'
+
+" ----------------------------------------------------------------------------
+" latex
+" ----------------------------------------------------------------------------
+Plug 'lervag/vimtex'
+Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
+Plug 'Konfekt/FastFold'
+" Plug 'gi1242/vim-tex-syntax'
+
+" ----------------------------------------------------------------------------
+" surround
+" ----------------------------------------------------------------------------
 Plug 'jiangmiao/auto-pairs'
-Plug 'terryma/vim-multiple-cursors'
-" Plug 'mg979/vim-visual-multi', { 'branch': 'devel'}
 Plug 'tpope/vim-surround'
+
+" ----------------------------------------------------------------------------
+" complete
+" ----------------------------------------------------------------------------
+Plug 'wellle/tmux-complete.vim'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
+Plug 'honza/vim-snippets'
+
+
+
+Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
+Plug 'tomtom/tcomment_vim'
+
+
+Plug 'terryma/vim-multiple-cursors'
 Plug 'kana/vim-textobj-user'
 Plug 'tpope/vim-repeat'
 Plug 'junegunn/vim-easy-align',  { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'dhruvasagar/vim-table-mode'
-Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'chrisbra/vim-diff-enhanced'
-Plug 'airblade/vim-gitgutter'
-
-"Plug 'godlygeek/csapprox' "for color
-"Plug 'jellybeans.vim'
-Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight'
-
-Plug 'Konfekt/FastFold' "make fold fast
-" Plug 'gi1242/vim-tex-syntax' "make tex fast
-Plug 'lervag/vimtex' "required vim with +clientserver; alias vim='vim --servername vim', set okular with 'vim --remote-silent +%l \"%f\"'
-Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
-" Plug 'vim-scripts/Conque-GDB', { 'on': 'GDB' }
-" Plug 'critiqjo/lldb.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'huawenyu/neogdb.vim', { 'on': 'GDB'}
 Plug 'sakhnik/nvim-gdb', { 'do': ':UpdateRemotePlugins' }
-" Plug 'myusuf3/numbers.vim'
-" Plug 'simeji/winresizer'
-Plug 'mhinz/vim-startify'
-Plug 'christoomey/vim-tmux-navigator'
-" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-" Plug 'yuttie/hydrangea-vim'
-" Plug 't9md/vim-choosewin'
-" Plug 'zchee/clang-server'
-" Plug 'ajh17/VimCompletesMe'
-" function! BuildComposer(info)
-"   if a:info.status != 'unchanged' || a:info.force
-"     if has('nvim')
-"       !cargo build --release
-"     else
-"       !cargo build --release --no-default-features --features json-rpc
-"     endif
-"   endif
-" endfunction
-" Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
-" Plug 'svermeulen/vim-easyclip'
 Plug 'vim-scripts/ReplaceWithRegister'
-" Plug 'sbdchd/neoformat'
-" Plug 'justinmk/vim-dirvish'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'google/vim-searchindex'
-Plug 'kshenoy/vim-signature'
-Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
 Plug 'tpope/vim-markdown' | Plug 'suan/vim-instant-markdown', { 'do': function('BuildMD') }
-Plug 'machakann/vim-highlightedyank'
-Plug 'ryanoasis/vim-devicons'
 Plug 'sk1418/HowMuch'
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-Plug 'justinmk/vim-gtfo'
-Plug 'wellle/tmux-complete.vim'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
 
 " Initialize plugin system
 call plug#end()
@@ -154,12 +127,6 @@ set hidden
 set clipboard=unnamed
 set shortmess+=c
 
-" augroup fmt
-"  autocmd!
-"  " autocmd BufWritePre * undojoin | Neoformat
-"  autocmd BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
-" augroup END
-
 inoremap <silent> jk <esc>
 cnoremap <silent> jk <c-c>
 if (has('nvim'))
@@ -181,17 +148,9 @@ augroup latex
         \ softtabstop=2
 augroup end
 
-" Treat long lines as break lines
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
-" Disable highlight when <leader><CR>
 noremap <silent> <leader>hc :noh<CR>
-" hi CursorLine cterm=NONE ctermbg=darkgray ctermfg=white guibg=darkgray guifg=white
-" switch between windows
-" nnoremap <silent> <c-h> <c-w>h
-" nnoremap <silent> <c-j> <c-w>j
-" nnoremap <silent> <c-k> <c-w>k
-" nnoremap <silent> <c-l> <c-w>l
 nnoremap <silent> = :vertical resize +5<cr>
 nnoremap <silent> - :vertical resize -5<cr>
 nnoremap <silent> <leader>= :resize +5<cr>
@@ -273,21 +232,6 @@ function! s:zoom()
 endfunction
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
-" deoplete
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = "/usr/lib/llvm-3.8/lib/libclang.so.1"
-let g:deoplete#sources#clang#clang_header = "/usr/lib/llvm-3.8/lib/clang"
-
-" nvim-completion-manager
-let g:cm_matcher = {'module': 'cm_matchers.fuzzy_matcher', 'case': 'smartcase'}
-
-" vim-visual-multi
-let g:VM_default_mappings = 0
-let g:VM_maps = {}
-let g:VM_maps["Skip Region"] = '<C-x>'
-let g:VM_maps["Find Next"] = '<C-n>'
-let g:VM_maps["Find Prev"] = '<C-p>'
-
 " Ack
 if executable('rg')
   " let g:ackprg = 'ag --nogroup --nocolor --column'
@@ -317,20 +261,9 @@ let g:fzf_colors =
       \ 'spinner': ['fg', 'Label'],
       \ 'header':  ['fg', 'Comment'] }
 
-" vim-ctrlspace
-if executable("ag")
-  let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
-endif
-let g:CtrlSpaceLoadLastWorkspaceOnStart = 1
-let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
-let g:CtrlSpaceSaveWorkspaceOnExit = 1
-nnoremap <leader>s :CtrlSpace<cr>
-
 " NERD
 noremap <silent> <F6> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"nmap <c-t> :browse tabnew<CR>M
-"imap <c-t> <Esc>:browse tabnew<CR>M
 
 " easy-motion
 map <Leader> <Plug>(easymotion-prefix)
@@ -339,9 +272,6 @@ map <silent> <Leader>mj <Plug>(easymotion-j)
 map <silent> <Leader>mk <Plug>(easymotion-k)
 map <silent> <Leader>mh <Plug>(easymotion-linebackward)
 let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
-
-" vim-sneak
-let g:sneak#s_next = 1
 
 " airline
 set laststatus=2 "show status line even when only single window is opened
@@ -352,14 +282,6 @@ let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_
 noremap <silent> <F7> :TagbarToggle<CR>
 let g:tagbar_sort = 0
 
-" a.vim
-" nnoremap <leader>a :A<CR>
-" augroup unmap_space
-"   autocmd!
-"   autocmd vimEnter * iunmap <leader>ihn
-"   autocmd vimEnter * iunmap <leader>ih
-"   autocmd vimEnter * iunmap <leader>is
-" augroup END
 " ----------------------------------------------------------------------------
 " :A
 " ----------------------------------------------------------------------------
@@ -387,15 +309,13 @@ command! A call s:a('e')
 command! AV call s:a('botright vertical split')
 nnoremap <silent> <leader>a :call <sid>a('e')<cr>
 
-" vim-autoclose
-let g:autoclose_vim_commentmode = 1
-
 " tex-conceal
 " set conceallevel=2
 " let g:tex_conceal="abdgm"
 
 " vimtex
 let g:tex_flavor = 'latex'
+" let g:vimtex_view_general_viewer = 'mupdf'
 let g:vimtex_view_general_viewer = 'okular'
 let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
@@ -424,17 +344,15 @@ endif
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+let g:easy_align_delimiters = {
+      \  't': { 'pattern': '\t',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 }
+      \}
 
 " vim-surround
 autocmd fileType plaintex,tex let b:surround_{char2nr('b')} = "\\textbf{\r}"
 autocmd fileType plaintex,tex let b:surround_{char2nr('i')} = "\\textit{\r}"
 autocmd fileType plaintex,tex let b:surround_{char2nr('$')} = "$\r$"
 autocmd fileType plaintex,tex let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
-
-" vim-easy-align
-let g:easy_align_delimiters = {
-      \  't': { 'pattern': '\t',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 }
-      \}
 
 " vim-textobj-user
 let g:textobj_numeral_pattern = '\%(\<[[:digit:]]\+\%(\.[[:digit:]]\+\)\=\%([Ee][[:digit:]]\+\)\=\>\|\<0[xXbBoOdD][[:xdigit:]]\+\>\)'
@@ -487,11 +405,6 @@ augroup auto-pairs
   autocmd!
   autocmd FileType plaintex,tex let g:AutoPairs['$']='$'
 augroup END
-
-" python
-autocmd FileType python nnoremap <Leader>i :!isort %<CR><CR>
-autocmd FileType python vnoremap = :!yapf<CR>
-
 
 " vim-startify
 let g:startify_files_number=5
@@ -560,7 +473,6 @@ nnoremap <Leader>mm :make<CR>
 
 " indentLine
 let g:indentLine_char = '┆'
-" let g:indentLine_setColors = 0
 let g:indentLine_color_gui = '#d65d0e'
 
 " ale
@@ -589,6 +501,9 @@ set timeoutlen=500
 " vim-gtfo
 let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
 
+" ----------------------------------------------------------------------------
+" coc-vim
+" ----------------------------------------------------------------------------
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -657,8 +572,6 @@ augroup fmt
  autocmd!
  autocmd BufWritePre * try | undojoin | :call CocAction('format') | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent :call CocAction('format') | endtry
 augroup END
-
-" command! -nargs=0 Format :call CocAction('format')
 
 " coc_status for airline
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
