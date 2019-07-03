@@ -17,6 +17,9 @@ for rc in *rc tmux.conf alacritty.yml; do
 done
 source ~/.bashrc
 
+[ -e ~/.ssh/config ] && mv -v ~/.ssh/config bak/ssh_config
+ln -sfv "$BASE"/ssh_config ~/.ssh/config
+
 git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
 
