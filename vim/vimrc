@@ -1,11 +1,11 @@
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/bundle')
 
-function! BuildMD(info)
-  if a:info.status == 'installed' || a:info.force
-    !sudo npm -g install instant-markdown-d
-  endif
-endfunction
+" function! BuildMD(info)
+"   if a:info.status == 'installed' || a:info.force
+"     !sudo npm -g install instant-markdown-d
+"   endif
+" endfunction
 " Make sure you use single quotes
 
 " ----------------------------------------------------------------------------
@@ -24,6 +24,21 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
+Plug 'octol/vim-cpp-enhanced-highlight'
+
+" ----------------------------------------------------------------------------
+" complete
+" ----------------------------------------------------------------------------
+Plug 'wellle/tmux-complete.vim'
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'honza/vim-snippets'
+
+" ----------------------------------------------------------------------------
+" surround
+" ----------------------------------------------------------------------------
+" Plug 'jiangmiao/auto-pairs'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-surround'
 
 " ----------------------------------------------------------------------------
 " navigation
@@ -34,10 +49,9 @@ Plug 'mileszs/ack.vim' "need ack (now is ag instead) installed
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'andymass/vim-matchup'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'justinmk/vim-gtfo'
+" Plug 'justinmk/vim-gtfo'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
-
 
 " ----------------------------------------------------------------------------
 " writing
@@ -54,35 +68,25 @@ Plug 'Konfekt/FastFold'
 " Plug 'gi1242/vim-tex-syntax'
 
 " ----------------------------------------------------------------------------
-" surround
+" edit
 " ----------------------------------------------------------------------------
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
-
-" ----------------------------------------------------------------------------
-" complete
-" ----------------------------------------------------------------------------
-Plug 'wellle/tmux-complete.vim'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
-Plug 'honza/vim-snippets'
-
+Plug 'terryma/vim-multiple-cursors'
+Plug 'brooth/far.vim'
+Plug 'tpope/vim-repeat'
+Plug 'vim-scripts/ReplaceWithRegister'
 
 
 Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
 Plug 'tomtom/tcomment_vim'
-
-
-Plug 'terryma/vim-multiple-cursors'
 Plug 'kana/vim-textobj-user'
-Plug 'tpope/vim-repeat'
 Plug 'junegunn/vim-easy-align',  { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'chrisbra/vim-diff-enhanced'
-Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'sakhnik/nvim-gdb', { 'do': ':UpdateRemotePlugins' }
-Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'tpope/vim-markdown' | Plug 'suan/vim-instant-markdown', { 'do': function('BuildMD') }
+Plug 'tpope/vim-markdown'
+" Plug 'suan/vim-instant-markdown', { 'do': function('BuildMD') }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'sk1418/HowMuch'
 
 " Initialize plugin system
@@ -238,10 +242,12 @@ if executable('rg')
   let g:ackprg = 'rg --vimgrep'
 endif
 let g:ack_autoclose = 0
+nnoremap <Leader>sw :AckWindow <cword><cr>
+nnoremap <Leader>sW :Ack <cword><cr>
 
 " fzf
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>sf :Files<CR>
+
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-i': 'split',
@@ -406,6 +412,11 @@ augroup auto-pairs
   autocmd FileType plaintex,tex let g:AutoPairs['$']='$'
 augroup END
 
+" delimitMate
+let delimitMate_expand_space = 1
+let delimitMate_expand_cr = 1
+let delimitMate_jump_expansion = 1
+
 " vim-startify
 let g:startify_files_number=5
 let g:startify_files_number=5
@@ -499,7 +510,11 @@ nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 set timeoutlen=500
 
 " vim-gtfo
-let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
+" let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
+
+" markdown-preview.nvim
+nmap <leader>mp <Plug>MarkdownPreviewToggle
+let g:far#source='rg'
 
 " ----------------------------------------------------------------------------
 " coc-vim
@@ -522,8 +537,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<c-r>=coc#on_enter()\<CR>\<C-g>u\<CR>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " snippet
 let g:coc_snippet_next = '<TAB>'
@@ -565,8 +581,9 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Using CocList
-nnoremap <silent> gt  :<C-u>CocList outline<cr>
 command! Coc CocList diagnostics
+
+nnoremap <leader>st :CocList --auto-preview outline<CR>
 
 augroup fmt
  autocmd!
