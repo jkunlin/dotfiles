@@ -247,6 +247,7 @@ nnoremap <Leader>sW :Ack <cword><cr>
 
 " fzf
 nnoremap <leader>sf :Files<CR>
+nnoremap <leader>sr :Rg<CR>
 
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
@@ -407,9 +408,15 @@ if &diff
 endif
 
 " auto-pairs
-augroup auto-pairs
+" augroup auto-pairs
+"   autocmd!
+"   autocmd FileType plaintex,tex let g:AutoPairs['$']='$'
+" augroup END
+
+" delimitMate
+augroup delimitMate
   autocmd!
-  autocmd FileType plaintex,tex let g:AutoPairs['$']='$'
+  autocmd FileType plaintex,tex let b:delimitMate_quotes = "\" ' $"
 augroup END
 
 " delimitMate
