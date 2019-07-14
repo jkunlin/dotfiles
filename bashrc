@@ -44,6 +44,7 @@ export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
 export GOPATH=~/gosrc
 mkdir -p $GOPATH
 export PATH=$HOME/bin:$HOME/.local/bin:$HOME/.local/clang_llvm/bin:$HOME/.yarn/bin:$HOME/texlive2017/2017/bin/x86_64-linux:$PATH
+export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8

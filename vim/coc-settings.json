@@ -27,8 +27,30 @@
         "objc",
         "objcpp"
       ]
+    },
+    "latex": {
+      "command": "texlab",
+      "ignoredRootPaths": [
+        "~"
+      ],
+      "filetypes": [
+        "tex",
+        "bib"
+      ]
     }
   },
+  "latex.build.args": [
+    "-pdf",
+    "-interaction=nonstopmode",
+    "-synctex=1",
+    "-pv"
+  ],
+  "latex.build.onSave": true,
+  "latex.forwardSearch.executable": "okular",
+  "latex.forwardSearch.args": [
+    "--unique",
+    "file:%p#src:%l%f"
+  ],
   "python.jediEnabled": true,
   "coc.source.vimtex.enable": true,
   "coc.source.word.filetypes": [

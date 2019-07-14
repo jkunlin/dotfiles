@@ -18,8 +18,8 @@ ln -sf $BASE/ycm_extra_conf.py ~/.vim/.ycm_extra_conf
 
 # nvim
 if ! command -v nvim 2>/dev/null; then
-  curl --insecure -fLo ~/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-  chmod u+x ~/bin/nvim
+  curl --insecure -fLo ~/.local/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+  chmod u+x ~/.local/bin/nvim
 fi
 mkdir -p ~/.config/nvim/autoload
 ln -sf $BASE/vimrc ~/.config/nvim/init.vim
@@ -85,4 +85,4 @@ then
   echo '{"dependencies":{}}'> package.json
 fi
 # Change arguments to extensions you need
-env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex
+env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex coc-texlab
