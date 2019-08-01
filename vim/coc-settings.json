@@ -27,16 +27,6 @@
         "objc",
         "objcpp"
       ]
-    },
-    "latex": {
-      "command": "texlab",
-      "ignoredRootPaths": [
-        "~"
-      ],
-      "filetypes": [
-        "tex",
-        "bib"
-      ]
     }
   },
   "latex.build.args": [
@@ -61,5 +51,6 @@
   "list.source.outline.ctagsFilestypes": [
     "c",
     "cpp"
-  ]
+  ],
+  "java.errors.incompleteClasspath.severity": "ignore"
 }
