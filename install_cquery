@@ -1,5 +1,4 @@
 #!/bin/bash
-[ ! -e ~/bin ] && mkdir -p ~/bin
 [ ! -e ~/.local ] && mkdir -p ~/.local
 [ ! -e ~/.local/bin ] && mkdir ~/.local/bin
 [ ! -e ~/.local/include  ] && mkdir ~/.local/include
