@@ -28,7 +28,6 @@ ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 
 # dependence for plugins
 #####################################################
-[ ! -e ~/bin ] && mkdir -p ~/bin
 [ ! -e ~/.local ] && mkdir -p ~/.local
 [ ! -e ~/.local/bin ] && mkdir ~/.local/bin
 [ ! -e ~/.local/include  ] && mkdir ~/.local/include
