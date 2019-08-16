@@ -94,6 +94,7 @@ if [ "$PLATFORM" = 'Darwin' ]; then
 fi
 
 ### Tmux
+source "$BASE/tmux.completion.bash"
 alias tmux="tmux -2"
 alias tmuxls="ls $TMPDIR/tmux*/"
 tping() {
@@ -562,3 +563,4 @@ export ANDROID_HOME=$HOME/android_sdk/tools
 export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=$ANDROID_HOME/tools/bin:$PATH
 export PATH=$ANDROID_HOME/platform-tools:$PATH
+export PATH=$ANDROID_HOME/emulator:$PATH

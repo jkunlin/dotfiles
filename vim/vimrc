@@ -602,11 +602,16 @@ nmap <leader>rn <Plug>(coc-rename)
 command! Coc CocList diagnostics
 
 nnoremap <leader>st :CocList --auto-preview outline<CR>
+nnoremap <silent> <leader>lv  :<C-u>CocCommand latex.ForwardSearch<CR>
+nnoremap <silent> <leader>lb  :<C-u>CocCommand latex.Build<CR>
 
 augroup fmt
  autocmd!
  autocmd BufWritePre * try | undojoin | :call CocAction('format') | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent :call CocAction('format') | endtry
 augroup END
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
 
 " coc_status for airline
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'

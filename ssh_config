@@ -11,3 +11,6 @@ Host rn
   User jkunlin
   Port 1707
   
+Host dc
+  HostName 192.168.10.100
+  User jkunlin
