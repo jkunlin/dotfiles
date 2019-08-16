@@ -151,7 +151,7 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 
 # open google-chrome on $ws2
 # for_window [class="Google-chrome"] fullscreen
-assign [class="Google-chrome"] $ws1
+# assign [class="Google-chrome"] $ws1
 
 for_window [class="EasyConnect"] layout floating
 
