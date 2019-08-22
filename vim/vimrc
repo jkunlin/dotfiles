@@ -604,6 +604,8 @@ command! Coc CocList diagnostics
 nnoremap <leader>st :CocList --auto-preview outline<CR>
 nnoremap <silent> <leader>lv  :<C-u>CocCommand latex.ForwardSearch<CR>
 nnoremap <silent> <leader>lb  :<C-u>CocCommand latex.Build<CR>
+nnoremap <silent> <leader>lc  :<C-u>!latexmk -c<CR>
+nnoremap <silent> <leader>lC  :<C-u>!latexmk -C<CR>
 
 augroup fmt
  autocmd!

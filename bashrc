@@ -553,7 +553,7 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 MANPATH=$MANPATH:$HOME/share/man
 
-export JAVA_HOME=~/jdk/jdk-12.0.2
+export JAVA_HOME=~/jdk1.8.0_144
 export CLASSPATH=.:${JAVA_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 export PATH=/home/jkunlin/Downloads/android-studio/bin:$PATH

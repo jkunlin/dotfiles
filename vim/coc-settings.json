@@ -13,7 +13,7 @@
   "suggest.snippetIndicator": "🌟",
   "languageserver": {
     "clangd": {
-      "command": "clangd",
+      "command": "clangd-9",
       "rootPatterns": [
         "compile_flags.txt",
         "compile_commands.json",
@@ -36,11 +36,17 @@
     "-pv"
   ],
   "latex.build.onSave": true,
-  "latex.forwardSearch.executable": "okular",
+  "latex.forwardSearch.executable": "zathura",
   "latex.forwardSearch.args": [
-    "--unique",
-    "file:%p#src:%l%f"
+    "--synctex-forward",
+    "%l:1:%f",
+    "%p"
   ],
+  //  "latex.forwardSearch.executable": "okular",
+  //  "latex.forwardSearch.args": [
+  //  "--unique",
+  //    "file:%p#src:%l%f"
+  //  ],
   "python.jediEnabled": true,
   "coc.source.vimtex.enable": true,
   "coc.source.word.filetypes": [
