@@ -20,6 +20,9 @@ source ~/.bashrc
 [ -e ~/.ssh/config ] && mv -v ~/.ssh/config bak/ssh_config
 ln -sfv "$BASE"/ssh_config ~/.ssh/config
 
+[ -e ~/.config/zathura/zathurarc ] && mv -v ~/.config/zathura/zathurarc bak/
+ln -sfv "$BASE/zathura_config" ~/.config/zathura/zathurarc
+
 git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
 

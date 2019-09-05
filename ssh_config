@@ -12,5 +12,11 @@ Host rn
   Port 1707
   
 Host dc
-  HostName 192.168.10.100
+  HostName 192.168.2.30
   User jkunlin
+  Port 3360
+
+Host dell
+  HostName 192.168.2.30
+  User jkunlin
+  Port 336
