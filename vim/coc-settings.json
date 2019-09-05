@@ -9,7 +9,7 @@
   ],
   "suggest.noselect": false,
   "suggest.detailField": "abbr",
-  "diagnostic.virtualText": true,
+  "diagnostic.virtualText": false,
   "suggest.snippetIndicator": "🌟",
   "languageserver": {
     "clangd": {

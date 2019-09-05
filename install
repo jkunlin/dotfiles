@@ -40,6 +40,16 @@ fi
 
 mkdir -p $BASE/tmp
 
+# xcwd
+if ! command -v xcwd 2>/dev/null; then
+  curl --insecure -fLo $BASE/tmp/xcwd-master.zip https://github.com/schischi/xcwd/archive/master.zip
+  cd $BASE/tmp/
+  unzip xcwd-master.zip
+  cd xcwd-master
+  make && cp $BASE/tmp/xcwd-master/xcwd ~/.local/bin
+  cd $BASE
+fi
+
 # fd
 if ! command -v fd 2>/dev/null; then
   curl --insecure -fLo $BASE/tmp/fd_7.3.0_amd64.deb https://github.com/sharkdp/fd/releases/download/v7.3.0/fd_7.3.0_amd64.deb

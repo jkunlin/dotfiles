@@ -37,7 +37,7 @@ bindsym XF86AudioMute exec amixer -q set Master toggle
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec alacritty --working-directory="`xcwd`"
 
 # lock screen
 # bindsym ctrl+$mod+l exec xtrlock -b
