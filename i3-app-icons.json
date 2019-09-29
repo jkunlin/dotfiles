@@ -1,0 +1,17 @@
+{
+  "firefox": "firefox",
+  "chromium-browser": "chrome",
+  "chrome": "chrome",
+  "google-chrome": "chrome",
+  "x-terminal-emulator": "terminal",
+  "alacritty": "terminal",
+  "thunderbird": "envelope",
+  "jetbrains-idea-ce": "edit",
+  "nautilus": "folder-open",
+  "nemo": "folder-open",
+  "clementine": "music",
+  "vlc": "play",
+  "signal": "comment",
+  "zathura": "file-pdf",
+  "xreader": "file-pdf"
+}

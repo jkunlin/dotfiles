@@ -10,6 +10,8 @@ sudo apt install numlockx
 BASE=$(pwd)
 mkdir -p $BASE/tmp
 
+pip3 install --user i3-workspace-names-daemon
+
 # conky
 cd "$BASE/tmp" || exit 1
 if ! command -v conky 2>/dev/null; then
@@ -49,6 +51,7 @@ cd $BASE || exit 1
 ln -sfv "$BASE/i3_config" ~/.config/i3/config
 ln -sfv "$BASE/jconky" ~/.config/i3/jconky
 ln -sfv "$BASE/conkyrc" ~/.config/i3/conkyrc
+ln -sfv "$BASE/i3-app-icons.json" ~/.config/i3/app-icons.json
 
 # touchpad
 sudo mkdir -p /etc/X11/xorg.conf.d && sudo tee <<'EOF' /etc/X11/xorg.conf.d/90-touchpad.conf 1> /dev/null
