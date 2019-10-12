@@ -13,5 +13,8 @@
   "vlc": "play",
   "signal": "comment",
   "zathura": "file-pdf",
-  "xreader": "file-pdf"
+  "xreader": "file-pdf",
+  "easyconnect": "link",
+  "dropbox": "dropbox",
+  "insync": "sync"
 }
