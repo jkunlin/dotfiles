@@ -61,7 +61,7 @@ bindsym $mod+q kill
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+d exec --no-startup-id alacritty -d 50 20 -t "fzf-dmenu" --command i3-dmenu-desktop --dmenu=~/.fzf/bin/fzf
-bindsym $mod+c exec --no-startup-id alacritty -d 50 20 -t "fzf-dmenu" -e ~/.local/bin/passmenu
+bindsym $mod+p exec --no-startup-id alacritty -d 50 20 -t "fzf-dmenu" -e ~/.local/bin/passmenu
 for_window [title="fzf-dmenu"] floating enable
 
 # change focus
@@ -99,7 +99,7 @@ bindsym $mod+Shift+f floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+p focus parent
+# bindsym $mod+p focus parent
 
 # focus the child container
 #bindsym $mod+d focus child

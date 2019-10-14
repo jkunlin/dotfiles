@@ -14,6 +14,7 @@
   "signal": "comment",
   "zathura": "file-pdf",
   "xreader": "file-pdf",
+  "libreoffice-writer": "file-word",
   "easyconnect": "link",
   "dropbox": "dropbox",
   "insync": "sync"
