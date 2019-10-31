@@ -18,7 +18,8 @@ password=$(printf '%s\n' "${password_files[@]}" | ~/.fzf/bin/fzf "$@")
 [[ -n $password ]] || exit
 
 if [[ $typeit -eq 0 ]]; then
-  nohup pass show -c "$password" 1>/dev/null 2>/dev/null
+  # nohup pass show -c "$password" 1>/dev/null 2>/dev/null
+  pass show -c "$password"
 else
 	pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } |
 		xdotool type --clearmodifiers --file -

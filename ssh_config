@@ -20,3 +20,12 @@ Host dell
   HostName 192.168.2.30
   User jkunlin
   Port 336
+
+Host ios2
+  HostName 192.168.1.180
+  User sunsy
+
+Host ios3
+  HostName 192.168.1.181
+  User sunsy
+

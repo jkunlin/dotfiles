@@ -52,6 +52,21 @@ export LC_ALL=en_US.UTF-8
 ### OS X
 export COPYFILE_DISABLE=true
 
+MANPATH=$MANPATH:$HOME/share/man
+
+## java
+export JAVA_HOME=~/jdk1.8.0_144
+export CLASSPATH=.:${JAVA_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
+export PATH=/home/jkunlin/Downloads/android-studio/bin:$PATH
+
+## android
+export ANDROID_HOME=$HOME/sdk/tools
+export PATH=$ANDROID_HOME/tools:$PATH
+export PATH=$ANDROID_HOME/tools/bin:$PATH
+export PATH=$ANDROID_HOME/platform-tools:$PATH
+export PATH=$ANDROID_HOME/emulator:$PATH
+
 # Aliases
 # --------------------------------------------------------------------
 
@@ -551,15 +566,3 @@ fi
 
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-MANPATH=$MANPATH:$HOME/share/man
-
-export JAVA_HOME=~/jdk1.8.0_144
-export CLASSPATH=.:${JAVA_HOME}/lib
-export PATH=${JAVA_HOME}/bin:$PATH
-export PATH=/home/jkunlin/Downloads/android-studio/bin:$PATH
-
-export ANDROID_HOME=$HOME/sdk/tools
-export PATH=$ANDROID_HOME/tools:$PATH
-export PATH=$ANDROID_HOME/tools/bin:$PATH
-export PATH=$ANDROID_HOME/platform-tools:$PATH
-export PATH=$ANDROID_HOME/emulator:$PATH
