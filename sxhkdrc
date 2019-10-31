@@ -8,7 +8,7 @@ super + Return
 
 # program launcher
 super + d
-  alacritty -d 50 20 -t "fzf-dmenu" --command i3-dmenu-desktop --dmenu=~/.fzf/bin/fzf
+  alacritty -d 50 20 --class "fzf-dmenu" -e ~/dmenu_run
 
 # filemanager
 super + e
@@ -16,7 +16,7 @@ super + e
 
 # password
 super + p
-  alacritty -d 50 20 -t "fzf-dmenu" -e ~/.local/bin/passmenu
+  alacritty -d 50 20 --class "fzf-dmenu" -e ~/.local/bin/passmenu
 
 # make sxhkd reload its configuration files:
 super + Escape

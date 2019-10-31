@@ -1,0 +1,2 @@
+#!/bin/sh
+dmenu_path | ~/.fzf/bin/fzf "$@" | ${SHELL:-"/bin/sh"} &
