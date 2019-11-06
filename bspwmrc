@@ -7,15 +7,17 @@ nm-applet --sm-disable &      # Network Manager
 dropbox start -i             # Dropbox
 insync &                     # Insync
 numlockx &                   # numlock on
-/usr/bin/gnome-keyring-daemon --start --components=another
+/usr/bin/gnome-keyring-daemon --start --components=secrets
 xfce4-power-manager &        # brightnes
 xset dpms 600                # turn off screen
 
 
-bspc monitor -d I II III IV V VI VII
-# xrandr --output eDP-1-1 --off # close laptop screen
-# bspc monitor DP-1-2 -d I II III IV V VI VII
-# bspc monitor eDP-1-1 -d VIII IX X
+# bspc monitor -d I II III IV V VI VII
+xrandr --output eDP-1-1 --off # close laptop screen
+bspc config remove_unplugged_monitors true
+bspc config remove_disabled_monitors true
+bspc monitor DP-1-2 -d I II III IV V VI VII
+bspc monitor eDP-1-1 -d VIII IX X
 
 bspc config border_width         2
 bspc config window_gap          12

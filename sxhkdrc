@@ -8,7 +8,7 @@ super + Return
 
 # program launcher
 super + d
-  alacritty -d 50 20 --class "fzf-dmenu" -e ~/dmenu_run
+  dmenu_run -fn 'FantasqueSansMono Nerd Font Mono-35'
 
 # filemanager
 super + e
@@ -25,6 +25,10 @@ super + Escape
 # browser
 super + w
   google-chrome --password-store=gnome
+
+# screen locked
+super + alt + l
+  i3lock -c '#000000'
 
 #
 # bspwm hotkeys
