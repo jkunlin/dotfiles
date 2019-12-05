@@ -52,6 +52,7 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'justinmk/vim-gtfo'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
+Plug 'psliwka/vim-smoothie'
 
 " ----------------------------------------------------------------------------
 " writing
@@ -84,7 +85,8 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'chrisbra/vim-diff-enhanced'
 " Plug 'sakhnik/nvim-gdb', { 'do': ':UpdateRemotePlugins' }
-Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+" Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+Plug 'sakhnik/nvim-gdb', { 'branch': 'legacy' }
 Plug 'tpope/vim-markdown'
 " Plug 'suan/vim-instant-markdown', { 'do': function('BuildMD') }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -597,6 +599,10 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
 
 " Using CocList
 command! Coc CocList diagnostics

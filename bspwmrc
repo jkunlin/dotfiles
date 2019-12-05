@@ -4,12 +4,13 @@ sxhkd &
 numlockx &                   # numlock on
 nm-applet --sm-disable &      # Network Manager
 # system-config-printer-applet # Print Queue Applet
-dropbox start -i             # Dropbox
+KeeWeb & #password
 insync &                     # Insync
 numlockx &                   # numlock on
 /usr/bin/gnome-keyring-daemon --start --components=secrets
 xfce4-power-manager &        # brightnes
 xset dpms 600                # turn off screen
+dropbox start -i             # Dropbox
 
 
 # bspc monitor -d I II III IV V VI VII
