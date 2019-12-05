@@ -26,6 +26,10 @@ super + Escape
 super + w
   google-chrome --password-store=gnome
 
+# screenshot
+super + a
+  gnome-screenshot -i
+
 # screen locked
 super + alt + l
   i3lock -c '#000000'
