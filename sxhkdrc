@@ -14,6 +14,10 @@ super + d
 super + e
 	nemo
 
+# screenshot
+super + a
+  gnome-screenshot -i -a
+
 # password
 super + p
   alacritty -d 50 20 --class "fzf-dmenu" -e ~/.local/bin/passmenu
