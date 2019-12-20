@@ -308,8 +308,8 @@ let g:tagbar_sort = 0
 function! s:a(cmd)
   let name = expand('%:r')
   let ext = tolower(expand('%:e'))
-  let sources = ['c', 'cc', 'cpp', 'cxx']
-  let headers = ['h', 'hh', 'hpp', 'hxx']
+  let sources = ['c', 'cc', 'cpp', 'cxx', 'C']
+  let headers = ['h', 'hh', 'hpp', 'hxx', 'H']
   for pair in [[sources, headers], [headers, sources]]
     let [set1, set2] = pair
     if index(set1, ext) >= 0

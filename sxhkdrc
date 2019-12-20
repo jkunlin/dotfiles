@@ -8,15 +8,12 @@ super + Return
 
 # program launcher
 super + d
-  dmenu_run -fn 'FantasqueSansMono Nerd Font Mono-35'
+  rofi -show run
+  # dmenu_run -fn 'FantasqueSansMono Nerd Font Mono-35'
 
 # filemanager
 super + e
-	nemo
-
-# screenshot
-super + a
-  gnome-screenshot -i -a
+	pcmanfm
 
 # password
 super + p
@@ -32,7 +29,9 @@ super + w
 
 # screenshot
 super + a
-  gnome-screenshot -i
+  import png:- | xclip -selection clipboard -t image/png
+  # gnome-screenshot -i -a
+
 
 # screen locked
 super + alt + l
