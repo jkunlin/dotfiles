@@ -1,16 +1,14 @@
 #! /bin/sh
 
 sxhkd &
-numlockx &                   # numlock on
-nm-applet --sm-disable &      # Network Manager
-# system-config-printer-applet # Print Queue Applet
-KeeWeb & #password
-insync &                     # Insync
-numlockx &                   # numlock on
-/usr/bin/gnome-keyring-daemon --start --components=secrets
-xfce4-power-manager &        # brightnes
-xset dpms 600                # turn off screen
-dropbox start -i             # Dropbox
+numlockx                                                   # numlock on
+KeeWeb &                                                   # password
+insync &                                                   # Insync
+/usr/bin/gnome-keyring-daemon --start --components=secrets # for chrome
+xfce4-power-manager                                        # brightnes
+xset dpms 600                                              # turn off screen
+# dropbox start -i                                           # Dropbox
+# nm-applet --sm-disable &                                   # Network Manager
 
 
 # bspc monitor -d I II III IV V VI VII
@@ -35,6 +33,8 @@ wmname LG3D
 # bspc rule -a Chromium desktop='^2'
 # bspc rule -a mplayer2 state=floating
 bspc rule -a Alacritty:fzf-dmenu state=floating
+bspc rule -a KeeWeb state=floating
+bspc rule -a Insync state=floating
 # bspc rule -a Kupfer.py focus=on
 # bspc rule -a Screenkey manage=off
 
