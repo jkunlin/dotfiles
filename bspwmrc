@@ -3,6 +3,7 @@
 sxhkd &
 numlockx                                                   # numlock on
 KeeWeb &                                                   # password
+nm-applet --sm-disable &                                   # Network Manager
 insync &                                                   # Insync
 /usr/bin/gnome-keyring-daemon --start --components=secrets # for chrome
 xfce4-power-manager                                        # brightnes
