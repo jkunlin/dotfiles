@@ -30,7 +30,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 " complete
 " ----------------------------------------------------------------------------
 Plug 'wellle/tmux-complete.vim'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
 
 " ----------------------------------------------------------------------------
@@ -504,7 +504,8 @@ nnoremap <Leader>mm :make<CR>
 
 " indentLine
 let g:indentLine_char = '┆'
-let g:indentLine_color_gui = '#d65d0e'
+" let g:indentLine_color_gui = '#d65d0e'
+" let g:indentLine_setColors = 0
 
 " ale
 " For all languages unspecified in the dictionary, all possible linters will be run for those languages, just as when the dictionary is not defined.
@@ -602,6 +603,9 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" coc-explorer
+nmap ge :CocCommand explorer<CR>
 
 
 " Using CocList
