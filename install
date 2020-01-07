@@ -21,7 +21,7 @@ source ~/.bashrc
 ln -sfv "$BASE"/ssh_config ~/.ssh/config
 
 [ -e ~/.config/zathura/zathurarc ] && mv -v ~/.config/zathura/zathurarc bak/
-ln -sfv "$BASE/zathura_config" ~/.config/zathura/zathurarc
+mkdir -p ~/.config/zathura && ln -sfv "$BASE/zathura_config" ~/.config/zathura/zathurarc
 
 git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
@@ -34,12 +34,12 @@ fi
 
 # install softwares
 #######################################################################
-[ ! -e ~/.local ] && mkdir -p ~/.local
-[ ! -e ~/.local/bin ] && mkdir ~/.local/bin
-[ ! -e ~/.local/include  ] && mkdir ~/.local/include
-[ ! -e ~/.local/lib ] && mkdir ~/.local/lib
-[ ! -e ~/.local/libexec ] && mkdir ~/.local/libexec
-[ ! -e ~/.local/share ] && mkdir ~/.local/share
+mkdir -p ~/.local
+mkdir -p ~/.local/bin
+mkdir -p ~/.local/include
+mkdir -p ~/.local/lib
+mkdir -p ~/.local/libexec
+mkdir -p ~/.local/share
 
 mkdir -p $BASE/tmp
 
@@ -70,7 +70,7 @@ fi
 # parallel
 if ! command -v parallel 2>/dev/null; then
   cd $BASE/tmp
-  wget -c https://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2
+  curl --insecure -fLo parallel-latest.tar.bz2 https://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2
   tar xjf parallel-latest.tar.bz2
   cd  $(fd --maxdepth 1 parallel -t d)
   ./configure --prefix=$HOME/.local
@@ -82,7 +82,7 @@ fi
 # runsolver
 if ! command -v runsolver 2>/dev/null; then
   cd $BASE/tmp
-  wget -c https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.3.4.tar.bz2
+  curl --insecure -fLo runsolver-3.3.4.tar.bz2 https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.3.4.tar.bz2
   tar xjf runsolver-3.3.4.tar.bz2
   cd runsolver/src
   make -j

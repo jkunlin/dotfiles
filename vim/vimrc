@@ -606,6 +606,7 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " coc-explorer
 nmap ge :CocCommand explorer<CR>
+let g:indentLine_fileTypeExclude = ['coc-explorer']
 
 
 " Using CocList

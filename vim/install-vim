@@ -28,12 +28,12 @@ ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 
 # dependence for plugins
 #####################################################
-[ ! -e ~/.local ] && mkdir -p ~/.local
-[ ! -e ~/.local/bin ] && mkdir ~/.local/bin
-[ ! -e ~/.local/include  ] && mkdir ~/.local/include
-[ ! -e ~/.local/lib ] && mkdir ~/.local/lib
-[ ! -e ~/.local/libexec ] && mkdir ~/.local/libexec
-[ ! -e ~/.local/share ] && mkdir ~/.local/share
+mkdir -p ~/.local
+mkdir -p ~/.local/bin
+mkdir -p ~/.local/include
+mkdir -p ~/.local/lib
+mkdir -p ~/.local/libexec
+mkdir -p ~/.local/share
 
 mkdir -p $BASE/tmp
 # pip
@@ -84,4 +84,4 @@ then
   echo '{"dependencies":{}}'> package.json
 fi
 # Change arguments to extensions you need
-env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex coc-texlab
+env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex coc-texlab coc-explorer
