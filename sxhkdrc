@@ -66,8 +66,11 @@ super + g
 #
 
 # set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+super + t
+  {bspc node -t floating && window-placer $(bspc query -T -d | grep -o '"state":"floating"' | wc -l), bspc node -t tiled}
+
+super + f
+  bspc node -t {fullscreen, tiled}
 
 # set the node flags
 super + ctrl + {m,x,y,z}
