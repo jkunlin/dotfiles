@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# RC files
-
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
+# RC files
 # git-prompt
 if [ ! -e ~/.git-prompt.sh ]; then
   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
@@ -91,6 +90,3 @@ if ! command -v runsolver 2>/dev/null; then
 fi
 
 rm -r $BASE/tmp
-
-# neovim
-./vim/install-vim

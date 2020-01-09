@@ -41,9 +41,9 @@ export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
 [ -z "$TMPDIR" ] && TMPDIR=/tmp
 
 ### Global
-export GOPATH=~/gosrc
+export GOPATH=~/.gosrc
 mkdir -p $GOPATH
-export PATH=$HOME/bin:$HOME/.local/bin:$HOME/.local/clang_llvm/bin:$HOME/.yarn/bin:$HOME/texlive2017/2017/bin/x86_64-linux:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$HOME/.local/clang_llvm/bin:$HOME/.yarn/bin:$PATH
 export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
 export EDITOR=nvim
 export LANG=en_US.UTF-8
@@ -55,17 +55,9 @@ export COPYFILE_DISABLE=true
 MANPATH=$MANPATH:$HOME/share/man
 
 ## java
-export JAVA_HOME=~/jdk1.8.0_144
+export JAVA_HOME=~/jdk-13.0.1
 export CLASSPATH=.:${JAVA_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
-export PATH=/home/jkunlin/Downloads/android-studio/bin:$PATH
-
-## android
-export ANDROID_HOME=$HOME/sdk/tools
-export PATH=$ANDROID_HOME/tools:$PATH
-export PATH=$ANDROID_HOME/tools/bin:$PATH
-export PATH=$ANDROID_HOME/platform-tools:$PATH
-export PATH=$ANDROID_HOME/emulator:$PATH
 
 # Aliases
 # --------------------------------------------------------------------
@@ -186,6 +178,27 @@ tt() {
 ..cd() {
   cd ..
   cd "$@"
+}
+
+ex () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2) tar xjf "$1" ;;
+      *.tar.gz)  tar xzf "$1" ;;
+      *.bz2)     bunzip2 "$1" ;;
+      *.rar)     unrar x "$1" ;;
+      *.gz)      gunzip "$1" ;;
+      *.tar)     tar xf "$1" ;;
+      *.tbz2)    tar xjf "$1" ;;
+      *.tgz)     tar xzf "$1" ;;
+      *.zip)     unzip "$1" ;;
+      *.Z)       uncompress "$1" ;;
+      *.7z)      7z x "$1" ;;
+      *)         echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
 }
 
 _parent_dirs() {

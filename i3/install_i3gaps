@@ -52,7 +52,7 @@ ln -sfv "$BASE/i3_config" ~/.config/i3/config
 ln -sfv "$BASE/jconky" ~/.config/i3/jconky
 ln -sfv "$BASE/conkyrc" ~/.config/i3/conkyrc
 ln -sfv "$BASE/i3-app-icons.json" ~/.config/i3/app-icons.json
-ln -sfv "$BASE/passmenu" ~/.local/bin/passmenu & chmod a+x ~/.local/bin/passmenu
+ln -sfv "$BASE/bin/passmenu" ~/.local/bin/passmenu & chmod a+x ~/.local/bin/passmenu
 
 # touchpad
 sudo mkdir -p /etc/X11/xorg.conf.d && sudo tee <<'EOF' /etc/X11/xorg.conf.d/90-touchpad.conf 1> /dev/null

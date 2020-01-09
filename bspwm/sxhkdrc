@@ -25,11 +25,12 @@ super + Escape
 
 # browser
 super + w
-  google-chrome --password-store=gnome
+  google-chrome
 
 # screenshot
 super + a
-  import png:- | xclip -selection clipboard -t image/png
+  flameshot gui
+  # import png:- | xclip -selection clipboard -t image/png
   # gnome-screenshot -i -a
 
 

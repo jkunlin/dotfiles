@@ -41,6 +41,10 @@ insync &                                                   # Insync
 /usr/bin/gnome-keyring-daemon --start --components=secrets # for chrome
 xfce4-power-manager                                        # brightnes
 xset dpms 600                                              # turn off screen
+flameshot &                                                # screenshot
 # dropbox start -i                                           # Dropbox
 # nm-applet --sm-disable &                                   # Network Manager
 $HOME/.config/polybar/launch.sh
+
+[ -e "$PANEL_FIFO" ] && bspc subscribe report > "$PANEL_FIFO" &
+pgrep -x panel > /dev/null || panel &
