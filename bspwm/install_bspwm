@@ -68,6 +68,10 @@ XPROFILE=~/.xprofile
 [ -e  $XPROFILE ] && mv -v $XPROFILE bak/xprofile
 ln -sfv "$BASE"/xprofile $XPROFILE
 
+POLYBARLAUCH=~/.config/polybar/launch.sh
+[ -e $POLYBARLAUCH ] && mv -v $POLYBARLAUCH bak/launch.sh
+ln -sfv "$BASE"/launch.sh $POLYBARLAUCH
+
 # touchpad
 sudo mkdir -p /etc/X11/xorg.conf.d && sudo tee <<'EOF' /etc/X11/xorg.conf.d/90-touchpad.conf 1> /dev/null
 Section "InputClass"
