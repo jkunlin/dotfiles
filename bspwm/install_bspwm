@@ -38,18 +38,35 @@ sudo apt install libxcb-xkb-dev  libxcb-cursor-dev libasound2-dev libpulse-dev l
 sudo apt install libxcb-xrm-dev
 
 ## install
-cd $BASE/tmp || exit 1
-wget https://github.com/polybar/polybar/releases/download/3.4.1/polybar-3.4.1.tar
-tar xvf polybar-3.4.1.tar
-cd polybar/ 
-mkdir build 
-cd build/ 
-cmake .. 
-make -j 
-sudo make install
-install -Dm644 /usr/local/share/doc/polybar/config $HOME/.config/polybar/config
+if ! command -v fd 2>/dev/null; then
+  cd $BASE/tmp || exit 1
+  wget https://github.com/polybar/polybar/releases/download/3.4.1/polybar-3.4.1.tar
+  tar xvf polybar-3.4.1.tar
+  cd polybar/ 
+  mkdir build 
+  cd build/ 
+  cmake .. 
+  make -j 
+  sudo make install
+fi
 
-exit 0
+# RC
+mkdir -p ~/.config/{bspwm,sxhkd}
+BSPWMRC=~/.config/bspwm/bspwmrc
+[ -e $BSPWMRC ] && mv -v $BSPWMRC bak/
+ln -sfv "$BASE"/bspwmrc $BSPWMRC
+
+SXHKDRC=~/.config/sxhkd/sxhkdrc
+[ -e $SXHKDRC ] && mv -v $SXHKDRC bak/
+ln -sfv "$BASE"/sxhkdrc $SXHKDRC
+
+POLYBARRC=~/.config/polybar/config
+[ -e $POLYBARRC ] && mv -v $POLYBARRC bak/polybarrc
+ln -sfv "$BASE"/polybarrc $POLYBARRC
+
+XPROFILE=~/.xprofile
+[ -e  $XPROFILE ] && mv -v $XPROFILE bak/xprofile
+ln -sfv "$BASE"/xprofile $XPROFILE
 
 # touchpad
 sudo mkdir -p /etc/X11/xorg.conf.d && sudo tee <<'EOF' /etc/X11/xorg.conf.d/90-touchpad.conf 1> /dev/null
@@ -68,3 +85,5 @@ sudo apt install xfce4-power-manager
 
 # open numlock
 sudo apt install numlockx
+
+exit 0
