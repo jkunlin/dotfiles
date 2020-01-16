@@ -1,6 +1,5 @@
 #! /bin/sh
-gap=12
-export gap
+gap=5
 
 # This create negative padding equal to window gap so that gaps are shown only between windows and not on desktop edges
 bspc config window_gap $gap
@@ -30,6 +29,8 @@ bspc config remove_disabled_monitors true
 bspc rule -a Alacritty:fzf-dmenu state=floating
 bspc rule -a KeeWeb state=floating
 bspc rule -a Insync state=floating
+bspc rule -a flameshot state=floating
+bspc rule -a Zathura state=tiled
 # bspc rule -a Kupfer.py focus=on
 # bspc rule -a Screenkey manage=off
 

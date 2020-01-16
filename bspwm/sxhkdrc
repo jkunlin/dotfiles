@@ -25,7 +25,7 @@ super + Escape
 
 # browser
 super + w
-  google-chrome
+  chromium-browser
 
 # screenshot
 super + a

@@ -11,12 +11,12 @@ mkdir -p $BASE/tmp
 # ----------------------------------------------------------------------------
 # bspwm and sxhkd
 # ----------------------------------------------------------------------------
-# sudo apt-get install libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev
-# cd $BASE/tmp || exit 1
-# git clone https://github.com/baskerville/bspwm.git
-# git clone https://github.com/baskerville/sxhkd.git
-# cd bspwm && make && sudo make install
-# cd ../sxhkd && make && sudo make install
+sudo apt-get install libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev
+cd $BASE/tmp || exit 1
+git clone https://github.com/baskerville/bspwm.git
+git clone https://github.com/baskerville/sxhkd.git
+cd bspwm && make && sudo make install
+cd ../sxhkd && make && sudo make install
 #
 # mkdir -p ~/.config/{bspwm,sxhkd}
 # cp /usr/local/share/doc/bspwm/examples/bspwmrc ~/.config/bspwm/
