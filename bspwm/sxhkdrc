@@ -36,7 +36,8 @@ super + a
 
 # screen locked
 super + alt + l
-  i3lock -c '#000000'
+  dm-tool lock
+  # i3lock -c '#000000'
 
 #
 # bspwm hotkeys
@@ -135,6 +136,13 @@ super + ctrl + shift + space
 # move/resize
 #
 
+# hide window
+super + z
+  bspc node -g hidden
+
+# unhide window
+super + shift + z
+  bspc node {,$(bspc query -N -n .hidden | tail -n1)} -g hidden=off
 # expand a window by moving one of its side outward
 super + alt + {h,j,k,l}
 	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
