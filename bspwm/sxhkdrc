@@ -36,7 +36,8 @@ super + a
 
 # screen locked
 super + alt + l
-  i3lock -c '#000000'
+  dm-tool lock
+  # i3lock -c '#000000'
 
 #
 # bspwm hotkeys

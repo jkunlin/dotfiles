@@ -1,7 +1,7 @@
 sxhkd -f 100 &
-export XMODIFIERS=@im=fcitx
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XIM=fcitx
-fcitx
+export XMODIFIERS=@im=ibus
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XIM=ibus
+ibus-daemon -drx
 exec bspwm
