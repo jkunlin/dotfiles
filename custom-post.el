@@ -119,15 +119,29 @@
   (my-leader-def
     :keymaps 'normal
     "SPC" 'counsel-M-x
-    "w" 'save-buffer
+    "rg" 'counsel-projectile-rg
+
+    "wh" 'evil-window-left
+    "wl" 'evil-window-right
+    "wj" 'evil-window-down
+    "wk" 'evil-window-up
+
+    "b" 'ivy-switch-buffer
+
+    "s" 'save-buffer
     "q" 'evil-quit
     "Q" 'evil-quit-all
-    "f" 'counsel-projectile-find-file
-    "rg" 'counsel-projectile-rg
-    )
+
+    "d" 'counsel-dired
+    "f" 'counsel-find-file
+    "pf" 'counsel-projectile-find-file)
+
   (my-leader-def
     :keymaps 'dashboard-mode-map
-    "f" 'counsel-find-file)
+    "f" 'counsel-find-file
+    "q" 'evil-quit)
+
+  (general-setq lsp-enable-on-type-formatting nil)
 
   ;; ;; to prevent your leader keybindings from ever being overridden (e.g. an evil
   ;; ;; package may bind "SPC"), use :keymaps 'override
