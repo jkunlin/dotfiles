@@ -295,8 +295,6 @@ let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
 
 " airline
 set laststatus=2 "show status line even when only single window is opened
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " tagbar
 noremap <silent> gt :TagbarToggle<CR>
@@ -392,6 +390,8 @@ call textobj#user#plugin('number', {
 " nvim-gdb
 command! -complete=file -nargs=1 Gdb call plug#load('nvim-gdb') | GdbStart gdb -q <args>
 let g:nvimgdb_disable_start_keymaps = 1
+nmap <leader>v :GdbEvalWord<CR>
+vmap <leader>v :GdbEvalRange<CR>
 
 " vim-grammarous
 let g:grammarous#hooks = {}
@@ -558,13 +558,11 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<c-r>=coc#on_enter()\<CR>\<C-g>u\<CR>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " snippet
-let g:coc_snippet_next = '<TAB>'
-let g:coc_snippet_prev = '<S-TAB>'
+let g:coc_snippet_next = '<c-j>'
+let g:coc_snippet_prev = '<c-k>'
 
 " Use `[c` and `]c` for navigate diagnostics
 nmap <silent> [d <Plug>(coc-diagnostic-prev)
@@ -629,3 +627,8 @@ command! -nargs=0 Format :call CocAction('format')
 " coc_status for airline
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+
+" vimspector
+" let &packpath ="~/.vim"
+" let g:vimspector_enable_mappings = 'HUMAN'
+" packadd! vimspector

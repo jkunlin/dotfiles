@@ -31,6 +31,7 @@ bspc rule -a KeeWeb state=floating
 bspc rule -a Insync state=floating
 bspc rule -a flameshot state=floating
 bspc rule -a Zathura state=tiled
+bspc rule -a Emacs state=tiled
 # bspc rule -a Kupfer.py focus=on
 # bspc rule -a Screenkey manage=off
 

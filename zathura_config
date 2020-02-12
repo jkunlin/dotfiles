@@ -36,7 +36,6 @@ set recolor-reverse-video false
 set render-loading-bg \#282828
 set render-loading-fg \#ebdbb2
 set statusbar-home-tilde true
-set selection-clipboard primary
 set index-bg \#282828
 set index-fg \#98971a
 set index-active-bg \#3c3836

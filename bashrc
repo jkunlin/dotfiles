@@ -55,9 +55,10 @@ export COPYFILE_DISABLE=true
 MANPATH=$MANPATH:$HOME/share/man
 
 ## java
-export JAVA_HOME=~/jdk-13.0.1
+export JAVA_HOME=~/jre1.8.0_241
 export CLASSPATH=.:${JAVA_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 # Aliases
 # --------------------------------------------------------------------

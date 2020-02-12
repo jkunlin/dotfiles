@@ -60,7 +60,7 @@
   ],
   "languageserver": {
     "clangd": {
-      "command": "clangd-9",
+      "command": "clangd",
       "rootPatterns": [
         "compile_flags.txt",
         "compile_commands.json",

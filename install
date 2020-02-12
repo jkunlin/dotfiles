@@ -22,6 +22,9 @@ ln -sfv "$BASE"/ssh_config ~/.ssh/config
 [ -e ~/.config/zathura/zathurarc ] && mv -v ~/.config/zathura/zathurarc bak/
 mkdir -p ~/.config/zathura && ln -sfv "$BASE/zathura_config" ~/.config/zathura/zathurarc
 
+[ -e ~/.emacs.d/custom-post.el ] && mv -v ~/.emacs.d/custom-post.el bak/
+mkdir -p ~/.emacs.d && ln -sfv "$BASE/custom-post.el" ~/.emacs.d
+
 git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
 
