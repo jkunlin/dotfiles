@@ -141,8 +141,6 @@
     "f" 'counsel-find-file
     "q" 'evil-quit)
 
-  (general-setq lsp-enable-on-type-formatting nil)
-
   ;; ;; to prevent your leader keybindings from ever being overridden (e.g. an evil
   ;; ;; package may bind "SPC"), use :keymaps 'override
   ;; (my-leader-def
