@@ -276,9 +276,9 @@ let g:fzf_colors =
       \ 'header':  ['fg', 'Comment'] }
 
 " coc-translator
-" popup 
+" popup
 nmap <Leader>tw <Plug>(coc-translator-p)
-" echo 
+" echo
 " nmap <Leader>e <Plug>(coc-translator-e)
 
 " NERD

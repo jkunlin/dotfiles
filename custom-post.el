@@ -16,7 +16,7 @@
          (w-stack (split-window w-locals nil 'above)) ;; right middle top
          (w-breakpoints (split-window w-stack nil 'above)) ;; right top
          (w-gdb (split-window w-source (floor(* 0.9 (window-body-height)))
-                             'below)) ;; left bottom
+                              'below)) ;; left bottom
          )
     (set-window-buffer w-io (gdb-get-buffer-create 'gdb-inferior-io))
     (set-window-dedicated-p w-io t)
@@ -48,11 +48,13 @@
 
 (use-package evil
   :ensure t
-  :defer .1 ;; don't block emacs when starting, load evil immediately after startup
+  :demand t
+  ;; :defer 1 ;; don't block emacs when starting, load evil immediately after startup
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
+  (setq evil-search-module 'evil-search)
   :config
   (loop for (mode . state) in '((inferior-emacs-lisp-mode . emacs)
                                 (dashboard-mode . emacs)
@@ -90,6 +92,42 @@
   (setq-default evil-escape-key-sequence "jk")
   (setq-default evil-escape-delay 0.2)
   )
+
+;; visual hints while editing
+(use-package evil-goggles
+  :ensure t
+  :demand t
+  :config
+  (evil-goggles-mode))
+
+;; like vim-surround
+(use-package evil-surround
+  :ensure t
+  :demand t
+  :config
+  (global-evil-surround-mode 1))
+
+
+;; * operator in vusual mode
+(use-package evil-visualstar
+  :ensure t
+  :bind (:map evil-visual-state-map
+         ("*" . evil-visualstar/begin-search-forward)
+         ("#" . evil-visualstar/begin-search-backward)))
+
+
+(use-package dired-sidebar
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
 ;;; `General':
 ;; This is a whole framework for binding keys in a really nice and consistent
 ;; manner.
@@ -98,15 +136,17 @@
   :config
   ;; * Global Keybindings
   (general-def 'normal
-    "ge" 'treemacs
+    "ge" 'dired-sidebar-toggle-sidebar
+    "gt" 'lsp-ui-imenu
     "gcc" 'comment-line
-    "C-p" 'evil-jump-forward
-    )
-  (general-def 'normal 'override
     "C-p" 'evil-jump-forward
     )
   (general-def 'visual
     "gc" 'comment-region)
+
+  (general-def 'normal 'override
+    "C-p" 'evil-jump-forward
+    )
 
   ;; * Prefix Keybindings
   (general-create-definer my-leader-def
@@ -126,8 +166,9 @@
     "wj" 'evil-window-down
     "wk" 'evil-window-up
 
-    "b" 'ivy-switch-buffer
+    "hc" 'evil-ex-nohighlight
 
+    "b" 'ivy-switch-buffer
     "s" 'save-buffer
     "q" 'evil-quit
     "Q" 'evil-quit-all
@@ -135,6 +176,13 @@
     "d" 'counsel-dired
     "f" 'counsel-find-file
     "pf" 'counsel-projectile-find-file)
+
+  (my-leader-def
+    :keymaps 'dired-sidebar-mode-map
+    "wh" 'evil-window-left
+    "wl" 'evil-window-right
+    "wj" 'evil-window-down
+    "wk" 'evil-window-up)
 
   (my-leader-def
     :keymaps 'dashboard-mode-map
@@ -214,27 +262,16 @@
 ;;                          :map evil-visual-state-map
 ;;                          ("gr" . evil-replace-with-register)))
 ;;
-;; ;; * operator in vusual mode
-;; (use-package evil-visualstar
-;;              :ensure t
-;;              :bind (:map evil-visual-state-map
-;;                          ("*" . evil-visualstar/begin-search-forward)
-;;                          ("#" . evil-visualstar/begin-search-backward)))
 ;;
 ;; ;; ex commands, which a vim user is likely to be familiar with
 ;; (use-package evil-expat
 ;;              :ensure t
 ;;              :defer t)
 ;;
-;; ;; visual hints while editing
-;; (use-package evil-goggles
-;;              :ensure t
-;;              :config
-;;              (evil-goggles-use-diff-faces)
-;;              (evil-goggles-mode))
 ;;
-;; ;; like vim-surround
-;; (use-package evil-surround
+;;
+;; (use-package neotree
 ;;   :ensure t
+;;   :defer t
 ;;   :config
-;;   (global-evil-surround-mode 1))
+;;   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
