@@ -132,6 +132,12 @@
 (use-package general
   :demand t
   :config
+  ;; * Prefix Keybindings
+  (general-create-definer my-leader-def
+    :prefix "SPC")
+  (general-create-definer my-local-leader-def
+    :prefix "SPC m")
+
   ;; * Global Keybindings
   (general-def 'normal
     "[c" 'diff-hl-previous-hunk
@@ -150,49 +156,52 @@
     :states 'normal
     :keymaps'prog-mode-map
     "K" 'lsp-ui-doc-glance)
-
-  ;; * Prefix Keybindings
-  (general-create-definer my-leader-def
-    :prefix "SPC")
-
-  (general-create-definer my-local-leader-def
-    :prefix "SPC m")
+  (general-def
+    :states 'visual
+    :keymaps'prog-mode-map
+    "=" 'lsp-format-region)
+  (my-leader-def
+   :states 'normal
+   :keymaps 'prog-mode-map
+   "=" 'lsp-format-buffer)
 
   ;; ** Global Keybindings
   (my-leader-def
-    :keymaps 'normal
-    "SPC" 'counsel-M-x
+   :keymaps 'normal
+   "SPC" 'counsel-M-x
 
-    "rg" 'counsel-projectile-rg
-    "gi" 'magit-status
+   "t" 'youdao-dictionary-search-at-point
 
-    "wh" 'evil-window-left
-    "wl" 'evil-window-right
-    "wj" 'evil-window-down
-    "wk" 'evil-window-up
+   "rg" 'counsel-projectile-rg
+   "gi" 'magit-status
 
-    "hc" 'evil-ex-nohighlight
+   "wh" 'evil-window-left
+   "wl" 'evil-window-right
+   "wj" 'evil-window-down
+   "wk" 'evil-window-up
 
-    "b" 'ivy-switch-buffer
-    "s" 'save-buffer
-    "q" 'evil-quit
-    "Q" 'evil-quit-all
+   "hc" 'evil-ex-nohighlight
 
-    "d" 'counsel-dired
-    "f" 'counsel-find-file
-    "pf" 'counsel-projectile-find-file)
+   "b" 'ivy-switch-buffer
+   "s" 'save-buffer
+   "q" 'evil-quit
+   "Q" 'evil-quit-all
 
-  (my-leader-def
-    :keymaps 'dired-sidebar-mode-map
-    "wh" 'evil-window-left
-    "wl" 'evil-window-right
-    "wj" 'evil-window-down
-    "wk" 'evil-window-up)
+   "d" 'counsel-dired
+   "f" 'counsel-find-file
+   "pf" 'counsel-projectile-find-file)
 
   (my-leader-def
-    :keymaps 'dashboard-mode-map
-    "f" 'counsel-find-file
-    "q" 'evil-quit)
+   :keymaps 'dired-sidebar-mode-map
+   "wh" 'evil-window-left
+   "wl" 'evil-window-right
+   "wj" 'evil-window-down
+   "wk" 'evil-window-up)
+
+  (my-leader-def
+   :keymaps 'dashboard-mode-map
+   "f" 'counsel-find-file
+   "q" 'evil-quit)
 
   ;; ;; to prevent your leader keybindings from ever being overridden (e.g. an evil
   ;; ;; package may bind "SPC"), use :keymaps 'override
