@@ -74,8 +74,7 @@
                                 (dired-mode . emacs)
                                 (wdired-mode . normal))
         do (evil-set-initial-state mode state))
-  (evil-mode 1)
-  )
+  (evil-mode 1))
 
 (use-package evil-collection
   :after evil
@@ -90,8 +89,7 @@
   :ensure t
   :config
   (setq-default evil-escape-key-sequence "jk")
-  (setq-default evil-escape-delay 0.2)
-  )
+  (setq-default evil-escape-delay 0.15))
 
 ;; visual hints while editing
 (use-package evil-goggles
@@ -136,17 +134,22 @@
   :config
   ;; * Global Keybindings
   (general-def 'normal
+    "[c" 'diff-hl-previous-hunk
+    "]c" 'diff-hl-next-hunk
     "ge" 'dired-sidebar-toggle-sidebar
     "gt" 'lsp-ui-imenu
-    "gcc" 'comment-line
-    "C-p" 'evil-jump-forward
-    )
-  (general-def 'visual
-    "gc" 'comment-region)
-
+    "gcc" 'comment-line)
   (general-def 'normal 'override
-    "C-p" 'evil-jump-forward
-    )
+    "C-p" 'evil-jump-forward)
+
+  (general-def 'visual
+    "gc" 'comment-dwim)
+
+  (setq lsp-ui-doc-enable nil)
+  (general-def
+    :states 'normal
+    :keymaps'prog-mode-map
+    "K" 'lsp-ui-doc-glance)
 
   ;; * Prefix Keybindings
   (general-create-definer my-leader-def
@@ -159,7 +162,9 @@
   (my-leader-def
     :keymaps 'normal
     "SPC" 'counsel-M-x
+
     "rg" 'counsel-projectile-rg
+    "gi" 'magit-status
 
     "wh" 'evil-window-left
     "wl" 'evil-window-right

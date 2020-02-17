@@ -75,6 +75,7 @@ alias ll='ls -alF'
 alias vi='vim'
 alias vi2='vi -O2 '
 alias nv='nvim'
+alias em='emacsclient -n -c -a ""'
 alias hc="history -c"
 alias which='type -p'
 alias k5='kill -9 %%'
