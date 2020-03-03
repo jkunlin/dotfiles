@@ -151,6 +151,9 @@
   (general-def 'visual
     "gc" 'comment-dwim)
 
+  (with-eval-after-load 'cc-mode
+    (setq c-mode-common-hook nil)
+    (add-hook 'c-mode-common-hook (lambda () (setq c-basic-offset 2))))
   (setq lsp-ui-doc-enable nil)
   (general-def
     :states 'normal
@@ -161,47 +164,47 @@
     :keymaps'prog-mode-map
     "=" 'lsp-format-region)
   (my-leader-def
-   :states 'normal
-   :keymaps 'prog-mode-map
-   "=" 'lsp-format-buffer)
+    :states 'normal
+    :keymaps 'prog-mode-map
+    "=" 'lsp-format-buffer)
 
   ;; ** Global Keybindings
   (my-leader-def
-   :keymaps 'normal
-   "SPC" 'counsel-M-x
+    :keymaps 'normal
+    "SPC" 'counsel-M-x
 
-   "t" 'youdao-dictionary-search-at-point
+    "t" 'youdao-dictionary-search-at-point
 
-   "rg" 'counsel-projectile-rg
-   "gi" 'magit-status
+    "rg" 'counsel-projectile-rg
+    "gi" 'magit-status
 
-   "wh" 'evil-window-left
-   "wl" 'evil-window-right
-   "wj" 'evil-window-down
-   "wk" 'evil-window-up
+    "wh" 'evil-window-left
+    "wl" 'evil-window-right
+    "wj" 'evil-window-down
+    "wk" 'evil-window-up
 
-   "hc" 'evil-ex-nohighlight
+    "hc" 'evil-ex-nohighlight
 
-   "b" 'ivy-switch-buffer
-   "s" 'save-buffer
-   "q" 'evil-quit
-   "Q" 'evil-quit-all
+    "b" 'ivy-switch-buffer
+    "s" 'save-buffer
+    "q" 'evil-quit
+    "Q" 'evil-quit-all
 
-   "d" 'counsel-dired
-   "f" 'counsel-find-file
-   "pf" 'counsel-projectile-find-file)
-
-  (my-leader-def
-   :keymaps 'dired-sidebar-mode-map
-   "wh" 'evil-window-left
-   "wl" 'evil-window-right
-   "wj" 'evil-window-down
-   "wk" 'evil-window-up)
+    "d" 'counsel-dired
+    "f" 'counsel-find-file
+    "pf" 'counsel-projectile-find-file)
 
   (my-leader-def
-   :keymaps 'dashboard-mode-map
-   "f" 'counsel-find-file
-   "q" 'evil-quit)
+    :keymaps 'dired-sidebar-mode-map
+    "wh" 'evil-window-left
+    "wl" 'evil-window-right
+    "wj" 'evil-window-down
+    "wk" 'evil-window-up)
+
+  (my-leader-def
+    :keymaps 'dashboard-mode-map
+    "f" 'counsel-find-file
+    "q" 'evil-quit)
 
   ;; ;; to prevent your leader keybindings from ever being overridden (e.g. an evil
   ;; ;; package may bind "SPC"), use :keymaps 'override

@@ -2,6 +2,10 @@ Host ios
   HostName 192.168.1.43
   User jkunlin
 
+Host mcqios
+  HostName 192.168.1.43
+  User mcq
+
 Host citios
   HostName 192.168.1.43
   User cit
