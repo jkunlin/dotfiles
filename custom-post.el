@@ -15,7 +15,7 @@
          (w-locals (split-window w-io (floor(* 0.3 (window-body-height))) 'above)) ;; right middle bottom
          (w-stack (split-window w-locals nil 'above)) ;; right middle top
          (w-breakpoints (split-window w-stack nil 'above)) ;; right top
-         (w-gdb (split-window w-source (floor(* 0.9 (window-body-height)))
+         (w-gdb (split-window w-source (floor(* 0.8 (window-body-height)))
                               'below)) ;; left bottom
          )
     (set-window-buffer w-io (gdb-get-buffer-create 'gdb-inferior-io))
@@ -46,6 +46,13 @@
   ad-do-it
   (set-window-configuration global-config-editing))
 
+(setq grip-github-user "jkunlin")
+(setq grip-github-password "3ec892f4aea0f9aec2aa066465fb39644af8fc49")
+(setq grip-preview-use-webkit nil)
+
+;; (advice-remove #'show-paren-function #'show-paren-off-screen)
+
+
 (use-package evil
   :ensure t
   :demand t
@@ -74,7 +81,12 @@
                                 (dired-mode . emacs)
                                 (wdired-mode . normal))
         do (evil-set-initial-state mode state))
-  (evil-mode 1))
+  (evil-mode 1)
+  (with-eval-after-load 'evil
+    ;; (defalias 'forward-evil-word 'forward-evil-symbol)
+    ;; make evil-search-word look for symbol rather than word boundaries
+    (setq-default evil-symbol-word-search t))
+  )
 
 (use-package evil-collection
   :after evil
@@ -96,7 +108,25 @@
   :ensure t
   :demand t
   :config
-  (evil-goggles-mode))
+  (evil-goggles-mode)
+  :init
+  (setq evil-goggles-enable-delete nil)
+  (setq evil-goggles-enable-change nil)
+  (setq evil-goggles-enable-indent nil)
+  ;; (setq evil-goggles-enable-yank nil)
+  (setq evil-goggles-enable-join nil)
+  (setq evil-goggles-enable-fill-and-move nil)
+  (setq evil-goggles-enable-paste nil)
+  (setq evil-goggles-enable-shift nil)
+  (setq evil-goggles-enable-surround nil)
+  (setq evil-goggles-enable-commentary nil)
+  (setq evil-goggles-enable-nerd-commenter nil)
+  (setq evil-goggles-enable-replace-with-register nil)
+  (setq evil-goggles-enable-set-marker nil)
+  (setq evil-goggles-enable-undo nil)
+  (setq evil-goggles-enable-redo nil)
+  (setq evil-goggles-enable-record-macro nil)
+  )
 
 ;; like vim-surround
 (use-package evil-surround
@@ -106,7 +136,7 @@
   (global-evil-surround-mode 1))
 
 
-;; * operator in vusual mode
+;; * operator in visual mode
 (use-package evil-visualstar
   :ensure t
   :bind (:map evil-visual-state-map
@@ -123,8 +153,54 @@
               (unless (file-remote-p default-directory)
                 (auto-revert-mode))))
   :config
+  (setq dired-sidebar-theme 'nerd)
   (setq dired-sidebar-use-term-integration t)
   (setq dired-sidebar-use-custom-font t))
+
+   ;; child frame help
+(use-package eldoc-box
+  :commands (eldoc-box-eglot-help-at-point))
+
+;; clangd
+; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+
+;; eglot uses builtin project.el to detect the project root. If you want to use projectile
+(defun projectile-project-find-function (dir)
+  (let* ((root (projectile-project-root dir)))
+    (and root (cons 'transient root))))
+(with-eval-after-load 'project
+  (add-to-list 'project-find-functions 'projectile-project-find-function))
+
+;; Use help window to display hierarchies
+(defun eglot-ccls-inheritance-hierarchy (&optional derived)
+  "Show inheritance hierarchy for the thing at point.
+If DERIVED is non-nil (interactively, with prefix argument), show
+the children of class at point."
+  (interactive "P")
+  (if-let* ((res (jsonrpc-request
+                  (eglot--current-server-or-lose)
+                  :$ccls/inheritance
+                  (append (eglot--TextDocumentPositionParams)
+                          `(:derived ,(if derived t :json-false))
+                          '(:levels 100) '(:hierarchy t))))
+            (tree (list (cons 0 res))))
+      (with-help-window "*ccls inheritance*"
+        (with-current-buffer standard-output
+          (while tree
+            (pcase-let ((`(,depth . ,node) (pop tree)))
+              (cl-destructuring-bind (&key uri range) (plist-get node :location)
+                (insert (make-string depth ?\ ) (plist-get node :name) "\n")
+                (make-text-button (+ (point-at-bol 0) depth) (point-at-eol 0)
+                                  'action (lambda (_arg)
+                                            (interactive)
+                                            (find-file (eglot--uri-to-path uri))
+                                            (goto-char (car (eglot--range-region range)))))
+                (cl-loop for child across (plist-get node :children)
+                         do (push (cons (1+ depth) child) tree)))))))
+    (eglot--error "Hierarchy unavailable")))
+
+;; ccls has a fuzzy matching algorithm to order candidates according to your query. You may want to disable client-side sorting
+(setq company-transformers nil)
 
 ;;; `General':
 ;; This is a whole framework for binding keys in a really nice and consistent
@@ -139,9 +215,13 @@
     :prefix "SPC m")
 
   ;; * Global Keybindings
+  (general-def
+    "M-o" 'ace-window)
   (general-def 'normal
     "[c" 'diff-hl-previous-hunk
     "]c" 'diff-hl-next-hunk
+    "[d" 'previous-error
+    "]d" 'next-error
     "ge" 'dired-sidebar-toggle-sidebar
     "gt" 'lsp-ui-imenu
     "gcc" 'comment-line)
@@ -158,15 +238,19 @@
   (general-def
     :states 'normal
     :keymaps'prog-mode-map
-    "K" 'lsp-ui-doc-glance)
+    ;; "K" 'lsp-ui-doc-glance
+    "gd" 'xref-find-definitions
+    "gr" 'xref-find-references
+    "K" 'eldoc-box-eglot-help-at-point)
   (general-def
     :states 'visual
     :keymaps'prog-mode-map
-    "=" 'lsp-format-region)
+    "=" 'eglot-format)
   (my-leader-def
     :states 'normal
     :keymaps 'prog-mode-map
-    "=" 'lsp-format-buffer)
+    "=" 'eglot-format-buffer
+    "a" 'ff-find-other-file)
 
   ;; ** Global Keybindings
   (my-leader-def
@@ -178,11 +262,6 @@
     "rg" 'counsel-projectile-rg
     "gi" 'magit-status
 
-    "wh" 'evil-window-left
-    "wl" 'evil-window-right
-    "wj" 'evil-window-down
-    "wk" 'evil-window-up
-
     "hc" 'evil-ex-nohighlight
 
     "b" 'ivy-switch-buffer
@@ -192,19 +271,20 @@
 
     "d" 'counsel-dired
     "f" 'counsel-find-file
-    "pf" 'counsel-projectile-find-file)
-
+    "pf" 'counsel-projectile-find-file
+    "m" 'ace-pinyin-dwim)
   (my-leader-def
-    :keymaps 'dired-sidebar-mode-map
-    "wh" 'evil-window-left
-    "wl" 'evil-window-right
-    "wj" 'evil-window-down
-    "wk" 'evil-window-up)
+    :keymaps 'visual
+    "m" 'ace-pinyin-dwim)
 
   (my-leader-def
     :keymaps 'dashboard-mode-map
     "f" 'counsel-find-file
     "q" 'evil-quit)
+
+  (setq yas-snippet-dirs (append yas-snippet-dirs
+                                 '("~/.emacs.d/snippets")))
+
 
   ;; ;; to prevent your leader keybindings from ever being overridden (e.g. an evil
   ;; ;; package may bind "SPC"), use :keymaps 'override
