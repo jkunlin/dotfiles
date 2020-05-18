@@ -1,50 +1,19 @@
-(setq gdb-many-windows nil)
+(require 'nox)
 
-(defun set-gdb-layout(&optional c-buffer)
-  (if (not c-buffer)
-      (setq c-buffer (window-buffer (selected-window)))) ;; save current buffer
-
-  ;; from http://stackoverflow.com/q/39762833/846686
-  (set-window-dedicated-p (selected-window) nil) ;; unset dedicate state if needed
-  (switch-to-buffer gud-comint-buffer)
-  (delete-other-windows) ;; clean all
-
-  (let* (
-         (w-source (selected-window)) ;; left top
-         (w-io (split-window w-source nil 'right)) ;; right bottom
-         (w-locals (split-window w-io (floor(* 0.3 (window-body-height))) 'above)) ;; right middle bottom
-         (w-stack (split-window w-locals nil 'above)) ;; right middle top
-         (w-breakpoints (split-window w-stack nil 'above)) ;; right top
-         (w-gdb (split-window w-source (floor(* 0.8 (window-body-height)))
-                              'below)) ;; left bottom
-         )
-    (set-window-buffer w-io (gdb-get-buffer-create 'gdb-inferior-io))
-    (set-window-dedicated-p w-io t)
-    (set-window-buffer w-breakpoints (gdb-get-buffer-create 'gdb-breakpoints-buffer))
-    (set-window-dedicated-p w-breakpoints t)
-    (set-window-buffer w-locals (gdb-get-buffer-create 'gdb-locals-buffer))
-    (set-window-dedicated-p w-locals t)
-    (set-window-buffer w-stack (gdb-get-buffer-create 'gdb-stack-buffer))
-    (set-window-dedicated-p w-stack t)
-
-    (set-window-buffer w-gdb gud-comint-buffer)
-
-    (select-window w-source)
-    (set-window-buffer w-source c-buffer)
-    ))
-(defadvice gdb (around args activate)
-  "Change the way to gdb works."
-  (setq global-config-editing (current-window-configuration)) ;; to restore: (set-window-configuration c-editing)
-  (let (
-        (c-buffer (window-buffer (selected-window))) ;; save current buffer
-        )
-    ad-do-it
-    (set-gdb-layout c-buffer))
-  )
-(defadvice gdb-reset (around args activate)
-  "Change the way to gdb exit."
-  ad-do-it
-  (set-window-configuration global-config-editing))
+(dolist (hook (list
+                'js-mode-hook
+                'rust-mode-hook
+                'python-mode-hook
+                'ruby-mode-hook
+                'java-mode-hook
+                'sh-mode-hook
+                'php-mode-hook
+                'c-mode-common-hook
+                'c-mode-hook
+                'c++-mode-hook
+                'haskell-mode-hook
+                ))
+  (add-hook hook '(lambda () (nox-ensure))))
 
 (setq grip-github-user "jkunlin")
 (setq grip-github-password "3ec892f4aea0f9aec2aa066465fb39644af8fc49")
@@ -52,7 +21,9 @@
 
 ;; (advice-remove #'show-paren-function #'show-paren-off-screen)
 
+(setq scroll-margin 2)
 
+;; ----------------------`evil'----------------------------------
 (use-package evil
   :ensure t
   :demand t
@@ -62,31 +33,30 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-search-module 'evil-search)
+  (setq evil-want-Y-yank-to-eol t)
   :config
   (loop for (mode . state) in '((inferior-emacs-lisp-mode . emacs)
-                                (dashboard-mode . emacs)
-                                (nrepl-mode . insert)
-                                (pylookup-mode . emacs)
-                                (comint-mode . normal)
-                                (shell-mode . insert)
-                                (git-commit-mode . insert)
-                                (git-rebase-mode . emacs)
-                                (term-mode . emacs)
-                                (help-mode . emacs)
-                                (helm-grep-mode . emacs)
-                                (grep-mode . emacs)
-                                (bc-menu-mode . emacs)
-                                (magit-branch-manager-mode . emacs)
-                                (rdictcc-buffer-mode . emacs)
-                                (dired-mode . emacs)
-                                (wdired-mode . normal))
-        do (evil-set-initial-state mode state))
+                                 (nrepl-mode . insert)
+                                 (pylookup-mode . emacs)
+                                 (comint-mode . normal)
+                                 (shell-mode . insert)
+                                 (git-commit-mode . insert)
+                                 (git-rebase-mode . emacs)
+                                 (term-mode . emacs)
+                                 (help-mode . emacs)
+                                 (helm-grep-mode . emacs)
+                                 (grep-mode . emacs)
+                                 (bc-menu-mode . emacs)
+                                 (magit-branch-manager-mode . emacs)
+                                 (rdictcc-buffer-mode . emacs)
+                                 (dired-mode . emacs)
+                                 (wdired-mode . normal))
+    do (evil-set-initial-state mode state))
   (evil-mode 1)
   (with-eval-after-load 'evil
     ;; (defalias 'forward-evil-word 'forward-evil-symbol)
     ;; make evil-search-word look for symbol rather than word boundaries
-    (setq-default evil-symbol-word-search t))
-  )
+    (setq-default evil-symbol-word-search t)))
 
 (use-package evil-collection
   :after evil
@@ -125,8 +95,7 @@
   (setq evil-goggles-enable-set-marker nil)
   (setq evil-goggles-enable-undo nil)
   (setq evil-goggles-enable-redo nil)
-  (setq evil-goggles-enable-record-macro nil)
-  )
+  (setq evil-goggles-enable-record-macro nil))
 
 ;; like vim-surround
 (use-package evil-surround
@@ -140,29 +109,46 @@
 (use-package evil-visualstar
   :ensure t
   :bind (:map evil-visual-state-map
-         ("*" . evil-visualstar/begin-search-forward)
-         ("#" . evil-visualstar/begin-search-backward)))
+          ("*" . evil-visualstar/begin-search-forward)
+          ("#" . evil-visualstar/begin-search-backward)))
 
+;; vdiff
+(use-package vdiff
+  :config
+  (evil-define-key 'normal vdiff-mode-map "," vdiff-mode-prefix-map))
+
+(use-package vdiff-magit
+  :config
+  (define-key magit-mode-map "e" 'vdiff-magit-dwim)
+  (define-key magit-mode-map "E" 'vdiff-magit)
+  (transient-suffix-put 'magit-dispatch "e" :description "vdiff (dwim)")
+  (transient-suffix-put 'magit-dispatch "e" :command 'vdiff-magit-dwim)
+  (transient-suffix-put 'magit-dispatch "E" :description "vdiff")
+  (transient-suffix-put 'magit-dispatch "E" :command 'vdiff-magit))
 
 (use-package dired-sidebar
   :ensure t
   :commands (dired-sidebar-toggle-sidebar)
   :init
   (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
+    (lambda ()
+      (unless (file-remote-p default-directory)
+        (auto-revert-mode))))
   :config
   (setq dired-sidebar-theme 'nerd)
   (setq dired-sidebar-use-term-integration t)
   (setq dired-sidebar-use-custom-font t))
 
-   ;; child frame help
+;; ----------------------`eglot'----------------------------------
+;; child frame help
 (use-package eldoc-box
   :commands (eldoc-box-eglot-help-at-point))
 
 ;; clangd
-; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+
+;; ccls has a fuzzy matching algorithm to order candidates according to your query. You may want to disable client-side sorting
+(setq company-transformers nil)
 
 ;; eglot uses builtin project.el to detect the project root. If you want to use projectile
 (defun projectile-project-find-function (dir)
@@ -178,31 +164,33 @@ If DERIVED is non-nil (interactively, with prefix argument), show
 the children of class at point."
   (interactive "P")
   (if-let* ((res (jsonrpc-request
-                  (eglot--current-server-or-lose)
-                  :$ccls/inheritance
-                  (append (eglot--TextDocumentPositionParams)
-                          `(:derived ,(if derived t :json-false))
-                          '(:levels 100) '(:hierarchy t))))
-            (tree (list (cons 0 res))))
-      (with-help-window "*ccls inheritance*"
-        (with-current-buffer standard-output
-          (while tree
-            (pcase-let ((`(,depth . ,node) (pop tree)))
-              (cl-destructuring-bind (&key uri range) (plist-get node :location)
-                (insert (make-string depth ?\ ) (plist-get node :name) "\n")
-                (make-text-button (+ (point-at-bol 0) depth) (point-at-eol 0)
-                                  'action (lambda (_arg)
-                                            (interactive)
-                                            (find-file (eglot--uri-to-path uri))
-                                            (goto-char (car (eglot--range-region range)))))
-                (cl-loop for child across (plist-get node :children)
-                         do (push (cons (1+ depth) child) tree)))))))
+                   (eglot--current-server-or-lose)
+                   :$ccls/inheritance
+                   (append (eglot--TextDocumentPositionParams)
+                     `(:derived ,(if derived t :json-false))
+                     '(:levels 100) '(:hierarchy t))))
+             (tree (list (cons 0 res))))
+    (with-help-window "*ccls inheritance*"
+      (with-current-buffer standard-output
+        (while tree
+          (pcase-let ((`(,depth . ,node) (pop tree)))
+            (cl-destructuring-bind (&key uri range) (plist-get node :location)
+              (insert (make-string depth ?\ ) (plist-get node :name) "\n")
+              (make-text-button (+ (point-at-bol 0) depth) (point-at-eol 0)
+                'action (lambda (_arg)
+                          (interactive)
+                          (find-file (eglot--uri-to-path uri))
+                          (goto-char (car (eglot--range-region range)))))
+              (cl-loop for child across (plist-get node :children)
+                do (push (cons (1+ depth) child) tree)))))))
     (eglot--error "Hierarchy unavailable")))
 
-;; ccls has a fuzzy matching algorithm to order candidates according to your query. You may want to disable client-side sorting
-(setq company-transformers nil)
 
-;;; `General':
+
+(use-package ggtags)
+
+
+;; ----------------------`General'----------------------------------
 ;; This is a whole framework for binding keys in a really nice and consistent
 ;; manner.
 (use-package general
@@ -223,7 +211,7 @@ the children of class at point."
     "[d" 'previous-error
     "]d" 'next-error
     "ge" 'dired-sidebar-toggle-sidebar
-    "gt" 'lsp-ui-imenu
+    "gt" 'ggtags-find-tag-regexp
     "gcc" 'comment-line)
   (general-def 'normal 'override
     "C-p" 'evil-jump-forward)
@@ -231,31 +219,44 @@ the children of class at point."
   (general-def 'visual
     "gc" 'comment-dwim)
 
+  (evil-define-key 'normal 'global
+    ;; select the previously pasted text
+    "gp" "`[v`]"
+    ;; run the macro in the q register
+    "Q" "@q")
+
   (with-eval-after-load 'cc-mode
     (setq c-mode-common-hook nil)
+    (ggtags-mode 1)
     (add-hook 'c-mode-common-hook (lambda () (setq c-basic-offset 2))))
+  (which-func-mode 1)
+  (eval-after-load "which-func"
+    '(setq which-func-modes '(java-mode c-mode c++-mode org-mode)))
   (setq lsp-ui-doc-enable nil)
+
   (general-def
     :states 'normal
     :keymaps'prog-mode-map
     ;; "K" 'lsp-ui-doc-glance
+    ;; "K" 'eldoc-box-eglot-help-at-point
+    "K" 'nox-show-doc
     "gd" 'xref-find-definitions
-    "gr" 'xref-find-references
-    "K" 'eldoc-box-eglot-help-at-point)
+    "gr" 'xref-find-references)
   (general-def
     :states 'visual
     :keymaps'prog-mode-map
-    "=" 'eglot-format)
+    "=" 'nox-format)
   (my-leader-def
     :states 'normal
     :keymaps 'prog-mode-map
-    "=" 'eglot-format-buffer
+    "=" 'nox-format-buffer
     "a" 'ff-find-other-file)
 
   ;; ** Global Keybindings
   (my-leader-def
     :keymaps 'normal
     "SPC" 'counsel-M-x
+    "2" 'make-frame
 
     "t" 'youdao-dictionary-search-at-point
 
@@ -270,21 +271,13 @@ the children of class at point."
     "Q" 'evil-quit-all
 
     "d" 'counsel-dired
-    "f" 'counsel-find-file
+    "f" 'counsel-fzf
+    "rf" 'counsel-recentf
     "pf" 'counsel-projectile-find-file
     "m" 'ace-pinyin-dwim)
   (my-leader-def
     :keymaps 'visual
     "m" 'ace-pinyin-dwim)
-
-  (my-leader-def
-    :keymaps 'dashboard-mode-map
-    "f" 'counsel-find-file
-    "q" 'evil-quit)
-
-  (setq yas-snippet-dirs (append yas-snippet-dirs
-                                 '("~/.emacs.d/snippets")))
-
 
   ;; ;; to prevent your leader keybindings from ever being overridden (e.g. an evil
   ;; ;; package may bind "SPC"), use :keymaps 'override
@@ -302,6 +295,59 @@ the children of class at point."
   ;;   ;; ...
   ;;   )
   )
+
+(setq yas-snippet-dirs (append yas-snippet-dirs
+                         '("~/.emacs.d/snippets")))
+
+
+;; ----------------------`gdb'----------------------------------
+(setq gdb-many-windows nil)
+
+(defun set-gdb-layout(&optional c-buffer)
+  (if (not c-buffer)
+    (setq c-buffer (window-buffer (selected-window)))) ;; save current buffer
+
+  ;; from http://stackoverflow.com/q/39762833/846686
+  (set-window-dedicated-p (selected-window) nil) ;; unset dedicate state if needed
+  (switch-to-buffer gud-comint-buffer)
+  (delete-other-windows) ;; clean all
+
+  (let* (
+          (w-source (selected-window)) ;; left top
+          (w-io (split-window w-source nil 'right)) ;; right bottom
+          (w-locals (split-window w-io (floor(* 0.3 (window-body-height))) 'above)) ;; right middle bottom
+          (w-stack (split-window w-locals nil 'above)) ;; right middle top
+          (w-breakpoints (split-window w-stack nil 'above)) ;; right top
+          (w-gdb (split-window w-source (floor(* 0.8 (window-body-height)))
+                   'below)) ;; left bottom
+          )
+    (set-window-buffer w-io (gdb-get-buffer-create 'gdb-inferior-io))
+    (set-window-dedicated-p w-io t)
+    (set-window-buffer w-breakpoints (gdb-get-buffer-create 'gdb-breakpoints-buffer))
+    (set-window-dedicated-p w-breakpoints t)
+    (set-window-buffer w-locals (gdb-get-buffer-create 'gdb-locals-buffer))
+    (set-window-dedicated-p w-locals t)
+    (set-window-buffer w-stack (gdb-get-buffer-create 'gdb-stack-buffer))
+    (set-window-dedicated-p w-stack t)
+
+    (set-window-buffer w-gdb gud-comint-buffer)
+
+    (select-window w-source)
+    (set-window-buffer w-source c-buffer)))
+(defadvice gdb (around args activate)
+  "Change the way to gdb works."
+  (setq global-config-editing (current-window-configuration)) ;; to restore: (set-window-configuration c-editing)
+  (let (
+         (c-buffer (window-buffer (selected-window))) ;; save current buffer
+         )
+    ad-do-it
+    (set-gdb-layout c-buffer))
+  )
+(defadvice gdb-reset (around args activate)
+  "Change the way to gdb exit."
+  ad-do-it
+  (set-window-configuration global-config-editing))
+
 
 
 ;; (use-package evil
