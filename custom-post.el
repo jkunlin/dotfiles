@@ -14,6 +14,7 @@
                 'haskell-mode-hook
                 ))
   (add-hook hook '(lambda () (nox-ensure))))
+(add-to-list 'nox-server-programs '((c++-mode c-mode) "clangd"))
 
 (setq grip-github-user "jkunlin")
 (setq grip-github-password "3ec892f4aea0f9aec2aa066465fb39644af8fc49")
@@ -111,6 +112,9 @@
   :bind (:map evil-visual-state-map
           ("*" . evil-visualstar/begin-search-forward)
           ("#" . evil-visualstar/begin-search-backward)))
+
+(use-package evil-easymotion
+  :ensure t)
 
 ;; vdiff
 (use-package vdiff
@@ -274,10 +278,17 @@ the children of class at point."
     "f" 'counsel-fzf
     "rf" 'counsel-recentf
     "pf" 'counsel-projectile-find-file
-    "m" 'ace-pinyin-dwim)
+    "mh" 'evilem-motion-backward-WORD-begin
+    "mj" 'evilem-motion-next-line
+    "mk" 'evilem-motion-previous-line
+    "ml" 'evilem-motion-forward-WORD-begin)
+  ;; "m" 'ace-pinyin-dwim)
   (my-leader-def
     :keymaps 'visual
-    "m" 'ace-pinyin-dwim)
+    "mh" 'evilem-motion-backward-WORD-begin
+    "mj" 'evilem-motion-next-line
+    "mk" 'evilem-motion-previous-line
+    "ml" 'evilem-motion-forward-WORD-begin)
 
   ;; ;; to prevent your leader keybindings from ever being overridden (e.g. an evil
   ;; ;; package may bind "SPC"), use :keymaps 'override
