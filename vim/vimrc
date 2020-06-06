@@ -139,6 +139,8 @@ set cursorline
 set hidden
 set clipboard=unnamed
 set shortmess+=c
+set splitbelow
+set splitright
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change
       autocmd FileChangedShellPost *
@@ -155,7 +157,8 @@ xnoremap <silent> v <c-c>
 let mapleader = "\<space>"
 
 nnoremap <silent> <leader>. :cd %:p:h<CR>
-nnoremap <leader>2 :vsplit<CR>
+nnoremap <leader>\ :vsplit<CR>
+nnoremap <leader>- :split<CR>
 
 " Jump to the last edited line
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"zz" | endif
@@ -173,8 +176,8 @@ noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 noremap <silent> <leader>hc :noh<CR>
 nnoremap <silent> = :vertical resize +5<cr>
 nnoremap <silent> - :vertical resize -5<cr>
-nnoremap <silent> <leader>= :resize +5<cr>
-nnoremap <silent> <leader>- :resize -5<cr>
+" nnoremap <silent> <leader>= :resize +5<cr>
+" nnoremap <silent> <leader>- :resize -5<cr>
 
 nnoremap <leader>s :update<cr>
 nnoremap <Leader>q :q<cr>
@@ -263,6 +266,7 @@ nnoremap <Leader>rW :Ack <cword><cr>
 
 " fzf
 nnoremap <leader>f :Files<CR>
+nnoremap <leader>d :Files 
 nnoremap <leader>rg :Rg<CR>
 
 let g:fzf_action = {
