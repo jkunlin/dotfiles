@@ -16,10 +16,10 @@ bspc config gapless_monocle      true
 bspc config focus_follows_pointer false
 wmname LG3D
 
-bspc monitor -d I II III IV V VI VII
-# bspc monitor DP-1-2 -d I II III IV V VI VII
-# bspc monitor eDP-1-1 -d VIII IX X
-# xrandr --output eDP-1-1 --off # close laptop screen
+# bspc monitor -d I II III IV V VI VII
+bspc monitor DP-1-2 -d I II III IV V VI VII
+bspc monitor eDP-1-1 -d VIII IX X
+xrandr --output eDP-1-1 --off # close laptop screen
 bspc config remove_unplugged_monitors true
 bspc config remove_disabled_monitors true
 

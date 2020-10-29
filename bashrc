@@ -44,7 +44,7 @@ export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
 export GOPATH=~/.gosrc
 mkdir -p $GOPATH
 export PATH=$HOME/bin:$HOME/.local/bin:$HOME/.local/clang_llvm/bin:$HOME/.yarn/bin:$PATH
-export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
+export PATH=$HOME/texlive2017/2017/bin/x86_64-linux:$PATH
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -55,7 +55,7 @@ export COPYFILE_DISABLE=true
 MANPATH=$MANPATH:$HOME/share/man
 
 ## java
-export JAVA_HOME=~/jre1.8.0_241
+export JAVA_HOME=~/jdk-13.0.1
 export CLASSPATH=.:${JAVA_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 export _JAVA_AWT_WM_NONREPARENTING=1

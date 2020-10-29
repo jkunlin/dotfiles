@@ -312,6 +312,7 @@ the children of class at point."
 
 
 ;; ----------------------`gdb'----------------------------------
+(setq gdb-mi-decode-strings 1) ;; no-ASCII directory name
 (setq gdb-many-windows nil)
 
 (defun set-gdb-layout(&optional c-buffer)

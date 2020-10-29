@@ -28,6 +28,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
+" Plug 'justinmk/vim-syntax-extra' "for flex and bison
 " Plug 'octol/vim-cpp-enhanced-highlight'
 
 " ----------------------------------------------------------------------------
@@ -171,6 +172,11 @@ augroup latex
         \ softtabstop=2
 augroup end
 
+augroup c++
+  autocmd!
+  autocmd filetype c,cpp setlocal foldmethod=syntax
+augroup end
+
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 noremap <silent> <leader>hc :noh<CR>
@@ -266,8 +272,10 @@ nnoremap <Leader>rW :Ack <cword><cr>
 
 " fzf
 nnoremap <leader>f :Files<CR>
+nnoremap <leader>g :GFiles<CR>
 nnoremap <leader>d :Files 
 nnoremap <leader>rg :Rg<CR>
+nnoremap <leader><leader> :Commands<CR>
 
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
@@ -467,6 +475,17 @@ let g:startify_list_order = [
       \ ['   sessions:'],
       \ 'sessions',
       \ ]
+
+" let g:startify_session_autoload = 1
+" let g:startify_session_before_save = [
+"       \ 'echo "Saving session.."',
+"       \ ]
+" let g:startify_session_persistence = 0
+" let g:startify_session_savevars = [
+"       \ 'g:startify_session_savevars',
+"       \ 'g:startify_session_savecmds',
+"       \ 'g:random_plugin_use_feature'
+"       \ ]
 
 
 " visual star
