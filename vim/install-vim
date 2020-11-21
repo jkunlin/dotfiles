@@ -84,4 +84,4 @@ then
   echo '{"dependencies":{}}'> package.json
 fi
 # Change arguments to extensions you need
-env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex coc-texlab coc-explorer coc-dictionary coc-word coc-translator
+env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex coc-texlab coc-explorer coc-dictionary coc-word coc-translator coc-python

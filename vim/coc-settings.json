@@ -94,7 +94,7 @@
   //  "--unique",
   //    "file:%p#src:%l%f"
   //  ],
-  "python.jediEnabled": true,
+  "python.jediEnabled": false,
   "coc.source.vimtex.enable": true,
   "coc.source.word.filetypes": [
     "tex",

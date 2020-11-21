@@ -138,7 +138,7 @@ set scrolloff=1
 set autoread
 set cursorline
 set hidden
-set clipboard=unnamed
+set clipboard=unnamedplus
 set shortmess+=c
 set splitbelow
 set splitright
@@ -276,6 +276,22 @@ nnoremap <leader>g :GFiles<CR>
 nnoremap <leader>d :Files 
 nnoremap <leader>rg :Rg<CR>
 nnoremap <leader><leader> :Commands<CR>
+
+function! GetJumps()
+  redir => cout
+  silent jumps
+  redir END
+  return reverse(split(cout, "\n")[1:])
+endfunction
+function! GoToJump(jump)
+    let jumpnumber = split(a:jump, '\s\+')[0]
+    execute "normal " . jumpnumber . "\<c-o>"
+endfunction
+command! Jumps call fzf#run(fzf#wrap({
+        \ 'source': GetJumps(),
+        \ 'sink': function('GoToJump')}))
+
+nnoremap <leader>j :Jumps<CR>
 
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
