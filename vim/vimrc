@@ -147,7 +147,7 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
       autocmd FileChangedShellPost *
         \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
-let g:python3_host_prog = '/usr/bin/python3.6'
+let g:python3_host_prog = '/usr/bin/python3'
 
 inoremap <silent> jk <esc>
 cnoremap <silent> jk <c-c>
@@ -185,7 +185,7 @@ nnoremap <silent> - :vertical resize -5<cr>
 " nnoremap <silent> <leader>= :resize +5<cr>
 " nnoremap <silent> <leader>- :resize -5<cr>
 
-nnoremap <leader>s :update<cr>
+nnoremap <leader>w :update<cr>
 nnoremap <Leader>q :q<cr>
 nnoremap <Leader>Q :qa!<cr>
 
