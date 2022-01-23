@@ -9,15 +9,25 @@ call plug#begin('~/.vim/bundle')
 " Make sure you use single quotes
 
 " ----------------------------------------------------------------------------
+" Neovim 0.6
+" ----------------------------------------------------------------------------
+Plug 'dstein64/vim-startuptime'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+" Plug 'nvim-lualine/lualine.nvim'
+
+" ----------------------------------------------------------------------------
 " appearance
 " ----------------------------------------------------------------------------
-Plug 'bling/vim-airline'
-Plug 'ryanoasis/vim-devicons'
-" Plug 'morhetz/gruvbox'
-Plug 'gruvbox-community/gruvbox'
-Plug 'arcticicestudio/nord-vim'
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'sheerun/vim-polyglot'
+Plug 'shaunsingh/nord.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'lukas-reineke/indent-blankline.nvim'
+
+" ----------------------------------------------------------------------------
+" appearance
+" ----------------------------------------------------------------------------
+" Plug 'bling/vim-airline'
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'sheerun/vim-polyglot'
 Plug 'mhinz/vim-startify'
 Plug 'machakann/vim-highlightedyank'
 Plug 'google/vim-searchindex'
@@ -27,9 +37,8 @@ Plug 'kshenoy/vim-signature'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
-" Plug 'justinmk/vim-syntax-extra' "for flex and bison
-" Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'folke/which-key.nvim'
+" Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
 
 " ----------------------------------------------------------------------------
 " complete
@@ -41,13 +50,13 @@ Plug 'honza/vim-snippets'
 " ----------------------------------------------------------------------------
 " surround
 " ----------------------------------------------------------------------------
-" Plug 'jiangmiao/auto-pairs'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 
 " ----------------------------------------------------------------------------
 " navigation
 " ----------------------------------------------------------------------------
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'majutsushi/tagbar' "need exuberant ctag installed
 Plug 'Lokaltog/vim-easymotion'
 Plug 'mileszs/ack.vim' "need ack (now is ag instead) installed
@@ -55,7 +64,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegu
 Plug 'andymass/vim-matchup'
 Plug 'christoomey/vim-tmux-navigator'
 " Plug 'justinmk/vim-gtfo'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 Plug 'psliwka/vim-smoothie'
 
@@ -70,7 +78,7 @@ Plug 'reedes/vim-lexical'
 " ----------------------------------------------------------------------------
 " Plug 'lervag/vimtex'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
-Plug 'Konfekt/FastFold'
+" Plug 'Konfekt/FastFold'
 " Plug 'gi1242/vim-tex-syntax'
 
 " ----------------------------------------------------------------------------
@@ -97,19 +105,176 @@ Plug 'tpope/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'sk1418/HowMuch'
 Plug 'tpope/vim-obsession'
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+" Plug 'Pocco81/DAPInstall.nvim'
+Plug 'tomasgareau/DAPInstall.nvim'
 
 " Initialize plugin system
 call plug#end()
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = "maintained",
+
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+" lua << END
+" require('lualine').setup {
+"   options = {
+"     -- ... your lualine config
+"     theme = 'nord'
+"     -- ... your lualine config
+"   }
+" }
+" END
+
+lua << END
+require'nvim-web-devicons'.setup {
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+}
+END
+
+lua << END
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    show_current_context = true,
+}
+END
+let g:indent_blankline_filetype = ['c', 'cpp']
+
+lua << END
+require'nvim-tree'.setup()
+END
+nnoremap ge :NvimTreeToggle<CR>
+
+lua << END
+local dap = require('dap')
+dap.adapters.cppdbg = {
+  type = 'executable',
+  command = '/home/jkunlin/.local/share/nvim/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7',
+}
+dap.configurations.cpp = {
+  {
+    name = "Launch file",
+    type = "cppdbg",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = true,
+    setupCommands = {  
+      { 
+          text = '-enable-pretty-printing',
+          description =  'enable pretty printing',
+          ignoreFailures = false 
+      },
+    },
+  },
+  {
+    name = 'Attach to gdbserver :1234',
+    type = 'cppdbg',
+    request = 'launch',
+    MIMode = 'gdb',
+    miDebuggerServerAddress = 'localhost:1234',
+    miDebuggerPath = '/usr/bin/gdb',
+    miDebuggerPath = '/home/jkunlin/.local/share/nvim/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
+    cwd = '${workspaceFolder}',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+  },
+}
+dap.configurations.c = dap.configurations.cpp
+dap.configurations.rust = dap.configurations.cpp
+END
+
+" lua << END
+" local dap = require('dap')
+" dap.adapters.lldb = {
+"   type = 'executable',
+"   command = '/home/jkunlin/.local/clang_llvm/bin/lldb-vscode', -- adjust as needed
+"   name = "lldb"
+" }
+"
+" dap.configurations.cpp = {
+"   {
+"     name = "Launch",
+"     type = "lldb",
+"     request = "launch",
+"     program = function()
+"       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+"     end,
+"     cwd = '${workspaceFolder}',
+"     stopOnEntry = false,
+"     args = {},
+"
+"     -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+"     --
+"     --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+"     --
+"     -- Otherwise you might get the following error:
+"     --
+"     --    Error on launch: Failed to attach to the target process
+"     --
+"     -- But you should be aware of the implications:
+"     -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+"     runInTerminal = true,
+"   },
+" }
+"
+"
+" -- If you want to use this for rust and c, add something like this:
+"
+" dap.configurations.c = dap.configurations.cpp
+" dap.configurations.rust = dap.configurations.cpp
+" END
+
+lua << END
+require("dapui").setup()
+local dap = require('dap')
+local dapui = require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
+END
 
 augroup vimrc
   autocmd!
 augroup END
 
 set encoding=UTF-8
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable
 set number
-" set relativenumber
 set lazyredraw
-syntax enable
+" syntax enable
 set termguicolors
 set confirm
 set autoindent
@@ -131,8 +296,6 @@ set showcmd
 set wildmenu
 set ttimeout
 set ttimeoutlen=100
-" set foldmethod=marker
-set foldlevel=100
 set completeopt=longest,menu
 set scrolloff=1
 set autoread
@@ -157,6 +320,19 @@ endif
 xnoremap <silent> v <c-c>
 let mapleader = "\<space>"
 
+
+nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+nnoremap <silent> <leader>n :lua require'dap'.step_over()<CR>
+nnoremap <silent> <leader>s :lua require'dap'.step_into()<CR>
+" nnoremap <silent> <leader> :lua require'dap'.step_out()<CR>
+nnoremap <silent> <leader>k <Cmd>lua require("dapui").eval()<CR>
+nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+
+
 nnoremap <silent> <leader>. :cd %:p:h<CR>
 nnoremap <leader>\ :vsplit<CR>
 nnoremap <leader>- :split<CR>
@@ -172,10 +348,10 @@ augroup latex
         \ softtabstop=2
 augroup end
 
-augroup c++
-  autocmd!
-  autocmd filetype c,cpp setlocal foldmethod=syntax
-augroup end
+" augroup c++
+"   autocmd!
+"   autocmd filetype c,cpp setlocal foldmethod=syntax
+" augroup end
 
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
@@ -273,7 +449,7 @@ nnoremap <Leader>rW :Ack <cword><cr>
 " fzf
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :GFiles<CR>
-nnoremap <leader>d :Files 
+nnoremap <leader>F :Files 
 nnoremap <leader>rg :Rg<CR>
 nnoremap <leader><leader> :Commands<CR>
 
@@ -317,10 +493,6 @@ let g:fzf_colors =
 nmap <Leader>tw <Plug>(coc-translator-p)
 " echo
 " nmap <Leader>e <Plug>(coc-translator-e)
-
-" NERD
-noremap <silent> <F6> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " easy-motion
 map <Leader> <Plug>(easymotion-prefix)
@@ -657,8 +829,8 @@ nmap <leader>rn <Plug>(coc-rename)
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " coc-explorer
-nmap ge :CocCommand explorer<CR>
-let g:indentLine_fileTypeExclude = ['coc-explorer']
+" nmap ge :CocCommand explorer<CR>
+" let g:indentLine_fileTypeExclude = ['coc-explorer']
 
 
 " Using CocList
@@ -670,10 +842,10 @@ nnoremap <silent> <leader>lb  :<C-u>CocCommand latex.Build<CR>
 nnoremap <silent> <leader>lc  :<C-u>!latexmk -c<CR>
 nnoremap <silent> <leader>lC  :<C-u>!latexmk -C<CR>
 
-augroup fmt
- autocmd!
- autocmd BufWritePre * try | undojoin | :call CocAction('format') | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent :call CocAction('format') | endtry
-augroup END
+" augroup fmt
+"  autocmd!
+"  autocmd BufWritePre * try | undojoin | :call CocAction('format') | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent :call CocAction('format') | endtry
+" augroup END
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
