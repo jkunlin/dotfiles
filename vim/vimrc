@@ -13,7 +13,9 @@ call plug#begin('~/.vim/bundle')
 " ----------------------------------------------------------------------------
 Plug 'dstein64/vim-startuptime'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'romgrk/nvim-treesitter-context'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'simrat39/symbols-outline.nvim'
 
 " ----------------------------------------------------------------------------
 " appearance
@@ -113,7 +115,7 @@ Plug 'tomasgareau/DAPInstall.nvim'
 " Initialize plugin system
 call plug#end()
 
-lua <<EOF
+lua << END
 require'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "maintained",
@@ -133,7 +135,40 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
-EOF
+
+require'treesitter-context'.setup{
+    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+    throttle = true, -- Throttles plugin updates (may improve performance)
+    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+    patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+        -- For all filetypes
+        -- Note that setting an entry here replaces all other patterns for this entry.
+        -- By setting the 'default' entry below, you can control which nodes you want to
+        -- appear in the context window.
+        default = {
+            'class',
+            'function',
+            'method',
+            -- 'for', -- These won't appear in the context
+            -- 'while',
+            -- 'if',
+            -- 'switch',
+            -- 'case',
+        },
+        -- Example for a specific filetype.
+        -- If a pattern is missing, *open a PR* so everyone can benefit.
+        --   rust = {
+        --       'impl_item',
+        --   },
+    },
+    exact_patterns = {
+        -- Example for a specific filetype with Lua patterns
+        -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
+        -- exactly match "impl_item" only)
+        -- rust = true, 
+    }
+}
+END
 
 lua << END
 require('lualine').setup {
@@ -170,9 +205,29 @@ lua << END
 local dap = require('dap')
 dap.adapters.cppdbg = {
   type = 'executable',
-  command = '/home/jkunlin/.local/share/nvim/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7',
+  command = vim.fn.stdpath("data") .. "/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7",
 }
 dap.configurations.cpp = {
+  {
+    name = "z3",
+    type = "cppdbg",
+    request = "launch",
+    program = os.getenv("HOME") .. '/smt/z3-z3-4.8.14/build/z3',
+    cwd = '${workspaceFolder}',
+    stopOnEntry = true,
+    setupCommands = {  
+      { 
+          text = '-enable-pretty-printing',
+          description =  'enable pretty printing',
+          ignoreFailures = false 
+      },
+      {
+          text = 'set args /home/jkunlin/smt/z3-z3-4.8.14/001.smt2',
+          description = 'instance',
+          ignoreFailures = flase
+      },
+    },
+  },
   {
     name = "Launch file",
     type = "cppdbg",
@@ -188,6 +243,11 @@ dap.configurations.cpp = {
           description =  'enable pretty printing',
           ignoreFailures = false 
       },
+      {
+          text = 'set args /home/jkunlin/smt/z3-z3-4.8.14/001.smt2',
+          description = 'instance',
+          ignoreFailures = flase
+      },
     },
   },
   {
@@ -196,12 +256,18 @@ dap.configurations.cpp = {
     request = 'launch',
     MIMode = 'gdb',
     miDebuggerServerAddress = 'localhost:1234',
-    miDebuggerPath = '/usr/bin/gdb',
-    miDebuggerPath = '/home/jkunlin/.local/share/nvim/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
+    miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
     cwd = '${workspaceFolder}',
     program = function()
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
+    setupCommands = {  
+      { 
+          text = '-enable-pretty-printing',
+          description =  'enable pretty printing',
+          ignoreFailures = false 
+      },
+    },
   },
 }
 dap.configurations.c = dap.configurations.cpp
@@ -262,6 +328,18 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
+END
+
+lua << END
+vim.g.symbols_outline = {
+    highlight_hovered_item = true,
+    auto_preview = false,
+    position = 'right',
+    relative_width = true,
+    width = 40,
+    show_numbers = false,
+    preview_bg_highlight = 'Pmenu',
+    }
 END
 
 augroup vimrc
@@ -331,6 +409,14 @@ nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Break
 nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+
+augroup dap-repl
+  autocmd!
+  autocmd FileType dap-repl nnoremap<buffer> n <cmd>lua require('dap').step_over()<CR>
+  autocmd FileType dap-repl nnoremap<buffer> s <cmd>lua require('dap').step_into()<CR>
+  autocmd FileType dap-repl nnoremap<buffer> o <cmd>lua require('dap').step_out()<CR>
+  autocmd FileType dap-repl nnoremap<buffer> c <cmd>lua require('dap').continue()<CR>
+augroup end
 
 
 nnoremap <silent> <leader>. :cd %:p:h<CR>
