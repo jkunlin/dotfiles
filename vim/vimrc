@@ -14,6 +14,8 @@ call plug#begin('~/.vim/bundle')
 Plug 'dstein64/vim-startuptime'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'romgrk/nvim-treesitter-context'
+Plug 'numToStr/Comment.nvim'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 
@@ -93,7 +95,7 @@ Plug 'vim-scripts/ReplaceWithRegister'
 
 
 Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
-Plug 'tomtom/tcomment_vim'
+" Plug 'tomtom/tcomment_vim'
 Plug 'kana/vim-textobj-user'
 Plug 'junegunn/vim-easy-align',  { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'dhruvasagar/vim-table-mode'
@@ -168,6 +170,12 @@ require'treesitter-context'.setup{
         -- rust = true, 
     }
 }
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true
+  }
+}
+require('Comment').setup()
 END
 
 lua << END
@@ -215,11 +223,11 @@ dap.configurations.cpp = {
     program = os.getenv("HOME") .. '/smt/z3-z3-4.8.14/build/z3',
     cwd = '${workspaceFolder}',
     stopOnEntry = true,
-    setupCommands = {  
-      { 
+    setupCommands = { 
+      {
           text = '-enable-pretty-printing',
           description =  'enable pretty printing',
-          ignoreFailures = false 
+          ignoreFailures = false
       },
       {
           text = 'set args /home/jkunlin/smt/z3-z3-4.8.14/001.smt2',
@@ -228,99 +236,99 @@ dap.configurations.cpp = {
       },
     },
   },
-  {
-    name = "Launch file",
-    type = "cppdbg",
-    request = "launch",
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    cwd = '${workspaceFolder}',
-    stopOnEntry = true,
-    setupCommands = {  
-      { 
-          text = '-enable-pretty-printing',
-          description =  'enable pretty printing',
-          ignoreFailures = false 
-      },
-      {
-          text = 'set args /home/jkunlin/smt/z3-z3-4.8.14/001.smt2',
-          description = 'instance',
-          ignoreFailures = flase
-      },
-    },
-  },
-  {
-    name = 'Attach to gdbserver :1234',
-    type = 'cppdbg',
-    request = 'launch',
-    MIMode = 'gdb',
-    miDebuggerServerAddress = 'localhost:1234',
-    miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
-    cwd = '${workspaceFolder}',
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    setupCommands = {  
-      { 
-          text = '-enable-pretty-printing',
-          description =  'enable pretty printing',
-          ignoreFailures = false 
-      },
-    },
-  },
+  -- {
+  --   name = "Launch file",
+  --   type = "cppdbg",
+  --   request = "launch",
+  --   program = function()
+  --     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+  --   end,
+  --   cwd = '${workspaceFolder}',
+  --   stopOnEntry = true,
+  --   setupCommands = { 
+  --     {
+  --         text = '-enable-pretty-printing',
+  --         description =  'enable pretty printing',
+  --         ignoreFailures = false
+  --     },
+  --     {
+  --         text = 'set args /home/jkunlin/smt/z3-z3-4.8.14/001.smt2',
+  --         description = 'instance',
+  --         ignoreFailures = flase
+  --     },
+  --   },
+  -- },
+  -- {
+  --   name = 'Attach to gdbserver :1234',
+  --   type = 'cppdbg',
+  --   request = 'launch',
+  --   MIMode = 'gdb',
+  --   miDebuggerServerAddress = 'localhost:1234',
+  --   miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
+  --   cwd = '${workspaceFolder}',
+  --   program = function()
+  --     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+  --   end,
+  --   setupCommands = { 
+  --     {
+  --         text = '-enable-pretty-printing',
+  --         description =  'enable pretty printing',
+  --         ignoreFailures = false
+  --     },
+  --   },
+  -- },
 }
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
-END
 
-" lua << END
-" local dap = require('dap')
-" dap.adapters.lldb = {
-"   type = 'executable',
-"   command = '/home/jkunlin/.local/clang_llvm/bin/lldb-vscode', -- adjust as needed
-"   name = "lldb"
-" }
-"
-" dap.configurations.cpp = {
-"   {
-"     name = "Launch",
-"     type = "lldb",
-"     request = "launch",
-"     program = function()
-"       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-"     end,
-"     cwd = '${workspaceFolder}',
-"     stopOnEntry = false,
-"     args = {},
-"
-"     -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
-"     --
-"     --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-"     --
-"     -- Otherwise you might get the following error:
-"     --
-"     --    Error on launch: Failed to attach to the target process
-"     --
-"     -- But you should be aware of the implications:
-"     -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
-"     runInTerminal = true,
-"   },
-" }
-"
-"
-" -- If you want to use this for rust and c, add something like this:
-"
-" dap.configurations.c = dap.configurations.cpp
-" dap.configurations.rust = dap.configurations.cpp
-" END
+dap.defaults.fallback.terminal_win_cmd = '7split new'
 
-lua << END
-require("dapui").setup()
+require("dapui").setup({
+  icons = { expanded = "▾", collapsed = "▸" },
+  mappings = {
+    -- Use a table to apply multiple mappings
+    expand = { "<CR>", "<2-LeftMouse>" },
+    open = "o",
+    remove = "d",
+    edit = "e",
+    repl = "r",
+  },
+  sidebar = {
+    -- You can change the order of elements in the sidebar
+    elements = {
+      -- Provide as ID strings or tables with "id" and "size" keys
+      {
+        id = "scopes",
+        size = 0.25, -- Can be float or integer > 1
+      },
+      { id = "breakpoints", size = 0.25 },
+      { id = "stacks", size = 0.25 },
+      { id = "watches", size = 00.25 },
+    },
+    size = 30,
+    position = "left", -- Can be "left", "right", "top", "bottom"
+  },
+  tray = {
+    elements = { },
+    size = 7,
+    -- position = "bottom", -- Can be "left", "right", "top", "bottom"
+  },
+  floating = {
+    max_height = nil, -- These can be integers or a float between 0 and 1.
+    max_width = nil, -- Floats will be treated as percentage of your screen.
+    border = "single", -- Border style. Can be "single", "double" or "rounded"
+    mappings = {
+      close = { "q", "<Esc>" },
+    },
+  },
+  windows = { indent = 1 },
+})
 local dap = require('dap')
 local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
+  dap.repl.toggle({height = 7}, "wincmd j | leftabove vsplit")
+  vim.api.nvim_command('wincmd j')
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
   dapui.close()
@@ -328,6 +336,12 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
+
+-- local dap = require('dap')
+-- dap.listeners.after.event_initialized["dap_relp_config"] = function()
+--   dap.repl.toggle({height = 7}, "wincmd j | belowright vsplit")
+-- end
+
 END
 
 lua << END
@@ -406,9 +420,13 @@ nnoremap <silent> <leader>s :lua require'dap'.step_into()<CR>
 nnoremap <silent> <leader>k <Cmd>lua require("dapui").eval()<CR>
 nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+
 nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
-nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+nnoremap <silent> <leader>du :lua require'dapui'.toggle()<CR>
+nnoremap <silent> <leader>dr :lua require'dap'.repl.toggle({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
+" nnoremap <silent> <leader>df :lua require("dapui").float_element('watches')<CR>
+
 
 augroup dap-repl
   autocmd!
