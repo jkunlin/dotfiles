@@ -111,8 +111,8 @@ Plug 'sk1418/HowMuch'
 Plug 'tpope/vim-obsession'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
-" Plug 'Pocco81/DAPInstall.nvim'
-Plug 'tomasgareau/DAPInstall.nvim'
+Plug 'Pocco81/DAPInstall.nvim'
+" Plug 'tomasgareau/DAPInstall.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -210,6 +210,7 @@ END
 nnoremap ge :NvimTreeToggle<CR>
 
 lua << END
+-- ccppr_vsc
 local dap = require('dap')
 dap.adapters.cppdbg = {
   type = 'executable',
@@ -220,67 +221,141 @@ dap.configurations.cpp = {
     name = "z3",
     type = "cppdbg",
     request = "launch",
-    program = os.getenv("HOME") .. '/smt/z3-z3-4.8.14/build/z3',
+    program = os.getenv("HOME") .. '/smt/z3/build/z3',
+   
     cwd = '${workspaceFolder}',
     stopOnEntry = true,
-    setupCommands = { 
+    setupCommands = {
       {
           text = '-enable-pretty-printing',
           description =  'enable pretty printing',
           ignoreFailures = false
       },
       {
-          text = 'set args /home/jkunlin/smt/z3-z3-4.8.14/001.smt2',
+          text = 'set args /home/jkunlin/smt/z3/Prim_4.smt2',
           description = 'instance',
           ignoreFailures = flase
       },
     },
   },
-  -- {
-  --   name = "Launch file",
-  --   type = "cppdbg",
-  --   request = "launch",
-  --   program = function()
-  --     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-  --   end,
-  --   cwd = '${workspaceFolder}',
-  --   stopOnEntry = true,
-  --   setupCommands = { 
-  --     {
-  --         text = '-enable-pretty-printing',
-  --         description =  'enable pretty printing',
-  --         ignoreFailures = false
-  --     },
-  --     {
-  --         text = 'set args /home/jkunlin/smt/z3-z3-4.8.14/001.smt2',
-  --         description = 'instance',
-  --         ignoreFailures = flase
-  --     },
-  --   },
-  -- },
-  -- {
-  --   name = 'Attach to gdbserver :1234',
-  --   type = 'cppdbg',
-  --   request = 'launch',
-  --   MIMode = 'gdb',
-  --   miDebuggerServerAddress = 'localhost:1234',
-  --   miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
-  --   cwd = '${workspaceFolder}',
-  --   program = function()
-  --     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-  --   end,
-  --   setupCommands = { 
-  --     {
-  --         text = '-enable-pretty-printing',
-  --         description =  'enable pretty printing',
-  --         ignoreFailures = false
-  --     },
-  --   },
-  -- },
+  {
+    name = "Launch file",
+    type = "cppdbg",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = true,
+    setupCommands = {
+      {
+          text = '-enable-pretty-printing',
+          description =  'enable pretty printing',
+          ignoreFailures = false
+      },
+    },
+  },
+  {
+    name = 'Attach to gdbserver :1234',
+    type = 'cppdbg',
+    request = 'launch',
+    MIMode = 'gdb',
+    miDebuggerServerAddress = 'localhost:1234',
+    miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
+    cwd = '${workspaceFolder}',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    setupCommands = {
+      {
+          text = '-enable-pretty-printing',
+          description =  'enable pretty printing',
+          ignoreFailures = false
+      },
+    },
+  },
 }
+
+-- codelldb
+-- local dap = require('dap')
+-- dap.adapters.codelldb = function(callback, config)
+--     callback({ type = "server", host = "127.0.0.1", port = 1234 })
+-- end
+-- dap.adapters.codelldb = function(on_adapter)
+--   local stdout = vim.loop.new_pipe(false)
+--   local stderr = vim.loop.new_pipe(false)
+--
+--   -- CHANGE THIS!
+--   local cmd = vim.fn.stdpath("data") .. "/dapinstall/codelldb/extension/adapter/codelldb"
+--   local handle, pid_or_err
+--   local opts = {
+--     stdio = {nil, stdout, stderr},
+--     detached = true,
+--   }
+--   handle, pid_or_err = vim.loop.spawn(cmd, opts, function(code)
+--     stdout:close()
+--     stderr:close()
+--     handle:close()
+--     if code ~= 0 then
+--       print("codelldb exited with code", code)
+--     end
+--   end)
+--   assert(handle, "Error running codelldb: " .. tostring(pid_or_err))
+--   stdout:read_start(function(err, chunk)
+--     assert(not err, err)
+--     if chunk then
+--       local port = chunk:match('Listening on port (%d+)')
+--       if port then
+--         vim.schedule(function()
+--           on_adapter({
+--             type = 'server',
+--             host = '127.0.0.1',
+--             port = port
+--           })
+--         end)
+--       else
+--         vim.schedule(function()
+--           require("dap.repl").append(chunk)
+--         end)
+--       end
+--     end
+--   end)
+--   stderr:read_start(function(err, chunk)
+--     assert(not err, err)
+--     if chunk then
+--       vim.schedule(function()
+--         require("dap.repl").append(chunk)
+--       end)
+--     end
+--   end)
+-- end
+-- dap.configurations.cpp = {
+--   {
+--     name = "z3",
+--     type = "codelldb",
+--     request = "launch",
+--     program = "/home/jkunlin/smt/z3/build/z3",
+--     cwd = '${workspaceFolder}',
+--     args = { "/home/jkunlin/smt/z3/Prim_4.smt2" },
+--     stopOnEntry = false,
+--   },
+--   {
+--     name = "Launch file",
+--     type = "codelldb",
+--     request = "launch",
+--     program = function()
+--       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+--     end,
+--     cwd = '${workspaceFolder}',
+--     stopOnEntry = false,
+--   },
+-- }
+
+
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
+-- ui
 dap.defaults.fallback.terminal_win_cmd = '7split new'
 
 require("dapui").setup({
@@ -323,6 +398,7 @@ require("dapui").setup({
   },
   windows = { indent = 1 },
 })
+
 local dap = require('dap')
 local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
@@ -336,12 +412,6 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
-
--- local dap = require('dap')
--- dap.listeners.after.event_initialized["dap_relp_config"] = function()
---   dap.repl.toggle({height = 7}, "wincmd j | belowright vsplit")
--- end
-
 END
 
 lua << END
@@ -418,6 +488,7 @@ nnoremap <silent> <leader>n :lua require'dap'.step_over()<CR>
 nnoremap <silent> <leader>s :lua require'dap'.step_into()<CR>
 " nnoremap <silent> <leader> :lua require'dap'.step_out()<CR>
 nnoremap <silent> <leader>k <Cmd>lua require("dapui").eval()<CR>
+" nnoremap <silent> <leader>k <Cmd>lua require("dap.ui.widgets").hover()<CR>
 nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
 
@@ -430,6 +501,7 @@ nnoremap <silent> <leader>dr :lua require'dap'.repl.toggle({height = 7}, 'wincmd
 
 augroup dap-repl
   autocmd!
+  autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
   autocmd FileType dap-repl nnoremap<buffer> n <cmd>lua require('dap').step_over()<CR>
   autocmd FileType dap-repl nnoremap<buffer> s <cmd>lua require('dap').step_into()<CR>
   autocmd FileType dap-repl nnoremap<buffer> o <cmd>lua require('dap').step_out()<CR>
