@@ -583,6 +583,8 @@ nnoremap <silent> K <Cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> [e <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> ]e <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> <space>rn :lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> cmd vim.lsp.buf.formatting()<CR>
 command! -nargs=0 Format :lua vim.lsp.buf.formatting()<CR>
