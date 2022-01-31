@@ -203,25 +203,6 @@ lua <<EOF
   }
 EOF
 
-imap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
-smap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
-
-" Jump forward or backward
-imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
-smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
-imap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
-smap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
-
-
-
-nnoremap <silent> K <Cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
-nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> <space>rn :lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> cmd vim.lsp.buf.formatting()<CR>
-command! -nargs=0 Format :lua vim.lsp.buf.formatting()<CR>
-
 
 lua << END
 require'nvim-treesitter.configs'.setup {
@@ -589,7 +570,25 @@ endif
 xnoremap <silent> v <c-c>
 let mapleader = "\<space>"
 
+" vsnip
+imap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
+smap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
+imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+imap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
+smap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
 
+" nvim-cmp
+nnoremap <silent> K <Cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <space>rn :lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> cmd vim.lsp.buf.formatting()<CR>
+command! -nargs=0 Format :lua vim.lsp.buf.formatting()<CR>
+
+
+" dap
 nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
 nnoremap <silent> <leader>n :lua require'dap'.step_over()<CR>
 nnoremap <silent> <leader>s :lua require'dap'.step_into()<CR>
@@ -604,7 +603,6 @@ nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
 nnoremap <silent> <leader>du :lua require'dapui'.toggle()<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.toggle({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
 " nnoremap <silent> <leader>df :lua require("dapui").float_element('watches')<CR>
-
 
 augroup dap-repl
   autocmd!
@@ -636,8 +634,8 @@ augroup end
 "   autocmd filetype c,cpp setlocal foldmethod=syntax
 " augroup end
 
-noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
-noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
+nnoremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
+nnoremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 noremap <silent> <leader>hc :noh<CR>
 nnoremap <silent> = :vertical resize +5<cr>
 nnoremap <silent> - :vertical resize -5<cr>
