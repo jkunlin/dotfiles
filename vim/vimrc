@@ -54,6 +54,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 " Plug 'folke/which-key.nvim'
 " Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
+Plug 'kevinhwang91/nvim-bqf'
 
 " ----------------------------------------------------------------------------
 " complete
@@ -72,7 +73,7 @@ Plug 'tpope/vim-surround'
 " navigation
 " ----------------------------------------------------------------------------
 Plug 'kyazdani42/nvim-tree.lua'
-Plug 'majutsushi/tagbar' "need exuberant ctag installed
+" Plug 'majutsushi/tagbar' "need exuberant ctag installed
 Plug 'Lokaltog/vim-easymotion'
 Plug 'mileszs/ack.vim' "need ack (now is ag instead) installed
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
@@ -545,6 +546,7 @@ set showcmd
 set wildmenu
 set ttimeout
 set ttimeoutlen=100
+set timeoutlen=500
 " set completeopt=longest,menu
 set completeopt=menu,menuone,noselect
 set scrolloff=1
@@ -588,6 +590,9 @@ nnoremap <silent> ]e <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> <space>rn :lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> cmd vim.lsp.buf.formatting()<CR>
 command! -nargs=0 Format :lua vim.lsp.buf.formatting()<CR>
+
+" symbols-outline
+nnoremap <silent> gt <cmd>SymbolsOutline<CR>
 
 
 " dap
@@ -789,8 +794,8 @@ let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
 set laststatus=2 "show status line even when only single window is opened
 
 " tagbar
-noremap <silent> gt :TagbarToggle<CR>
-let g:tagbar_sort = 0
+" noremap <silent> gt :TagbarToggle<CR>
+" let g:tagbar_sort = 0
 
 " ----------------------------------------------------------------------------
 " :A
@@ -1037,7 +1042,6 @@ let g:HowMuch_auto_engines = ['bc', 'vim', 'py']
 
 " WhichKey
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-set timeoutlen=500
 
 " vim-gtfo
 " let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
