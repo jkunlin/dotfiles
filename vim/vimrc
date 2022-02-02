@@ -183,6 +183,8 @@ lua <<EOF
       -- { name = 'snippy' }, -- For snippy users.
     }, {
       { name = 'buffer' },
+      { name = 'path' },
+      { name = 'cmdline' },
     })
   })
 
@@ -330,7 +332,7 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/jkunlin/smt/z3/Prim_4.smt2',
+          text = 'set args /home/jkunlin/smt/z3/bvadd_assoc_test.smt',
           description = 'instance',
           ignoreFailures = flase
       },

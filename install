@@ -64,8 +64,8 @@ fi
 
 # rg
 if ! command -v rg 2>/dev/null; then
-  curl --insecure -fLo $BASE/tmp/ripgrep_0.10.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
-  dpkg -x $BASE/tmp/ripgrep_0.10.0_amd64.deb $BASE/tmp
+  curl --insecure -fLo $BASE/tmp/ripgrep_13.0.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
+  dpkg -x $BASE/tmp/ripgrep_13.0.0_amd64.deb $BASE/tmp
   cp $BASE/tmp/usr/bin/rg ~/.local/bin
 fi
 
