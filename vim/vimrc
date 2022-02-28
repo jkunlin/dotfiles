@@ -1,17 +1,21 @@
+augroup vimrc
+  autocmd!
+augroup END
+
+let mapleader = "\<space>"
+let maplocalleader = '\<space>'
+
+
+" ============================================================================
+" VIM-PLUG
+" ============================================================================
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/bundle')
-
-" function! BuildMD(info)
-"   if a:info.status == 'installed' || a:info.force
-"     !sudo npm -g install instant-markdown-d
-"   endif
-" endfunction
-" Make sure you use single quotes
 
 " ----------------------------------------------------------------------------
 " Neovim 0.6
 " ----------------------------------------------------------------------------
-Plug 'dstein64/vim-startuptime'
+" Plug 'dstein64/vim-startuptime'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'romgrk/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
@@ -37,14 +41,12 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'shaunsingh/nord.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'lukas-reineke/indent-blankline.nvim'
+  let g:indent_blankline_filetype = ['c', 'cpp']
+  let g:indent_blankline_use_treesitter = v:true
 
 " ----------------------------------------------------------------------------
 " appearance
 " ----------------------------------------------------------------------------
-" Plug 'bling/vim-airline'
-" Plug 'ryanoasis/vim-devicons'
-" Plug 'sheerun/vim-polyglot'
-Plug 'mhinz/vim-startify'
 Plug 'machakann/vim-highlightedyank'
 Plug 'google/vim-searchindex'
 Plug 'junegunn/goyo.vim'
@@ -52,89 +54,217 @@ Plug 'junegunn/limelight.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+Plug 'kevinhwang91/nvim-bqf'
 " Plug 'folke/which-key.nvim'
 " Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
-Plug 'kevinhwang91/nvim-bqf'
+" Plug 'bling/vim-airline'
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'sheerun/vim-polyglot'
+
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+  nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+
+Plug 'mhinz/vim-startify'
+  let g:startify_files_number=5
+  let g:startify_files_number=5
+  let g:startify_list_order = [
+        \ ["   MRU " . getcwd()],
+        \ 'dir',
+        \ ['   MRU'],
+        \ 'files',
+        \ ['   sessions:'],
+        \ 'sessions',
+        \ ]
+
+  " let g:startify_session_autoload = 1
+  " let g:startify_session_before_save = [
+  "       \ 'echo "Saving session.."',
+  "       \ ]
+  " let g:startify_session_persistence = 0
+  " let g:startify_session_savevars = [
+  "       \ 'g:startify_session_savevars',
+  "       \ 'g:startify_session_savecmds',
+  "       \ 'g:random_plugin_use_feature'
+  "       \ ]
+
 
 " ----------------------------------------------------------------------------
 " complete
 " ----------------------------------------------------------------------------
 Plug 'wellle/tmux-complete.vim'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " ----------------------------------------------------------------------------
 " surround
 " ----------------------------------------------------------------------------
 Plug 'Raimondi/delimitMate'
+  augroup delimitMate
+    autocmd!
+    autocmd FileType plaintex,tex let b:delimitMate_quotes = "\" ' $"
+  augroup END
+  let delimitMate_expand_space = 1
+  let delimitMate_expand_cr = 1
+  let delimitMate_jump_expansion = 1
+
 Plug 'tpope/vim-surround'
+  augroup vim-surround
+    autocmd!
+    autocmd fileType plaintex,tex let b:surround_{char2nr('b')} = "\\textbf{\r}"
+    autocmd fileType plaintex,tex let b:surround_{char2nr('i')} = "\\textit{\r}"
+    autocmd fileType plaintex,tex let b:surround_{char2nr('$')} = "$\r$"
+    autocmd fileType plaintex,tex let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
+  augroup END
 
 " ----------------------------------------------------------------------------
 " navigation
 " ----------------------------------------------------------------------------
-Plug 'kyazdani42/nvim-tree.lua'
-" Plug 'majutsushi/tagbar' "need exuberant ctag installed
-Plug 'Lokaltog/vim-easymotion'
-Plug 'mileszs/ack.vim' "need ack (now is ag instead) installed
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'andymass/vim-matchup'
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'justinmk/vim-gtfo'
-Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 Plug 'psliwka/vim-smoothie'
+" Plug 'majutsushi/tagbar' "need exuberant ctag installed
+
+Plug 'kyazdani42/nvim-tree.lua'
+  nnoremap ge :NvimTreeToggle<CR>
+
+Plug 'Lokaltog/vim-easymotion'
+  map <Leader> <Plug>(easymotion-prefix)
+  map <silent> <Leader>ml <Plug>(easymotion-lineforward)
+  map <silent> <Leader>mj <Plug>(easymotion-j)
+  map <silent> <Leader>mk <Plug>(easymotion-k)
+  map <silent> <Leader>mh <Plug>(easymotion-linebackward)
+  let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
+
+Plug 'mileszs/ack.vim' "need rg installed
+  if executable('rg')
+    " let g:ackprg = 'ag --nogroup --nocolor --column'
+    let g:ackprg = 'rg --vimgrep'
+  endif
+  let g:ack_autoclose = 0
+  nnoremap <Leader>rw :AckWindow <cword><cr>
+  nnoremap <Leader>rW :Ack <cword><cr>
+
+Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
+  nnoremap U :UndotreeToggle<cr>
+  let g:undotree_WindowLayout = 2
+  if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+  endif
+
 Plug 'dhruvasagar/vim-zoom'
+  nmap <silent> <Leader>z <Plug>(zoom-toggle)
+  set statusline+=%{zoom#statusline()}
+
+" Plug 'justinmk/vim-gtfo'
+  " let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
 
 " ----------------------------------------------------------------------------
 " writing
 " ----------------------------------------------------------------------------
 Plug 'rhysd/vim-grammarous'
+  let g:grammarous#hooks = {}
+  function! g:grammarous#hooks.on_check(errs) abort
+    nmap <buffer>gn <Plug>(grammarous-move-to-next-error)
+    nmap <buffer>gp <Plug>(grammarous-move-to-previous-error)
+    nmap <buffer>gf <Plug>(grammarous-fixit)
+  endfunction
+  function! g:grammarous#hooks.on_reset(errs) abort
+    nunmap <buffer>gn
+    nunmap <buffer>gp
+    nunmap <buffer>gf
+  endfunction
+
 Plug 'reedes/vim-lexical'
+  augroup lexical
+    autocmd!
+    autocmd FileType text call lexical#init()
+    autocmd FileType plaintex,tex call lexical#init()
+    autocmd FileType markdown call lexical#init()
+  augroup END
+  let g:lexical#spell_key = 'z='
+
 Plug 'voldikss/vim-translator'
+  nmap <silent> <Leader>tw <Plug>TranslateW
+  vmap <silent> <Leader>tw <Plug>TranslateWV
 
 " ----------------------------------------------------------------------------
 " latex
 " ----------------------------------------------------------------------------
-" Plug 'lervag/vimtex'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
+" Plug 'lervag/vimtex'
 " Plug 'Konfekt/FastFold'
 " Plug 'gi1242/vim-tex-syntax'
 
 " ----------------------------------------------------------------------------
 " edit
 " ----------------------------------------------------------------------------
-Plug 'terryma/vim-multiple-cursors'
-Plug 'brooth/far.vim'
-Plug 'tpope/vim-repeat'
-" Plug 'vim-scripts/ReplaceWithRegister'
-
-
-Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
-" Plug 'tomtom/tcomment_vim'
-Plug 'kana/vim-textobj-user'
-Plug 'junegunn/vim-easy-align',  { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'AndrewRadev/linediff.vim'
-Plug 'chrisbra/vim-diff-enhanced'
-" Plug 'sakhnik/nvim-gdb', { 'do': ':UpdateRemotePlugins' }
-" Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
-Plug 'sakhnik/nvim-gdb', { 'branch': 'legacy' }
-Plug 'tpope/vim-markdown'
-" Plug 'suan/vim-instant-markdown', { 'do': function('BuildMD') }
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-Plug 'sk1418/HowMuch'
 Plug 'tpope/vim-obsession'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'Pocco81/DAPInstall.nvim'
-" Plug 'tomasgareau/DAPInstall.nvim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-repeat'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'kana/vim-textobj-user'
+" Plug 'tomtom/tcomment_vim'
+" Plug 'vim-scripts/ReplaceWithRegister'
+" Plug 'sakhnik/nvim-gdb', { 'do': ':UpdateRemotePlugins' }
+" Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+" Plug 'sakhnik/nvim-gdb', { 'branch': 'legacy' }
+" Plug 'suan/vim-instant-markdown', { 'do': function('BuildMD') }
+"
+
+Plug 'brooth/far.vim'
+  let g:far#source='rg'
+
+Plug 'tpope/vim-markdown'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+  nmap <leader>mp <Plug>MarkdownPreviewToggle
+
+Plug 'sk1418/HowMuch'
+  "The scale of the result:
+  let g:HowMuch_scale = 2
+  "the engine order for auto-calculation
+  let g:HowMuch_auto_engines = ['bc', 'vim', 'py']
+
+
+Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
+  " For all languages unspecified in the dictionary, all possible linters will be run for those languages, just as when the dictionary is not defined.
+  let g:ale_linters = {
+  \   'tex' : ['chktex', 'vale'],
+  \   'latex' : ['chktex', 'vale'],
+  \   'text': ['vale'],
+  \}
+
+Plug 'junegunn/vim-easy-align',  { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+  " Start interactive EasyAlign in visual mode (e.g. vipga)
+  xmap ga <Plug>(EasyAlign)
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
+  let g:easy_align_delimiters = {
+        \  't': { 'pattern': '\t',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 }
+        \}
+
+Plug 'chrisbra/vim-diff-enhanced'
+  if &diff
+    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+  endif
 
 " Initialize plugin system
 call plug#end()
 
-"" nvim-cmp
-lua <<EOF
-  -- Setup nvim-cmp.
+
+" ============================================================================
+" Lua config
+" ============================================================================
+lua << END
+
+------------------------------------------------------------------------------
+-- nvim-cmp
+------------------------------------------------------------------------------
   local cmp = require'cmp'
   local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
   cmp.setup({
@@ -236,10 +366,10 @@ end
     border = "single"
     }
   )
-EOF
 
-
-lua << END
+------------------------------------------------------------------------------
+-- nvim-treesitter
+------------------------------------------------------------------------------
 require'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "maintained",
@@ -297,10 +427,14 @@ require'nvim-treesitter.configs'.setup {
     enable = true
   }
 }
-require('Comment').setup()
-END
 
-lua << END
+require('Comment').setup()
+
+require'nvim-tree'.setup()
+
+------------------------------------------------------------------------------
+-- lualine
+------------------------------------------------------------------------------
 require('lualine').setup {
   options = {
     -- ... your lualine config
@@ -308,32 +442,27 @@ require('lualine').setup {
     -- ... your lualine config
   }
 }
-END
 
-lua << END
+------------------------------------------------------------------------------
+-- nvim-web-devicons
+------------------------------------------------------------------------------
 require'nvim-web-devicons'.setup {
  -- globally enable default icons (default to false)
  -- will get overriden by `get_icons` option
  default = true;
 }
-END
 
-lua << END
+------------------------------------------------------------------------------
+-- indent_blankline
+------------------------------------------------------------------------------
 require("indent_blankline").setup {
     -- for example, context is off by default, use this to turn it on
     show_current_context = true,
 }
-END
-let g:indent_blankline_filetype = ['c', 'cpp']
-let g:indent_blankline_use_treesitter = v:true
 
-lua << END
-require'nvim-tree'.setup()
-END
-nnoremap ge :NvimTreeToggle<CR>
-
-lua << END
--- ccppr_vsc
+------------------------------------------------------------------------------
+-- dap ccppr_vsc
+------------------------------------------------------------------------------
 local dap = require('dap')
 dap.adapters.cppdbg = {
   type = 'executable',
@@ -399,7 +528,9 @@ dap.configurations.cpp = {
   },
 }
 
--- codelldb
+------------------------------------------------------------------------------
+-- dap codelldb
+------------------------------------------------------------------------------
 -- local dap = require('dap')
 -- dap.adapters.codelldb = function(callback, config)
 --     callback({ type = "server", host = "127.0.0.1", port = 1234 })
@@ -478,7 +609,9 @@ dap.configurations.cpp = {
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
--- ui
+------------------------------------------------------------------------------
+-- dap ui
+------------------------------------------------------------------------------
 dap.defaults.fallback.terminal_win_cmd = '7split new'
 
 require("dapui").setup({
@@ -535,9 +668,10 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
-END
 
-lua << END
+------------------------------------------------------------------------------
+-- symbols-outline
+------------------------------------------------------------------------------
 vim.g.symbols_outline = {
     highlight_hovered_item = true,
     auto_preview = true,
@@ -547,11 +681,8 @@ vim.g.symbols_outline = {
     show_numbers = false,
     preview_bg_highlight = 'Pmenu',
     }
-END
 
-augroup vimrc
-  autocmd!
-augroup END
+END
 
 set encoding=UTF-8
 set foldmethod=expr
@@ -592,6 +723,10 @@ set clipboard=unnamedplus
 set shortmess+=c
 set splitbelow
 set splitright
+set updatetime=100
+set laststatus=2 "show status line even when only single window is opened
+colorscheme nord
+
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change
       autocmd FileChangedShellPost *
@@ -605,11 +740,6 @@ if (has('nvim'))
   tnoremap <silent> jk <c-\><c-n>
 endif
 xnoremap <silent> v <c-c>
-let mapleader = "\<space>"
-
-" vim-zoom
-nmap <silent> <Leader>z <Plug>(zoom-toggle)
-set statusline+=%{zoom#statusline()}
 
 " vsnip
 " imap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
@@ -667,11 +797,6 @@ augroup end
 "   autocmd CursorMoved * silent TSContextDisable
 " augroup end
 nnoremap <silent> gs <cmd>TSContextToggle<CR>
-
-" vim-translator
-nmap <silent> <Leader>tw <Plug>TranslateW
-vmap <silent> <Leader>tw <Plug>TranslateWV
-
 
 nnoremap <silent> <leader>. :cd %:p:h<CR>
 nnoremap <leader>\ :vsplit<CR>
@@ -777,15 +902,6 @@ nnoremap zf zfa{ za
 " endfunction
 " nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
-" Ack
-if executable('rg')
-  " let g:ackprg = 'ag --nogroup --nocolor --column'
-  let g:ackprg = 'rg --vimgrep'
-endif
-let g:ack_autoclose = 0
-nnoremap <Leader>rw :AckWindow <cword><cr>
-nnoremap <Leader>rW :Ack <cword><cr>
-
 " fzf
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :GFiles<CR>
@@ -834,17 +950,6 @@ let g:fzf_colors =
 " echo
 " nmap <Leader>e <Plug>(coc-translator-e)
 
-" easy-motion
-map <Leader> <Plug>(easymotion-prefix)
-map <silent> <Leader>ml <Plug>(easymotion-lineforward)
-map <silent> <Leader>mj <Plug>(easymotion-j)
-map <silent> <Leader>mk <Plug>(easymotion-k)
-map <silent> <Leader>mh <Plug>(easymotion-linebackward)
-let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
-
-" airline
-set laststatus=2 "show status line even when only single window is opened
-
 " tagbar
 " noremap <silent> gt :TagbarToggle<CR>
 " let g:tagbar_sort = 0
@@ -881,140 +986,38 @@ nnoremap <silent> <leader>a :call <sid>a('e')<cr>
 " let g:tex_conceal="abdgm"
 
 " vimtex
-let g:tex_flavor = 'latex'
-" let g:vimtex_view_general_viewer = 'mupdf'
-let g:vimtex_view_general_viewer = 'okular'
-let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-let g:vimtex_view_general_options_latexmk = '--unique'
-let g:vimtex_quickfix_latexlog = {'default' : 0}
-" let g:vimtex_quickfix_latexlog = {
-"       \ 'overfull' : 0,
-"       \ 'underfull' : 0,
-"       \ 'font' : 0,
-"       \}
-let g:vimtex_compiler_progname='nvr'
+" let g:tex_flavor = 'latex'
+" " let g:vimtex_view_general_viewer = 'mupdf'
+" let g:vimtex_view_general_viewer = 'okular'
+" let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+" let g:vimtex_view_general_options_latexmk = '--unique'
+" let g:vimtex_quickfix_latexlog = {'default' : 0}
+" " let g:vimtex_quickfix_latexlog = {
+" "       \ 'overfull' : 0,
+" "       \ 'underfull' : 0,
+" "       \ 'font' : 0,
+" "       \}
+" let g:vimtex_compiler_progname='nvr'
 
 " gruvbox
 " let g:gruvbox_italic=1
 " colorscheme gruvbox
 " set background=dark
 
-" nord-vim
-colorscheme nord
-
 " drewtempelmeyer/palenight.vim
 " colorscheme palenight
 
-" undotree
-nnoremap <F8> :UndotreeToggle<cr>
-if has("persistent_undo")
-  set undodir=~/.undodir/
-  set undofile
-endif
-
-" vim-easy-align
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-let g:easy_align_delimiters = {
-      \  't': { 'pattern': '\t',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 }
-      \}
-
-" vim-surround
-autocmd fileType plaintex,tex let b:surround_{char2nr('b')} = "\\textbf{\r}"
-autocmd fileType plaintex,tex let b:surround_{char2nr('i')} = "\\textit{\r}"
-autocmd fileType plaintex,tex let b:surround_{char2nr('$')} = "$\r$"
-autocmd fileType plaintex,tex let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
-
-" vim-textobj-user
-let g:textobj_numeral_pattern = '\%(\<[[:digit:]]\+\%(\.[[:digit:]]\+\)\=\%([Ee][[:digit:]]\+\)\=\>\|\<0[xXbBoOdD][[:xdigit:]]\+\>\)'
-let g:textobj_solution_pattern = g:textobj_numeral_pattern . '(' . g:textobj_numeral_pattern . ')'
-call textobj#user#plugin('number', {
-      \   '-': {
-      \     'pattern': g:textobj_numeral_pattern,
-      \     'select': ['an', 'in'],
-      \   },
-      \   's': {
-      \     'pattern': g:textobj_solution_pattern,
-      \     'select': ['as', 'is'],
-      \   }
-      \ })
-
-
 " nvim-gdb
-command! -complete=file -nargs=1 Gdb call plug#load('nvim-gdb') | GdbStart gdb -q <args>
-let g:nvimgdb_disable_start_keymaps = 1
-nmap <leader>v :GdbEvalWord<CR>
-vmap <leader>v :GdbEvalRange<CR>
-
-" vim-grammarous
-let g:grammarous#hooks = {}
-function! g:grammarous#hooks.on_check(errs) abort
-  nmap <buffer>gn <Plug>(grammarous-move-to-next-error)
-  nmap <buffer>gp <Plug>(grammarous-move-to-previous-error)
-  nmap <buffer>gf <Plug>(grammarous-fixit)
-endfunction
-function! g:grammarous#hooks.on_reset(errs) abort
-  nunmap <buffer>gn
-  nunmap <buffer>gp
-  nunmap <buffer>gf
-endfunction
-
-" vim-lexical
-augroup lexical
-  autocmd!
-  autocmd FileType text call lexical#init()
-  autocmd FileType plaintex,tex call lexical#init()
-  autocmd FileType markdown call lexical#init()
-augroup END
-let g:lexical#spell_key = 'z='
-
-" vim-diff-enhanced
-if &diff
-  let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-endif
+" command! -complete=file -nargs=1 Gdb call plug#load('nvim-gdb') | GdbStart gdb -q <args>
+" let g:nvimgdb_disable_start_keymaps = 1
+" nmap <leader>v :GdbEvalWord<CR>
+" vmap <leader>v :GdbEvalRange<CR>
 
 " auto-pairs
 " augroup auto-pairs
 "   autocmd!
 "   autocmd FileType plaintex,tex let g:AutoPairs['$']='$'
 " augroup END
-
-" delimitMate
-augroup delimitMate
-  autocmd!
-  autocmd FileType plaintex,tex let b:delimitMate_quotes = "\" ' $"
-augroup END
-
-" delimitMate
-let delimitMate_expand_space = 1
-let delimitMate_expand_cr = 1
-let delimitMate_jump_expansion = 1
-
-" vim-startify
-let g:startify_files_number=5
-let g:startify_files_number=5
-let g:startify_list_order = [
-      \ ["   MRU " . getcwd()],
-      \ 'dir',
-      \ ['   MRU'],
-      \ 'files',
-      \ ['   sessions:'],
-      \ 'sessions',
-      \ ]
-
-" let g:startify_session_autoload = 1
-" let g:startify_session_before_save = [
-"       \ 'echo "Saving session.."',
-"       \ ]
-" let g:startify_session_persistence = 0
-" let g:startify_session_savevars = [
-"       \ 'g:startify_session_savevars',
-"       \ 'g:startify_session_savecmds',
-"       \ 'g:random_plugin_use_feature'
-"       \ ]
-
 
 " visual star
 function! s:VSetSearch()
@@ -1029,8 +1032,19 @@ endfunction
 vnoremap * :<C-u>call <SID>VSetSearch()<CR>/<CR>
 vnoremap # :<C-u>call <SID>VSetSearch()<CR>?<CR>
 
-" vim-gitgutter
-set updatetime=100
+" vim-textobj-user
+let g:textobj_numeral_pattern = '\%(\<[[:digit:]]\+\%(\.[[:digit:]]\+\)\=\%([Ee][[:digit:]]\+\)\=\>\|\<0[xXbBoOdD][[:xdigit:]]\+\>\)'
+let g:textobj_solution_pattern = g:textobj_numeral_pattern . '(' . g:textobj_numeral_pattern . ')'
+call textobj#user#plugin('number', {
+      \   '-': {
+        \     'pattern': g:textobj_numeral_pattern,
+        \     'select': ['an', 'in'],
+        \   },
+        \   's': {
+          \     'pattern': g:textobj_solution_pattern,
+          \     'select': ['as', 'is'],
+          \   }
+          \ })
 
 " ----------------------------------------------------------------------------
 " goyo.vim + limelight.vim
@@ -1069,38 +1083,14 @@ nnoremap <Leader>G :Goyo<CR>
 nnoremap <Leader>mm :make<CR>
 
 " indentLine
-let g:indentLine_char = '┆'
+" let g:indentLine_char = '┆'
 " let g:indentLine_color_gui = '#d65d0e'
 " let g:indentLine_setColors = 0
 
-" ale
-" For all languages unspecified in the dictionary, all possible linters will be run for those languages, just as when the dictionary is not defined.
-let g:ale_linters = {
-\   'tex' : ['chktex', 'vale'],
-\   'latex' : ['chktex', 'vale'],
-\   'text': ['vale'],
-\}
-
 " vim-airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type= 2
-
-" HowMuch
-"The scale of the result:
-let g:HowMuch_scale = 2
-"the engine order for auto-calculation
-let g:HowMuch_auto_engines = ['bc', 'vim', 'py']
-
-" WhichKey
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-
-" vim-gtfo
-" let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
-
-" markdown-preview.nvim
-nmap <leader>mp <Plug>MarkdownPreviewToggle
-let g:far#source='rg'
+" let g:airline_powerline_fonts = 1
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#tab_nr_type= 2
 
 " ----------------------------------------------------------------------------
 " coc-vim
