@@ -155,7 +155,6 @@ Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 
 Plug 'dhruvasagar/vim-zoom'
   nmap <silent> <Leader>z <Plug>(zoom-toggle)
-  set statusline+=%{zoom#statusline()}
 
 " Plug 'justinmk/vim-gtfo'
   " let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
@@ -673,14 +672,14 @@ end
 -- symbols-outline
 ------------------------------------------------------------------------------
 vim.g.symbols_outline = {
-    highlight_hovered_item = true,
-    auto_preview = true,
-    position = 'right',
-    relative_width = true,
-    width = 40,
-    show_numbers = false,
-    preview_bg_highlight = 'Pmenu',
-    }
+  highlight_hovered_item = true,
+  auto_preview = true,
+  position = 'right',
+  relative_width = true,
+  width = 40,
+  show_numbers = false,
+  preview_bg_highlight = 'Pmenu',
+}
 
 END
 
@@ -725,6 +724,7 @@ set splitbelow
 set splitright
 set updatetime=100
 set laststatus=2 "show status line even when only single window is opened
+set statusline+=%{zoom#statusline()}
 colorscheme nord
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
