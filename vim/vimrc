@@ -83,12 +83,14 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'justinmk/vim-gtfo'
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 Plug 'psliwka/vim-smoothie'
+Plug 'dhruvasagar/vim-zoom'
 
 " ----------------------------------------------------------------------------
 " writing
 " ----------------------------------------------------------------------------
 Plug 'rhysd/vim-grammarous'
 Plug 'reedes/vim-lexical'
+Plug 'voldikss/vim-translator'
 
 " ----------------------------------------------------------------------------
 " latex
@@ -205,6 +207,18 @@ lua <<EOF
   })
 
   -- Setup lspconfig.
+  local custom_lsp_attach = function(client)
+    if client.resolved_capabilities.document_highlight then
+      vim.cmd [[
+        augroup lsp_document_highlight
+          autocmd! * <buffer>
+          autocmd! CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+          autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+        augroup END
+      ]]
+  end
+end
+
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities(), {
   --   snippetSupport = false,
@@ -212,7 +226,8 @@ lua <<EOF
 
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig')['clangd'].setup {
-    capabilities = capabilities
+    capabilities = capabilities,
+    on_attach = custom_lsp_attach
   }
 
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
@@ -310,6 +325,7 @@ require("indent_blankline").setup {
 }
 END
 let g:indent_blankline_filetype = ['c', 'cpp']
+let g:indent_blankline_use_treesitter = v:true
 
 lua << END
 require'nvim-tree'.setup()
@@ -591,6 +607,10 @@ endif
 xnoremap <silent> v <c-c>
 let mapleader = "\<space>"
 
+" vim-zoom
+nmap <silent> <Leader>z <Plug>(zoom-toggle)
+set statusline+=%{zoom#statusline()}
+
 " vsnip
 " imap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
 " smap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
@@ -641,6 +661,16 @@ augroup dap-repl
   autocmd FileType dap-repl nnoremap<buffer> o <cmd>lua require('dap').step_out()<CR>
   autocmd FileType dap-repl nnoremap<buffer> c <cmd>lua require('dap').continue()<CR>
 augroup end
+
+" augroup treesitter-context
+"   autocmd!
+"   autocmd CursorMoved * silent TSContextDisable
+" augroup end
+nnoremap <silent> gs <cmd>TSContextToggle<CR>
+
+" vim-translator
+nmap <silent> <Leader>tw <Plug>TranslateW
+vmap <silent> <Leader>tw <Plug>TranslateWV
 
 
 nnoremap <silent> <leader>. :cd %:p:h<CR>
@@ -737,15 +767,15 @@ nnoremap zf zfa{ za
 " ----------------------------------------------------------------------------
 " Zoom
 " ----------------------------------------------------------------------------
-function! s:zoom()
-  if winnr('$') > 1
-    tab split
-  elseif len(filter(map(range(tabpagenr('$')), 'tabpagebuflist(v:val + 1)'),
-        \ 'index(v:val, '.bufnr('').') >= 0')) > 1
-    tabclose
-  endif
-endfunction
-nnoremap <silent> <leader>z :call <sid>zoom()<cr>
+" function! s:zoom()
+"   if winnr('$') > 1
+"     tab split
+"   elseif len(filter(map(range(tabpagenr('$')), 'tabpagebuflist(v:val + 1)'),
+"         \ 'index(v:val, '.bufnr('').') >= 0')) > 1
+"     tabclose
+"   endif
+" endfunction
+" nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
 " Ack
 if executable('rg')
@@ -800,7 +830,7 @@ let g:fzf_colors =
 
 " coc-translator
 " popup
-nmap <Leader>tw <Plug>(coc-translator-p)
+" nmap <Leader>tw <Plug>(coc-translator-p)
 " echo
 " nmap <Leader>e <Plug>(coc-translator-e)
 
