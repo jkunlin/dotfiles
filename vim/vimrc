@@ -715,7 +715,7 @@ set ttimeoutlen=100
 set timeoutlen=500
 " set completeopt=longest,menu
 set completeopt=menu,menuone,noselect
-set scrolloff=1
+set scrolloff=5
 set autoread
 set cursorline
 set hidden
