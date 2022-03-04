@@ -153,8 +153,12 @@ Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
     set undofile
   endif
 
-Plug 'dhruvasagar/vim-zoom'
-  nmap <silent> <Leader>z <Plug>(zoom-toggle)
+" Plug 'dhruvasagar/vim-zoom'
+"   nmap <silent> <Leader>z <Plug>(zoom-toggle)
+
+Plug 'troydm/zoomwintab.vim'
+  nmap  <Leader>z <cmd>ZoomWinTabToggle<CR>
+  let g:zoomwintab_hidetabbar = 0
 
 " Plug 'justinmk/vim-gtfo'
   " let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
@@ -724,7 +728,7 @@ set splitbelow
 set splitright
 set updatetime=100
 set laststatus=2 "show status line even when only single window is opened
-set statusline+=%{zoom#statusline()}
+" set statusline+=%{zoom#statusline()}
 colorscheme nord
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
@@ -780,7 +784,8 @@ nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Break
 nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
 nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
 nnoremap <silent> <leader>du :lua require'dapui'.toggle()<CR>
-nnoremap <silent> <leader>dr :lua require'dap'.repl.toggle({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
+nnoremap <silent> <leader>dr :lua require'dap'.repl.close()<CR> :lua require'dap'.repl.open({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
+" nnoremap <silent> <leader>dr :lua require'dap'.repl.toggle({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
 " nnoremap <silent> <leader>df :lua require("dapui").float_element('watches')<CR>
 
 augroup dap-repl
@@ -901,6 +906,21 @@ nnoremap zf zfa{ za
 "   endif
 " endfunction
 " nnoremap <silent> <leader>z :call <sid>zoom()<cr>
+
+" ----------------------------------------------------------------------------
+" :Root | Change directory to the root of the Git repository
+" ----------------------------------------------------------------------------
+function! s:root()
+  let root = systemlist('git rev-parse --show-toplevel')[0]
+  if v:shell_error
+    echo 'Not in git repo'
+  else
+    execute 'lcd' root
+    echo 'Changed directory to: '.root
+  endif
+endfunction
+command! Root call s:root()
+
 
 " fzf
 nnoremap <leader>f :Files<CR>
