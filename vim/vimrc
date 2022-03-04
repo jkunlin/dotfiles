@@ -840,6 +840,11 @@ nnoremap Y y$
 
 " qq to record, Q to replay
 nnoremap Q @q
+
+" Open new line below and above current line
+nnoremap <leader>o o<esc>
+nnoremap <leader>O O<esc>
+
 " ----------------------------------------------------------------------------
 " Quickfix
 " ----------------------------------------------------------------------------
@@ -927,23 +932,12 @@ nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :GFiles<CR>
 nnoremap <leader>F :Files 
 nnoremap <leader>rg :Rg<CR>
-nnoremap <leader><leader> :Commands<CR>
+" nnoremap <leader><leader> :Commands<CR>
 
-function! GetJumps()
-  redir => cout
-  silent jumps
-  redir END
-  return reverse(split(cout, "\n")[1:])
-endfunction
-function! GoToJump(jump)
-    let jumpnumber = split(a:jump, '\s\+')[0]
-    execute "normal " . jumpnumber . "\<c-o>"
-endfunction
-command! Jumps call fzf#run(fzf#wrap({
-        \ 'source': GetJumps(),
-        \ 'sink': function('GoToJump')}))
-
-nnoremap <leader>j :Jumps<CR>
+command! -bar MoveBack if &buftype == 'nofile' && (winwidth(0) < &columns / 3 || winheight(0) < &lines / 3) | execute "normal! \<c-w>\<c-p>" | endif
+nnoremap <silent> <Leader><Leader> :MoveBack<BAR>Buffers<CR>
+nnoremap <silent> <Leader><Enter>  :MoveBack<BAR>Files<CR>
+nnoremap <silent> <Leader>`        :Marks<CR>
 
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
