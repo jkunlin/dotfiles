@@ -14,7 +14,7 @@ mv -v ~/.vimrc ~/.vimrc.old 2> /dev/null
 ln -sf $BASE/vimrc ~/.vimrc
 ln -sf $BASE/mysnippets ~/.vim/
 ln -sf $BASE/vale.ini ~/.vim/.vale.ini
-ln -sf $BASE/ycm_extra_conf.py ~/.vim/.ycm_extra_conf
+# ln -sf $BASE/ycm_extra_conf.py ~/.vim/.ycm_extra_conf
 
 # nvim
 if ! command -v nvim 2>/dev/null; then
@@ -23,7 +23,7 @@ if ! command -v nvim 2>/dev/null; then
 fi
 mkdir -p ~/.config/nvim/autoload
 ln -sf $BASE/vimrc ~/.config/nvim/init.vim
-ln -sf $BASE/coc-settings.json ~/.config/nvim/coc-settings.json
+# ln -sf $BASE/coc-settings.json ~/.config/nvim/coc-settings.json
 ln -sf ~/.vim/autoload/plug.vim ~/.config/nvim/autoload/
 
 # dependence for plugins
@@ -77,11 +77,11 @@ fi
 env PAHT=~/.local/bin:~/bin:"$PATH" nvim +PlugInstall +'qall'
 
 # coc extensions
-mkdir -p ~/.config/coc/extensions
-cd ~/.config/coc/extensions
-if [ ! -f package.json ]
-then
-  echo '{"dependencies":{}}'> package.json
-fi
+# mkdir -p ~/.config/coc/extensions
+# cd ~/.config/coc/extensions
+# if [ ! -f package.json ]
+# then
+#   echo '{"dependencies":{}}'> package.json
+# fi
 # Change arguments to extensions you need
-env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex coc-texlab coc-explorer coc-dictionary coc-word coc-translator coc-python
+# env PAHT=~/.local/bin:~/bin:~/.yarn/bin:~/.config/yarn/global/node_modules/.bin:"$PATH" yarn add coc-json coc-snippets coc-vimtex coc-texlab coc-explorer coc-dictionary coc-word coc-translator coc-python
