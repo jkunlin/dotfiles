@@ -74,6 +74,9 @@ elif command -v pip2 2>/dev/null; then
   pip2 install --user --upgrade neovim
 fi
 
+# neovim provider-python
+python3 -m pip install --user --upgrade pynvim
+
 env PAHT=~/.local/bin:~/bin:"$PATH" nvim +PlugInstall +'qall'
 
 # coc extensions

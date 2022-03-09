@@ -43,7 +43,7 @@ export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
 ### Global
 export GOPATH=~/.gosrc
 mkdir -p $GOPATH
-export PATH=$HOME/bin:$HOME/.local/bin:$HOME/.local/clang_llvm/bin:$HOME/.yarn/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/.local/clangd/bin:$HOME/.local/clang_llvm/bin:$HOME/.yarn/bin:/usr/local/bin:$PATH
 export PATH=$HOME/texlive2017/2017/bin/x86_64-linux:$PATH
 # export PATH=$HOME/.local/share/nvim/dapinstall/ccppr_vsc/gdb-10.2/gdb:$PATH
 export EDITOR=nvim
