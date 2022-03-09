@@ -793,8 +793,10 @@ augroup dap-repl
   autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
   autocmd FileType dap-repl nnoremap<buffer> n <cmd>lua require('dap').step_over()<CR>
   autocmd FileType dap-repl nnoremap<buffer> s <cmd>lua require('dap').step_into()<CR>
+  autocmd FileType dap-repl nnoremap<buffer> S <cmd>lua require('dap').step_out()<CR>
   autocmd FileType dap-repl nnoremap<buffer> o <cmd>lua require('dap').step_out()<CR>
   autocmd FileType dap-repl nnoremap<buffer> c <cmd>lua require('dap').continue()<CR>
+  autocmd FileType dap-repl inoremap<buffer> <c-k> <c-w>k
 augroup end
 
 " augroup treesitter-context
@@ -840,6 +842,18 @@ nnoremap Y y$
 
 " qq to record, Q to replay
 nnoremap Q @q
+
+" mark
+nnoremap mp mP
+nnoremap mo mO
+nnoremap mi mI
+nnoremap mu mU
+nnoremap my mY
+nnoremap `p `P
+nnoremap `o `O
+nnoremap `i `I
+nnoremap `u `U
+nnoremap `y `Y
 
 " Open new line below and above current line
 nnoremap <leader>o o<esc>
