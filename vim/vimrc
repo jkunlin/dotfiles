@@ -17,6 +17,7 @@ call plug#begin('~/.vim/bundle')
 " ----------------------------------------------------------------------------
 " Plug 'dstein64/vim-startuptime'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'romgrk/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
@@ -380,7 +381,6 @@ require'nvim-treesitter.configs'.setup {
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
-
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
@@ -390,6 +390,29 @@ require'nvim-treesitter.configs'.setup {
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
+  },
+
+  textobjects = {
+    move = {
+    enable = true,
+    set_jumps = true, -- whether to set jumps in the jumplist
+    goto_next_start = {
+      ["]m"] = "@function.outer",
+      ["]]"] = "@class.outer",
+      },
+    goto_next_end = {
+      ["]M"] = "@function.outer",
+      ["]["] = "@class.outer",
+      },
+    goto_previous_start = {
+      ["[m"] = "@function.outer",
+      ["[["] = "@class.outer",
+      },
+    goto_previous_end = {
+      ["[M"] = "@function.outer",
+      ["[]"] = "@class.outer",
+      },
+    },
   },
 }
 
@@ -507,6 +530,14 @@ dap.configurations.cpp = {
           text = '-enable-pretty-printing',
           description =  'enable pretty printing',
           ignoreFailures = false
+      },
+      {
+          text = function()
+            return 'set args ' .. vim.fn.input("args: ")
+            -- return vim.fn.input("args: ", 'set args ')
+          end,
+          description = 'args',
+          ignoreFailures = flase
       },
     },
   },
@@ -715,7 +746,7 @@ set showcmd
 set wildmenu
 set ttimeout
 set ttimeoutlen=100
-set timeoutlen=500
+" set timeoutlen=500
 " set completeopt=longest,menu
 set completeopt=menu,menuone,noselect
 set scrolloff=5
@@ -727,6 +758,7 @@ set shortmess+=c
 set splitbelow
 set splitright
 set updatetime=100
+set mouse=a
 set laststatus=2 "show status line even when only single window is opened
 " set statusline+=%{zoom#statusline()}
 colorscheme nord
@@ -759,6 +791,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " nvim-cmp
 nnoremap <silent> K <Cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gD <cmd>vsplit<bar>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> [e <cmd>lua vim.diagnostic.goto_prev()<CR>
