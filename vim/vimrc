@@ -25,6 +25,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'rmagatti/goto-preview'
 
+Plug 'williamboman/nvim-lsp-installer'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -57,14 +58,14 @@ Plug 'kshenoy/vim-signature'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'kevinhwang91/nvim-bqf'
-" Plug 'folke/which-key.nvim'
+Plug 'folke/which-key.nvim'
 " Plug 'Yggdroot/indentLine', { 'for': ['cpp', 'c']}
 " Plug 'bling/vim-airline'
 " Plug 'ryanoasis/vim-devicons'
 " Plug 'sheerun/vim-polyglot'
 
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-  nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+" Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+"   nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 
 Plug 'mhinz/vim-startify'
   let g:startify_files_number=5
@@ -130,13 +131,15 @@ Plug 'psliwka/vim-smoothie'
 Plug 'kyazdani42/nvim-tree.lua'
   nnoremap ge :NvimTreeToggle<CR>
 
-Plug 'Lokaltog/vim-easymotion'
-  map <Leader> <Plug>(easymotion-prefix)
-  map <silent> <Leader>ml <Plug>(easymotion-lineforward)
-  map <silent> <Leader>mj <Plug>(easymotion-j)
-  map <silent> <Leader>mk <Plug>(easymotion-k)
-  map <silent> <Leader>mh <Plug>(easymotion-linebackward)
-  let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
+" Plug 'Lokaltog/vim-easymotion'
+"   map <Leader> <Plug>(easymotion-prefix)
+"   map <silent> <Leader>ml <Plug>(easymotion-lineforward)
+"   map <silent> <Leader>mj <Plug>(easymotion-j)
+"   map <silent> <Leader>mk <Plug>(easymotion-k)
+"   map <silent> <Leader>mh <Plug>(easymotion-linebackward)
+"   let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
+
+Plug 'phaazon/hop.nvim'
 
 Plug 'mileszs/ack.vim' "need rg installed
   if executable('rg')
@@ -354,16 +357,37 @@ lua << END
   end
 end
 
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities(), {
-  --   snippetSupport = false,
-  --   })
+  -- lsp_installer
+  local lsp_installer = require("nvim-lsp-installer")
+  -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
+  -- or if the server is already installed).
+  lsp_installer.on_server_ready(function(server)
+    local opts = {}
 
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['clangd'].setup {
-    capabilities = capabilities,
-    on_attach = custom_lsp_attach
-  }
+    -- (optional) Customize the options passed to the server
+    -- if server.name == "tsserver" then
+    --     opts.root_dir = function() ... end
+    -- end
+
+    -- This setup() function will take the provided server configuration and decorate it with the necessary properties
+    -- before passing it onwards to lspconfig.
+    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+    server:setup(opts)
+    opts.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    server:setup(opts) -- this :setup() function is exactly[1] the same as lspconfig's setup() function
+  end)
+  
+  -- no lsp_installer
+  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities(), {
+  -- --   snippetSupport = false,
+  -- --   })
+  --
+  -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  -- require('lspconfig')['clangd'].setup {
+  --   capabilities = capabilities,
+  --   on_attach = custom_lsp_attach
+  -- }
 
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover, {
@@ -724,6 +748,23 @@ vim.g.symbols_outline = {
 require('goto-preview').setup {
   height = 20;
   vim.api.nvim_set_keymap("n", "gp", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", {noremap=true});
+  }
+
+
+------------------------------------------------------------------------------
+-- hop.nvim
+------------------------------------------------------------------------------
+require('hop').setup {
+  vim.api.nvim_set_keymap('n', 't', "<cmd>HopWord<cr>", {});
+  }
+
+------------------------------------------------------------------------------
+-- which-key
+------------------------------------------------------------------------------
+require("which-key").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
   }
 
 END
