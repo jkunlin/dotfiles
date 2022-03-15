@@ -23,6 +23,7 @@ Plug 'numToStr/Comment.nvim'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'simrat39/symbols-outline.nvim'
+Plug 'rmagatti/goto-preview'
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -715,6 +716,15 @@ vim.g.symbols_outline = {
   show_numbers = false,
   preview_bg_highlight = 'Pmenu',
 }
+
+
+------------------------------------------------------------------------------
+-- symbols-outline
+------------------------------------------------------------------------------
+require('goto-preview').setup {
+  height = 20;
+  vim.api.nvim_set_keymap("n", "gp", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", {noremap=true});
+  }
 
 END
 
