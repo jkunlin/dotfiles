@@ -22,6 +22,7 @@ Plug 'romgrk/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'akinsho/bufferline.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'rmagatti/goto-preview'
 
@@ -208,7 +209,8 @@ Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 " ----------------------------------------------------------------------------
 " edit
 " ----------------------------------------------------------------------------
-Plug 'tpope/vim-obsession'
+" Plug 'tpope/vim-obsession'
+Plug 'rmagatti/auto-session'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'Pocco81/DAPInstall.nvim'
@@ -357,12 +359,21 @@ lua << END
   end
 end
 
+  -- setup lspconfig
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities(), {
+  --   snippetSupport = false,
+  --   })
+
   -- lsp_installer
   local lsp_installer = require("nvim-lsp-installer")
   -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
   -- or if the server is already installed).
   lsp_installer.on_server_ready(function(server)
-    local opts = {}
+    local opts = {
+      capabilities = capabilities,
+      on_attach = custom_lsp_attach
+    }
 
     -- (optional) Customize the options passed to the server
     -- if server.name == "tsserver" then
@@ -372,17 +383,10 @@ end
     -- This setup() function will take the provided server configuration and decorate it with the necessary properties
     -- before passing it onwards to lspconfig.
     -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    server:setup(opts)
-    opts.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
     server:setup(opts) -- this :setup() function is exactly[1] the same as lspconfig's setup() function
   end)
   
-  -- no lsp_installer
-  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities(), {
-  -- --   snippetSupport = false,
-  -- --   })
-  --
+  -- original (without lsp_installer)
   -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   -- require('lspconfig')['clangd'].setup {
   --   capabilities = capabilities,
@@ -492,6 +496,15 @@ require('lualine').setup {
     theme = 'nord'
     -- ... your lualine config
   }
+}
+
+------------------------------------------------------------------------------
+-- bufferline
+------------------------------------------------------------------------------
+require("bufferline").setup{
+  options = {
+    -- mode = 'tabs'
+    }
 }
 
 ------------------------------------------------------------------------------
@@ -767,6 +780,8 @@ require("which-key").setup {
     -- refer to the configuration section below
   }
 
+require('auto-session').setup()
+
 END
 
 set encoding=UTF-8
@@ -842,6 +857,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " nvim-cmp
 nnoremap <silent> K <Cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gi :lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> gD <cmd>vsplit<bar>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
