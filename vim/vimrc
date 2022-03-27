@@ -209,8 +209,8 @@ Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 " ----------------------------------------------------------------------------
 " edit
 " ----------------------------------------------------------------------------
-" Plug 'tpope/vim-obsession'
-Plug 'rmagatti/auto-session'
+Plug 'tpope/vim-obsession'
+" Plug 'rmagatti/auto-session'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'Pocco81/DAPInstall.nvim'
@@ -555,6 +555,27 @@ dap.configurations.cpp = {
     },
   },
   {
+    name = "bitwuzla",
+    type = "cppdbg",
+    request = "launch",
+    program = os.getenv("HOME") .. '/smt/bitwuzla/build/bin/bitwuzla',
+   
+    cwd = '${workspaceFolder}',
+    stopOnEntry = true,
+    setupCommands = {
+      {
+          text = '-enable-pretty-printing',
+          description =  'enable pretty printing',
+          ignoreFailures = false
+      },
+      {
+          text = 'set args /home/jkunlin/smt/z3/bv-term-small-rw_1081.smt2 -v 4',
+          description = 'instance',
+          ignoreFailures = flase
+      },
+    },
+  },
+  {
     name = "Launch file",
     type = "cppdbg",
     request = "launch",
@@ -780,7 +801,7 @@ require("which-key").setup {
     -- refer to the configuration section below
   }
 
-require('auto-session').setup()
+-- require('auto-session').setup()
 
 END
 
@@ -858,7 +879,8 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 nnoremap <silent> K <Cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gi :lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gD <cmd>vsplit<bar>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> g\ <cmd>vsplit<bar>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> g- <cmd>split<bar>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> [e <cmd>lua vim.diagnostic.goto_prev()<CR>
