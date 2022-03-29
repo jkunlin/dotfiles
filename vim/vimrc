@@ -24,7 +24,9 @@ Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim'
 Plug 'simrat39/symbols-outline.nvim'
-Plug 'rmagatti/goto-preview'
+" Plug 'rmagatti/goto-preview'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'TimUntersberger/neogit'
 
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'neovim/nvim-lspconfig'
@@ -777,12 +779,12 @@ vim.g.symbols_outline = {
 
 
 ------------------------------------------------------------------------------
--- symbols-outline
+-- goto-preview
 ------------------------------------------------------------------------------
-require('goto-preview').setup {
-  height = 20;
-  vim.api.nvim_set_keymap("n", "gp", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", {noremap=true});
-  }
+-- require('goto-preview').setup {
+--   height = 20;
+--   vim.api.nvim_set_keymap("n", "gp", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", {noremap=true});
+--   }
 
 
 ------------------------------------------------------------------------------
@@ -802,6 +804,11 @@ require("which-key").setup {
   }
 
 -- require('auto-session').setup()
+
+------------------------------------------------------------------------------
+-- neogit
+------------------------------------------------------------------------------
+require('neogit').setup {}
 
 END
 
