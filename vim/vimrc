@@ -144,7 +144,8 @@ Plug 'kyazdani42/nvim-tree.lua'
 "   map <silent> <Leader>mh <Plug>(easymotion-linebackward)
 "   let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
 
-Plug 'phaazon/hop.nvim'
+" Plug 'phaazon/hop.nvim'
+Plug 'ggandor/lightspeed.nvim'
 
 Plug 'mileszs/ack.vim' "need rg installed
   if executable('rg')
@@ -552,7 +553,7 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/jkunlin/smt/z3/bvadd_assoc_test.smt',
+          text = 'set args /home/jkunlin/smt/z3/build/bvadd_assoc_test.smt',
           description = 'instance',
           ignoreFailures = flase
       },
@@ -792,9 +793,9 @@ vim.g.symbols_outline = {
 ------------------------------------------------------------------------------
 -- hop.nvim
 ------------------------------------------------------------------------------
-require('hop').setup {
-  vim.api.nvim_set_keymap('n', 't', "<cmd>HopWord<cr>", {});
-  }
+-- require('hop').setup {
+--   vim.api.nvim_set_keymap('n', 't', "<cmd>HopWord<cr>", {});
+--   }
 
 ------------------------------------------------------------------------------
 -- which-key
@@ -818,6 +819,7 @@ require('neogit').setup {}
 local actions = require("telescope.actions")
 require('telescope').setup {
   defaults = {
+    layout_config = { width = 0.95 },
     mappings = {
       n = {
         ["q"] = actions.close
