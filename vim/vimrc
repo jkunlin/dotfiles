@@ -27,6 +27,8 @@ Plug 'simrat39/symbols-outline.nvim'
 " Plug 'rmagatti/goto-preview'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'TimUntersberger/neogit'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'neovim/nvim-lspconfig'
@@ -810,6 +812,53 @@ require("which-key").setup {
 ------------------------------------------------------------------------------
 require('neogit').setup {}
 
+------------------------------------------------------------------------------
+-- telescope
+------------------------------------------------------------------------------
+local actions = require("telescope.actions")
+require('telescope').setup {
+  defaults = {
+    mappings = {
+      n = {
+        ["q"] = actions.close
+      },
+      i = {
+        ["<esc>"] = actions.close
+      },
+    }
+  },
+  pickers = {
+    find_files = {
+      mappings = {
+        n = {
+          ["cd"] = function(prompt_bufnr)
+          local selection = require("telescope.actions.state").get_selected_entry()
+          local dir = vim.fn.fnamemodify(selection.path, ":p:h")
+          require("telescope.actions").close(prompt_bufnr)
+          -- Depending on what you want put `cd`, `lcd`, `tcd`
+          vim.cmd(string.format("silent lcd %s", dir))
+        end
+        }
+      }
+    },
+  },
+}
+require('telescope').load_extension('fzf')
+
+local builtin = require("telescope.builtin")
+vim.keymap.set({'n'}, '<leader><leader>', builtin.commands)
+vim.keymap.set({'n'}, '<leader>j', builtin.jumplist)
+vim.keymap.set({'n'}, '<leader>rg', builtin.live_grep)
+vim.keymap.set({'n'}, '<leader>`', builtin.marks)
+
+-- Falling back to find_files if git_files can't find a .git directory
+project_files = function()
+  local opts = {} -- define here if you want to define something
+  local ok = pcall(require"telescope.builtin".git_files, opts)
+  if not ok then require"telescope.builtin".find_files(opts) end
+end
+vim.keymap.set({'n'}, '<leader>f',  project_files, {noremap = true, silent = true})
+
 END
 
 set encoding=UTF-8
@@ -1071,16 +1120,16 @@ command! Root call s:root()
 
 
 " fzf
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>g :GFiles<CR>
-nnoremap <leader>F :Files 
-nnoremap <leader>rg :Rg<CR>
-" nnoremap <leader><leader> :Commands<CR>
-
-command! -bar MoveBack if &buftype == 'nofile' && (winwidth(0) < &columns / 3 || winheight(0) < &lines / 3) | execute "normal! \<c-w>\<c-p>" | endif
-nnoremap <silent> <Leader><Leader> :MoveBack<BAR>Buffers<CR>
-nnoremap <silent> <Leader><Enter>  :MoveBack<BAR>Files<CR>
-nnoremap <silent> <Leader>`        :Marks<CR>
+" nnoremap <leader>f :Files<CR>
+" nnoremap <leader>g :GFiles<CR>
+" nnoremap <leader>F :Files 
+" nnoremap <leader>rg :Rg<CR>
+" " nnoremap <leader><leader> :Commands<CR>
+"
+" command! -bar MoveBack if &buftype == 'nofile' && (winwidth(0) < &columns / 3 || winheight(0) < &lines / 3) | execute "normal! \<c-w>\<c-p>" | endif
+" " nnoremap <silent> <Leader><Leader> :MoveBack<BAR>Buffers<CR>
+" nnoremap <silent> <Leader><Enter>  :MoveBack<BAR>Files<CR>
+" nnoremap <silent> <Leader>`        :Marks<CR>
 
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
