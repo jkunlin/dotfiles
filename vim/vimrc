@@ -46,7 +46,11 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 " ----------------------------------------------------------------------------
 " appearance
 " ----------------------------------------------------------------------------
-Plug 'shaunsingh/nord.nvim'
+Plug 'arcticicestudio/nord-vim'
+" Plug 'shaunsingh/nord.nvim'
+Plug 'ishan9299/nvim-solarized-lua'
+Plug 'folke/tokyonight.nvim'
+Plug 'rebelot/kanagawa.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'lukas-reineke/indent-blankline.nvim'
   let g:indent_blankline_filetype = ['c', 'cpp']
@@ -145,7 +149,7 @@ Plug 'kyazdani42/nvim-tree.lua'
 "   let g:EasyMotion_startofline = 0 " Keep cursor colum when JK motion
 
 " Plug 'phaazon/hop.nvim'
-Plug 'ggandor/lightspeed.nvim'
+Plug 'ggandor/leap.nvim'
 
 Plug 'mileszs/ack.vim' "need rg installed
   if executable('rg')
@@ -219,7 +223,8 @@ Plug 'tpope/vim-obsession'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'Pocco81/DAPInstall.nvim'
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-repeat'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'AndrewRadev/linediff.vim'
@@ -553,7 +558,7 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/jkunlin/smt/z3/build/bvadd_assoc_test.smt',
+          text = 'set args /home/jkunlin/smt/z3/build/bvadd_assoc_test.smt -tr:"th_rewriter_step"',
           description = 'instance',
           ignoreFailures = flase
       },
@@ -798,6 +803,13 @@ vim.g.symbols_outline = {
 --   }
 
 ------------------------------------------------------------------------------
+-- leap.nvim
+------------------------------------------------------------------------------
+-- require('leap').setup {
+-- }
+require('leap').set_default_keymaps()
+------------------------------------------------------------------------------
+
 -- which-key
 ------------------------------------------------------------------------------
 require("which-key").setup {
