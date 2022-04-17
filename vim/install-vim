@@ -68,14 +68,11 @@ rm -rf $BASE/tmp
 
 # provider-python
 if command -v pip3 2>/dev/null; then 
-  pip3 install --user --upgrade neovim
+  pip3 install --user --upgrade pynvim
   pip3 install --user neovim-remote
 elif command -v pip2 2>/dev/null; then
-  pip2 install --user --upgrade neovim
+  pip2 install --user --upgrade pynvim
 fi
-
-# neovim provider-python
-python3 -m pip install --user --upgrade pynvim
 
 env PAHT=~/.local/bin:~/bin:"$PATH" nvim +PlugInstall +'qall'
 

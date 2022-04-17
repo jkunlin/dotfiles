@@ -151,14 +151,14 @@ Plug 'kyazdani42/nvim-tree.lua'
 " Plug 'phaazon/hop.nvim'
 Plug 'ggandor/leap.nvim'
 
-Plug 'mileszs/ack.vim' "need rg installed
-  if executable('rg')
-    " let g:ackprg = 'ag --nogroup --nocolor --column'
-    let g:ackprg = 'rg --vimgrep'
-  endif
-  let g:ack_autoclose = 0
-  nnoremap <Leader>rw :AckWindow <cword><cr>
-  nnoremap <Leader>rW :Ack <cword><cr>
+" Plug 'mileszs/ack.vim' "need rg installed
+"   if executable('rg')
+"     " let g:ackprg = 'ag --nogroup --nocolor --column'
+"     let g:ackprg = 'rg --vimgrep'
+"   endif
+"   let g:ack_autoclose = 0
+"   nnoremap <Leader>rw :AckWindow <cword><cr>
+"   nnoremap <Leader>rW :Ack <cword><cr>
 
 Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
   nnoremap U :UndotreeToggle<cr>
@@ -415,7 +415,7 @@ end
 ------------------------------------------------------------------------------
 require'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  ensure_installed = {"c", "cpp", "bash", "vim", "lua", "python"},
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -430,6 +430,9 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+  -- indent = {
+  --   enable = true
+  -- },
 
   textobjects = {
     move = {
@@ -864,6 +867,8 @@ vim.keymap.set({'n'}, '<leader><leader>', builtin.commands)
 vim.keymap.set({'n'}, '<leader>j', builtin.jumplist)
 vim.keymap.set({'n'}, '<leader>rg', builtin.live_grep)
 vim.keymap.set({'n'}, '<leader>`', builtin.marks)
+vim.keymap.set({'n'}, '<leader>rw', function() builtin.grep_string({search_dirs = {vim.fn.expand("%:p")}}) end)
+vim.keymap.set({'n'}, '<leader>rW', builtin.grep_string)
 
 -- Falling back to find_files if git_files can't find a .git directory
 project_files = function()
@@ -871,7 +876,8 @@ project_files = function()
   local ok = pcall(require"telescope.builtin".git_files, opts)
   if not ok then require"telescope.builtin".find_files(opts) end
 end
-vim.keymap.set({'n'}, '<leader>f',  project_files, {noremap = true, silent = true})
+vim.keymap.set({'n'}, '<leader>f', project_files, {noremap = true, silent = true})
+vim.keymap.set({'n'}, '<leader>F', builtin.find_files)
 
 END
 
@@ -1102,8 +1108,6 @@ function! s:map_change_option(...)
 endfunction
 
 call s:map_change_option('r', 'relativenumber')
-
-nnoremap zf zfa{ za
 
 " ----------------------------------------------------------------------------
 " Zoom
