@@ -251,13 +251,13 @@ Plug 'sk1418/HowMuch'
   let g:HowMuch_auto_engines = ['bc', 'vim', 'py']
 
 
-Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
-  " For all languages unspecified in the dictionary, all possible linters will be run for those languages, just as when the dictionary is not defined.
-  let g:ale_linters = {
-  \   'tex' : ['chktex', 'vale'],
-  \   'latex' : ['chktex', 'vale'],
-  \   'text': ['vale'],
-  \}
+" Plug 'w0rp/ale', { 'for': ['sh', 'tex', 'latex', 'text']} "apt-get install shellcheck, vale or writegood or proselint
+"   " For all languages unspecified in the dictionary, all possible linters will be run for those languages, just as when the dictionary is not defined.
+"   let g:ale_linters = {
+"   \   'tex' : ['chktex', 'vale'],
+"   \   'latex' : ['chktex', 'vale'],
+"   \   'text': ['vale'],
+"   \}
 
 Plug 'junegunn/vim-easy-align',  { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
   " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -871,13 +871,14 @@ vim.keymap.set({'n'}, '<leader>rw', function() builtin.grep_string({search_dirs 
 vim.keymap.set({'n'}, '<leader>rW', builtin.grep_string)
 
 -- Falling back to find_files if git_files can't find a .git directory
-project_files = function()
-  local opts = {} -- define here if you want to define something
-  local ok = pcall(require"telescope.builtin".git_files, opts)
-  if not ok then require"telescope.builtin".find_files(opts) end
-end
-vim.keymap.set({'n'}, '<leader>f', project_files, {noremap = true, silent = true})
-vim.keymap.set({'n'}, '<leader>F', builtin.find_files)
+-- project_files = function()
+--   local opts = {} -- define here if you want to define something
+--   local ok = pcall(require"telescope.builtin".git_files, opts)
+--   if not ok then require"telescope.builtin".find_files(opts) end
+-- end
+-- vim.keymap.set({'n'}, '<leader>F', project_files, {noremap = true, silent = true})
+vim.keymap.set({'n'}, '<leader>f', builtin.find_files)
+vim.keymap.set({'n'}, '<leader>F', builtin.git_files)
 
 END
 
@@ -934,7 +935,7 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
 let g:python3_host_prog = '/usr/bin/python3'
 
 inoremap <silent> jk <esc>
-cnoremap <silent> jk <c-c>
+" cnoremap <silent> jk <c-c>
 if (has('nvim'))
   tnoremap <silent> jk <c-\><c-n>
 endif
