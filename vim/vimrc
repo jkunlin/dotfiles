@@ -18,9 +18,9 @@ call plug#begin('~/.vim/bundle')
 " Plug 'dstein64/vim-startuptime'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'romgrk/nvim-treesitter-context'
+Plug 'lewis6991/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
-Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+" Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim'
 Plug 'simrat39/symbols-outline.nvim'
@@ -65,7 +65,9 @@ Plug 'google/vim-searchindex'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'kshenoy/vim-signature'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
+    let g:signify_sign_change = '~'
 Plug 'tpope/vim-fugitive'
 Plug 'kevinhwang91/nvim-bqf'
 Plug 'folke/which-key.nvim'
@@ -238,8 +240,8 @@ Plug 'kana/vim-textobj-user'
 " Plug 'suan/vim-instant-markdown', { 'do': function('BuildMD') }
 "
 
-Plug 'brooth/far.vim'
-  let g:far#source='rg'
+" Plug 'brooth/far.vim'
+"   let g:far#source='rg'
 
 Plug 'tpope/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -367,7 +369,7 @@ lua << END
           autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
         augroup END
       ]]
-  end
+    end
 end
 
   -- setup lspconfig
@@ -389,9 +391,9 @@ end
 
     -- (optional) Customize the options passed to the server
     -- disable clangd diagnostics, since we use cppcheck
-    if server.name == "clangd" then
-        vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
-    end
+    -- if server.name == "clangd" then
+    --     vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+    -- end
 
     -- This setup() function will take the provided server configuration and decorate it with the necessary properties
     -- before passing it onwards to lspconfig.
@@ -444,6 +446,10 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
   -- indent = {
+  --   enable = true
+  -- },
+
+  -- context_commentstring = { -- nvim-ts-context-commentstring
   --   enable = true
   -- },
 
@@ -500,17 +506,36 @@ require'treesitter-context'.setup{
         -- Example for a specific filetype with Lua patterns
         -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
         -- exactly match "impl_item" only)
-        -- rust = true, 
+        -- rust = true,
     }
 }
-require'nvim-treesitter.configs'.setup {
-  context_commentstring = {
-    enable = true
-  }
+
+require('Comment').setup { -- with ts_context_commentstring
+-- -- NOTE: The example below is a proper integration and it is RECOMMENDED.
+-- ---@param ctx Ctx
+-- pre_hook = function(ctx)
+--     -- Only calculate commentstring for tsx filetypes
+--     if vim.bo.filetype == 'typescriptreact' then
+--         local U = require('Comment.utils')
+--
+--         -- Determine whether to use linewise or blockwise commentstring
+--         local type = ctx.ctype == U.ctype.line and '__default' or '__multiline'
+--
+--         -- Determine the location where to calculate commentstring from
+--         local location = nil
+--         if ctx.ctype == U.ctype.block then
+--             location = require('ts_context_commentstring.utils').get_cursor_location()
+--         elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
+--             location = require('ts_context_commentstring.utils').get_visual_start_location()
+--         end
+--
+--         return require('ts_context_commentstring.internal').calculate_commentstring({
+--             key = type,
+--             location = location,
+--         })
+--     end
+-- end,
 }
-
-require('Comment').setup()
-
 require'nvim-tree'.setup()
 
 ------------------------------------------------------------------------------
@@ -847,7 +872,14 @@ require('neogit').setup {}
 local actions = require("telescope.actions")
 require('telescope').setup {
   defaults = {
-    layout_config = { width = 0.95 },
+   layout_strategy = "vertical",
+    layout_config = {
+      -- height = vim.o.lines, -- maximally available lines
+      -- width = vim.o.columns, -- maximally available columns
+      -- mirror = true,
+      preview_cutoff = 30,
+      preview_height = 0.5, -- 50% of available lines
+    },
     mappings = {
       n = {
         ["q"] = actions.close
