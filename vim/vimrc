@@ -30,6 +30,7 @@ Plug 'TimUntersberger/neogit'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
+Plug 'ray-x/lsp_signature.nvim'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'neovim/nvim-lspconfig'
 Plug 'jose-elias-alvarez/null-ls.nvim'
@@ -424,6 +425,11 @@ require("null-ls").setup({
       require("null-ls").builtins.diagnostics.cppcheck,
     },
 })
+
+------------------------------------------------------------------------------
+-- lsp_signature.nvim
+------------------------------------------------------------------------------
+require "lsp_signature".setup{}
 
 ------------------------------------------------------------------------------
 -- nvim-treesitter
@@ -977,7 +983,7 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
       autocmd FileChangedShellPost *
         \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
-let g:python3_host_prog = '/usr/bin/python3'
+" let g:python3_host_prog = '/usr/local/bin/python3'
 
 inoremap <silent> jk <esc>
 " cnoremap <silent> jk <c-c>

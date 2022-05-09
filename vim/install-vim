@@ -38,11 +38,10 @@ mkdir -p ~/.local/share
 mkdir -p $BASE/tmp
 # pip
 if ! command -v pip 2>/dev/null; then
+  curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
   if command -v python3 2>/dev/null; then
-    curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
     python3 $BASE/tmp/get-pip.py --user
   elif command -v python2 2>/dev/null; then
-    curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
     python $BASE/tmp/get-pip.py --user
   fi
 fi
