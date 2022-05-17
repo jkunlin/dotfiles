@@ -4,9 +4,9 @@ cd $(dirname $BASH_SOURCE)
 BASE=$(pwd)
 
 if command -v curl 2>/dev/null; then
-	DL="curl --insecure -fLo"
+  DL="curl --insecure -fLo"
 elif command -v wget 2>/dev/null; then
-	DL="wget -O"
+  DL="wget -O"
 fi
 
 export GIT_SSL_NO_VERIFY=true
