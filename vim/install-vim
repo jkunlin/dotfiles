@@ -3,10 +3,16 @@
 cd $(dirname $BASH_SOURCE)
 BASE=$(pwd)
 
+if command -v curl 2>/dev/null; then
+	DL="curl --insecure -fLo"
+elif command -v wget 2>/dev/null; then
+	DL="wget -O"
+fi
+
 export GIT_SSL_NO_VERIFY=true
 mkdir -p ~/.vim/autoload
 if [ ! -e ~/.vim/autoload/plug.vim ]; then
-  curl --insecure -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim
+  $DL ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim
 fi
 
 # vimrc
@@ -18,7 +24,7 @@ ln -sf $BASE/vale.ini ~/.vim/.vale.ini
 
 # nvim
 if ! command -v nvim 2>/dev/null; then
-  curl --insecure -fLo ~/.local/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+  $DL ~/.local/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
   chmod u+x ~/.local/bin/nvim
 fi
 mkdir -p ~/.config/nvim/autoload
@@ -37,14 +43,14 @@ mkdir -p ~/.local/share
 
 mkdir -p $BASE/tmp
 # pip
-if ! command -v pip 2>/dev/null; then
-  curl --insecure -fLo $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
-  if command -v python3 2>/dev/null; then
-    python3 $BASE/tmp/get-pip.py --user
-  elif command -v python2 2>/dev/null; then
-    python $BASE/tmp/get-pip.py --user
-  fi
-fi
+# if ! command -v pip 2>/dev/null; then
+#   $DL $BASE/tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py
+#   if command -v python3 2>/dev/null; then
+#     python3 $BASE/tmp/get-pip.py --user
+#   elif command -v python2 2>/dev/null; then
+#     python $BASE/tmp/get-pip.py --user
+#   fi
+# fi
 
 # node
 if ! command -v node 2>/dev/null; then
@@ -58,10 +64,27 @@ fi
 
 # vale
 if ! command -v vale 2>/dev/null; then
-  curl --insecure -fLo $BASE/tmp/vale_1.3.2_Linux_64-bit.tar.gz https://github.com/errata-ai/vale/releases/download/v1.3.2/vale_1.3.2_Linux_64-bit.tar.gz
+  $DL $BASE/tmp/vale_1.3.2_Linux_64-bit.tar.gz https://github.com/errata-ai/vale/releases/download/v1.3.2/vale_1.3.2_Linux_64-bit.tar.gz
   tar xzf $BASE/tmp/vale_1.3.2_Linux_64-bit.tar.gz -C $BASE/tmp
   mv $BASE/tmp/vale $HOME/.local/bin
 fi
+
+# cppcheck
+if ! command -v cppcheck 2>/dev/null; then
+  $DL $BASE/tmp/cppcheck.tar.gz https://github.com/danmar/cppcheck/archive/refs/tags/2.7.tar.gz
+  tar xzf $BASE/tmp/cppcheck.tar.gz -C $BASE/tmp
+  cd $BASE/tmp/cppcheck-2.7
+  mkdir build
+  cd build
+  cmake -DUSE_MATCHCOMPILER=ON ..
+  cmake --build . -j
+  if [ -d $HOME/.local/cppcheck ]; then
+    mkdir $HOME/.local/cppcheck
+  fi
+  cp -r bin $HOME/.local/cppcheck
+  cd $BASE
+fi
+
 
 rm -rf $BASE/tmp
 

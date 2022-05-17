@@ -61,6 +61,9 @@ export CLASSPATH=.:${JAVA_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 export _JAVA_AWT_WM_NONREPARENTING=1
 
+## cppcheck
+export PATH=$HOME/.local/cppcheck/bin:$PATH
+
 # Aliases
 # --------------------------------------------------------------------
 
