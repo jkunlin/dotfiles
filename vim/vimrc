@@ -21,12 +21,13 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'lewis6991/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
 " Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-Plug 'nvim-lualine/lualine.nvim'
+" Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 " Plug 'rmagatti/goto-preview'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'TimUntersberger/neogit'
+Plug 'akinsho/toggleterm.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
@@ -226,7 +227,8 @@ Plug 'tpope/vim-obsession'
 " Plug 'rmagatti/auto-session'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
-Plug 'Pocco81/DAPInstall.nvim'
+" Plug 'Pocco81/DAPInstall.nvim'
+Plug 'Pocco81/dap-buddy.nvim', { 'commit': '24923c3' }
 " Plug 'terryma/vim-multiple-cursors'
 Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-repeat'
@@ -547,13 +549,13 @@ require'nvim-tree'.setup()
 ------------------------------------------------------------------------------
 -- lualine
 ------------------------------------------------------------------------------
-require('lualine').setup {
-  options = {
-    -- ... your lualine config
-    theme = 'nord'
-    -- ... your lualine config
-  }
-}
+-- require('lualine').setup {
+--   options = {
+--     -- ... your lualine config
+--     theme = 'nord'
+--     -- ... your lualine config
+--   }
+-- }
 
 ------------------------------------------------------------------------------
 -- bufferline
@@ -585,179 +587,133 @@ require("indent_blankline").setup {
 -- dap ccppr_vsc
 ------------------------------------------------------------------------------
 local dap = require('dap')
-dap.adapters.cppdbg = {
-  type = 'executable',
-  command = vim.fn.stdpath("data") .. "/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7",
-}
-dap.configurations.cpp = {
-  {
-    name = "z3",
-    type = "cppdbg",
-    request = "launch",
-    program = os.getenv("HOME") .. '/smt/z3/build/z3',
-   
-    cwd = '${workspaceFolder}',
-    stopOnEntry = true,
-    setupCommands = {
-      {
-          text = '-enable-pretty-printing',
-          description =  'enable pretty printing',
-          ignoreFailures = false
-      },
-      {
-          text = 'set args /home/jkunlin/smt/z3/build/bvadd_assoc_test.smt -tr:"th_rewriter_step"',
-          description = 'instance',
-          ignoreFailures = flase
-      },
-    },
-  },
-  {
-    name = "bitwuzla",
-    type = "cppdbg",
-    request = "launch",
-    program = os.getenv("HOME") .. '/smt/bitwuzla/build/bin/bitwuzla',
-   
-    cwd = '${workspaceFolder}',
-    stopOnEntry = true,
-    setupCommands = {
-      {
-          text = '-enable-pretty-printing',
-          description =  'enable pretty printing',
-          ignoreFailures = false
-      },
-      {
-          text = 'set args /home/jkunlin/smt/z3/bv-term-small-rw_1081.smt2 -v 4',
-          description = 'instance',
-          ignoreFailures = flase
-      },
-    },
-  },
-  {
-    name = "Launch file",
-    type = "cppdbg",
-    request = "launch",
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    cwd = '${workspaceFolder}',
-    stopOnEntry = true,
-    setupCommands = {
-      {
-          text = '-enable-pretty-printing',
-          description =  'enable pretty printing',
-          ignoreFailures = false
-      },
-      {
-          text = function()
-            return 'set args ' .. vim.fn.input("args: ")
-            -- return vim.fn.input("args: ", 'set args ')
-          end,
-          description = 'args',
-          ignoreFailures = flase
-      },
-    },
-  },
-  {
-    name = 'Attach to gdbserver :1234',
-    type = 'cppdbg',
-    request = 'launch',
-    MIMode = 'gdb',
-    miDebuggerServerAddress = 'localhost:1234',
-    miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
-    cwd = '${workspaceFolder}',
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    setupCommands = {
-      {
-          text = '-enable-pretty-printing',
-          description =  'enable pretty printing',
-          ignoreFailures = false
-      },
-    },
-  },
-}
-
-------------------------------------------------------------------------------
--- dap codelldb
-------------------------------------------------------------------------------
--- local dap = require('dap')
--- dap.adapters.codelldb = function(callback, config)
---     callback({ type = "server", host = "127.0.0.1", port = 1234 })
--- end
--- dap.adapters.codelldb = function(on_adapter)
---   local stdout = vim.loop.new_pipe(false)
---   local stderr = vim.loop.new_pipe(false)
---
---   -- CHANGE THIS!
---   local cmd = vim.fn.stdpath("data") .. "/dapinstall/codelldb/extension/adapter/codelldb"
---   local handle, pid_or_err
---   local opts = {
---     stdio = {nil, stdout, stderr},
---     detached = true,
---   }
---   handle, pid_or_err = vim.loop.spawn(cmd, opts, function(code)
---     stdout:close()
---     stderr:close()
---     handle:close()
---     if code ~= 0 then
---       print("codelldb exited with code", code)
---     end
---   end)
---   assert(handle, "Error running codelldb: " .. tostring(pid_or_err))
---   stdout:read_start(function(err, chunk)
---     assert(not err, err)
---     if chunk then
---       local port = chunk:match('Listening on port (%d+)')
---       if port then
---         vim.schedule(function()
---           on_adapter({
---             type = 'server',
---             host = '127.0.0.1',
---             port = port
---           })
---         end)
---       else
---         vim.schedule(function()
---           require("dap.repl").append(chunk)
---         end)
---       end
---     end
---   end)
---   stderr:read_start(function(err, chunk)
---     assert(not err, err)
---     if chunk then
---       vim.schedule(function()
---         require("dap.repl").append(chunk)
---       end)
---     end
---   end)
--- end
+-- dap.adapters.cppdbg = {
+--   type = 'executable',
+--   command = vim.fn.stdpath("data") .. "/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7",
+-- }
 -- dap.configurations.cpp = {
 --   {
 --     name = "z3",
---     type = "codelldb",
+--     type = "cppdbg",
 --     request = "launch",
---     program = "/home/jkunlin/smt/z3/build/z3",
+--     program = os.getenv("HOME") .. '/smt/z3/build/z3',
+--    
 --     cwd = '${workspaceFolder}',
---     args = { "/home/jkunlin/smt/z3/Prim_4.smt2" },
---     stopOnEntry = false,
+--     stopOnEntry = true,
+--     setupCommands = {
+--       {
+--           text = '-enable-pretty-printing',
+--           description =  'enable pretty printing',
+--           ignoreFailures = false
+--       },
+--       {
+--           text = 'set args /home/linjk/smt/2021_QF_BV/20210219-Sydr/master/yices/predicate_2066.smt2 -tr:"th_rewriter_step"',
+--           description = 'instance',
+--           ignoreFailures = flase
+--       },
+--     },
+--   },
+--   {
+--     name = "bitwuzla",
+--     type = "cppdbg",
+--     request = "launch",
+--     program = os.getenv("HOME") .. '/smt/bitwuzla/build/bin/bitwuzla',
+--    
+--     cwd = '${workspaceFolder}',
+--     stopOnEntry = true,
+--     setupCommands = {
+--       {
+--           text = '-enable-pretty-printing',
+--           description =  'enable pretty printing',
+--           ignoreFailures = false
+--       },
+--       {
+--           text = 'set args /home/jkunlin/smt/z3/bv-term-small-rw_1081.smt2 -v 4',
+--           description = 'instance',
+--           ignoreFailures = flase
+--       },
+--     },
 --   },
 --   {
 --     name = "Launch file",
---     type = "codelldb",
+--     type = "cppdbg",
 --     request = "launch",
 --     program = function()
 --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
 --     end,
 --     cwd = '${workspaceFolder}',
---     stopOnEntry = false,
+--     stopOnEntry = true,
+--     setupCommands = {
+--       {
+--           text = '-enable-pretty-printing',
+--           description =  'enable pretty printing',
+--           ignoreFailures = false
+--       },
+--       {
+--           text = function()
+--             return 'set args ' .. vim.fn.input("args: ")
+--             -- return vim.fn.input("args: ", 'set args ')
+--           end,
+--           description = 'args',
+--           ignoreFailures = flase
+--       },
+--     },
+--   },
+--   {
+--     name = 'Attach to gdbserver :1234',
+--     type = 'cppdbg',
+--     request = 'launch',
+--     MIMode = 'gdb',
+--     miDebuggerServerAddress = 'localhost:1234',
+--     miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
+--     cwd = '${workspaceFolder}',
+--     program = function()
+--       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+--     end,
+--     setupCommands = {
+--       {
+--           text = '-enable-pretty-printing',
+--           description =  'enable pretty printing',
+--           ignoreFailures = false
+--       },
+--     },
 --   },
 -- }
 
+------------------------------------------------------------------------------
+-- dap codelldb
+------------------------------------------------------------------------------
+local dap = require('dap')
 
+dap.adapters.codelldb = {
+    type = 'server',
+    host = '127.0.0.1',
+    port = 1234
+}
+dap.configurations.cpp = {
+    {
+        name = "z3",
+        type = 'codelldb',
+        request = 'launch',
+        program = os.getenv("HOME") .. '/smt/z3/build/z3',
+        cwd = '${workspaceFolder}',
+        args = { '/home/linjk/smt/2021_QF_BV/20210219-Sydr/master/yices/predicate_2066.smt2', '-tr:"th_rewriter_step"' },
+        terminal = 'integrated',
+    },
+    {
+        name = "Launch",
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        terminal = 'integrated'
+    }
+}
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
+dap.defaults.fallback.exception_breakpoints = {'raised', 'uncaught'}
 
 ------------------------------------------------------------------------------
 -- dap ui
@@ -809,8 +765,8 @@ local dap = require('dap')
 local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
-  dap.repl.toggle({height = 7}, "wincmd j | leftabove vsplit")
-  vim.api.nvim_command('wincmd j')
+  -- dap.repl.toggle({height = 7}, "wincmd j | leftabove vsplit")
+  -- vim.api.nvim_command('wincmd j')
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
   dapui.close()
@@ -928,9 +884,18 @@ vim.keymap.set({'n'}, '<leader>rW', builtin.grep_string)
 --   if not ok then require"telescope.builtin".find_files(opts) end
 -- end
 -- vim.keymap.set({'n'}, '<leader>F', project_files, {noremap = true, silent = true})
-vim.keymap.set({'n'}, '<leader>f', builtin.find_files)
-vim.keymap.set({'n'}, '<leader>F', builtin.git_files)
+vim.keymap.set({'n'}, '<leader>F', builtin.find_files)
+vim.keymap.set({'n'}, '<leader>f', builtin.git_files)
 
+
+------------------------------------------------------------------------------
+-- toggleterm
+------------------------------------------------------------------------------
+require("toggleterm").setup{
+  direction = 'float',
+  open_mapping = [[<c-t>]],
+  -- vim.api.nvim_set_keymap('n', '<c-t>', "<cmd>ToggleTerm<cr>", {});
+}
 END
 
 set encoding=UTF-8
