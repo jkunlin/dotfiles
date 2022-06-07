@@ -633,7 +633,7 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/jkunlin/smt/z3/bv-term-small-rw_1081.smt2 -v 4',
+          text = 'set args /home/linjk/smt/2021_QF_BV/20190311-bv-term-small-rw-Noetzli/bv-term-small-rw_1220.smt2 -v',
           description = 'instance',
           ignoreFailures = flase
       },
@@ -643,7 +643,6 @@ dap.configurations.cpp = {
     name = "Launch file",
     type = "cppdbg",
     request = "launch",
-    miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
     program = function()
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
