@@ -90,12 +90,12 @@ fi
 # runsolver
 if ! command -v runsolver 2>/dev/null; then
   cd $BASE/tmp
-  #  $DL runsolver-3.3.4.tar.bz2 https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.3.4.tar.bz2
-  #  tar xjf runsolver-3.3.4.tar.bz2
+  $DL runsolver-3.3.4.tar.bz2 https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.3.4.tar.bz2
+  tar xjf runsolver-3.3.4.tar.bz2
   cd runsolver/src
   make -j
   cp runsolver ~/.local/bin
   cd ../../..
 fi
 
-rm -r $BASE/tmp
+# rm -r $BASE/tmp

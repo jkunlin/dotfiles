@@ -81,7 +81,7 @@ if ! command -v cppcheck 2>/dev/null; then
   if [ -d $HOME/.local/cppcheck ]; then
     mkdir $HOME/.local/cppcheck
   fi
-  cp -r bin $HOME/.local/cppcheck
+  cp -r bin $HOME/.local/cppcheck/
   cd $BASE
 fi
 

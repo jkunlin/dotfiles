@@ -21,7 +21,7 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'lewis6991/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
 " Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-" Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 " Plug 'rmagatti/goto-preview'
@@ -232,8 +232,7 @@ Plug 'tpope/vim-obsession'
 " Plug 'rmagatti/auto-session'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
-" Plug 'Pocco81/DAPInstall.nvim'
-" Plug 'Pocco81/dap-buddy.nvim', { 'commit': '24923c3' }
+Plug 'Pocco81/dap-buddy.nvim', { 'commit': '24923c3' }
 " Plug 'terryma/vim-multiple-cursors'
 Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-repeat'
@@ -369,7 +368,7 @@ lua << END
 
   -- Setup lspconfig.
   local custom_lsp_attach = function(client)
-    if client.resolved_capabilities.document_highlight then
+    if client.server_capabilities.document_highlight then
       vim.cmd [[
         augroup lsp_document_highlight
           autocmd! * <buffer>
@@ -554,13 +553,13 @@ require'nvim-tree'.setup()
 ------------------------------------------------------------------------------
 -- lualine
 ------------------------------------------------------------------------------
--- require('lualine').setup {
---   options = {
---     -- ... your lualine config
---     theme = 'nord'
---     -- ... your lualine config
---   }
--- }
+require('lualine').setup {
+  options = {
+    -- ... your lualine config
+    theme = 'nord'
+    -- ... your lualine config
+  }
+}
 
 ------------------------------------------------------------------------------
 -- bufferline
@@ -644,6 +643,7 @@ dap.configurations.cpp = {
     name = "Launch file",
     type = "cppdbg",
     request = "launch",
+    miDebuggerPath = vim.fn.stdpath("data") .. '/dapinstall/ccppr_vsc/gdb-10.2/gdb/gdb',
     program = function()
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
@@ -724,8 +724,7 @@ dap.defaults.fallback.exception_breakpoints = {'raised', 'uncaught'}
 ------------------------------------------------------------------------------
 -- dap ui
 ------------------------------------------------------------------------------
-dap.defaults.fallback.terminal_win_cmd = '7split new'
-
+-- dap.defaults.fallback.terminal_win_cmd = '7split new'
 require("dapui").setup({
   icons = { expanded = "▾", collapsed = "▸" },
   mappings = {
@@ -735,7 +734,11 @@ require("dapui").setup({
     remove = "d",
     edit = "e",
     repl = "r",
+    toggle = "t",
   },
+  -- Expand lines larger than the window
+  -- Requires >= 0.7
+  expand_lines = vim.fn.has("nvim-0.7"),
   sidebar = {
     -- You can change the order of elements in the sidebar
     elements = {
@@ -748,13 +751,13 @@ require("dapui").setup({
       { id = "stacks", size = 0.25 },
       { id = "watches", size = 00.25 },
     },
-    size = 30,
+    size = 40,
     position = "left", -- Can be "left", "right", "top", "bottom"
   },
   tray = {
-    elements = { },
-    size = 7,
-    -- position = "bottom", -- Can be "left", "right", "top", "bottom"
+    elements = { "repl", "console" },
+    size = 10,
+    position = "bottom", -- Can be "left", "right", "top", "bottom"
   },
   floating = {
     max_height = nil, -- These can be integers or a float between 0 and 1.
@@ -765,14 +768,16 @@ require("dapui").setup({
     },
   },
   windows = { indent = 1 },
+  render = { 
+    max_type_length = nil, -- Can be integer or nil.
+  }
 })
 
 local dap = require('dap')
 local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
-  -- dap.repl.toggle({height = 7}, "wincmd j | leftabove vsplit")
-  -- vim.api.nvim_command('wincmd j')
+  vim.api.nvim_command('wincmd j')
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
   dapui.close()
@@ -1005,7 +1010,7 @@ nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Break
 nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
 nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
 nnoremap <silent> <leader>du :lua require'dapui'.toggle()<CR>
-nnoremap <silent> <leader>dr :lua require'dap'.repl.close()<CR> :lua require'dap'.repl.open({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
+" nnoremap <silent> <leader>dr :lua require'dap'.repl.close()<CR> :lua require'dap'.repl.open({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
 " nnoremap <silent> <leader>dr :lua require'dap'.repl.toggle({height = 7}, 'wincmd j \| leftabove vsplit' )<CR>
 " nnoremap <silent> <leader>df :lua require("dapui").float_element('watches')<CR>
 
