@@ -44,6 +44,11 @@ Plug 'hrsh7th/nvim-cmp'
 " Plug 'hrsh7th/vim-vsnip'
 Plug 'SirVer/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'antoinemadec/FixCursorHold.nvim'
+  " https://github.com/neovim/neovim/issues/12587
+  " in millisecond, used for both CursorHold and CursorHoldI,
+  " use updatetime instead if not defined
+  let g:cursorhold_updatetime = 100
 
 
 " ----------------------------------------------------------------------------
@@ -367,8 +372,8 @@ lua << END
   })
 
   -- Setup lspconfig.
-  local custom_lsp_attach = function(client)
-    if client.server_capabilities.document_highlight then
+  local custom_lsp_attach = function(client, bufnr)
+    if client.server_capabilities.documentHighlightProvider then
       vim.cmd [[
         augroup lsp_document_highlight
           autocmd! * <buffer>
@@ -612,7 +617,8 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/linjk/smt/z3_code/build/bv-term-small-rw_19.smt2 -tr:"th_rewriter_step"',
+          text = 'set args /home/linjk/smt/2021_QF_BV/20190311-bv-term-small-rw-Noetzli/bv-term-small-rw_1220.smt2 -tr:"th_rewriter_step"',
+          
           description = 'instance',
           ignoreFailures = flase
       },
@@ -913,7 +919,7 @@ set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
 set number
-set lazyredraw
+" set lazyredraw
 " syntax enable
 set termguicolors
 set confirm
