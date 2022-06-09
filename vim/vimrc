@@ -44,6 +44,9 @@ Plug 'hrsh7th/nvim-cmp'
 " Plug 'hrsh7th/vim-vsnip'
 Plug 'SirVer/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+" Plug 'github/copilot.vim'
+Plug 'zbirenbaum/copilot.lua'
+Plug 'zbirenbaum/copilot-cmp'
 Plug 'antoinemadec/FixCursorHold.nvim'
   " https://github.com/neovim/neovim/issues/12587
   " in millisecond, used for both CursorHold and CursorHoldI,
@@ -297,6 +300,8 @@ call plug#end()
 " ============================================================================
 lua << END
 
+-- require("copilot").setup { plugin_manager_path = os.getenv("HOME") .. "/.vim/bundle", }
+
 ------------------------------------------------------------------------------
 -- nvim-cmp
 ------------------------------------------------------------------------------
@@ -343,6 +348,7 @@ lua << END
       ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = cmp.config.sources({
+      { name = 'copilot' },
       -- { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
       { name = 'ultisnips' }, -- For ultisnips users.
