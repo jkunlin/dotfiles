@@ -300,7 +300,7 @@ call plug#end()
 " ============================================================================
 lua << END
 
--- require("copilot").setup { plugin_manager_path = os.getenv("HOME") .. "/.vim/bundle", }
+require("copilot").setup { plugin_manager_path = os.getenv("HOME") .. "/.vim/bundle", }
 
 ------------------------------------------------------------------------------
 -- nvim-cmp
@@ -623,7 +623,9 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/linjk/smt/2021_QF_BV/20190311-bv-term-small-rw-Noetzli/bv-term-small-rw_1220.smt2 -tr:"th_rewriter_step"',
+          text = 'set args /home/linjk/smt/z3_code/build/bvtest.smt -tr:"th_rewriter_step" -tr:"rewriter_step"',
+          
+          
           
           description = 'instance',
           ignoreFailures = flase
@@ -645,7 +647,8 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/linjk/smt/2021_QF_BV/20190311-bv-term-small-rw-Noetzli/bv-term-small-rw_1220.smt2 -v',
+          text = 'set args /home/linjk/smt/2021_QF_BV/2017-BuchwaldFried/counterexample.dump.ia32_Mul_base_disp--Add32.load32.Mul32.Mulh_u32.0005.smt2 -v',
+          
           description = 'instance',
           ignoreFailures = flase
       },
