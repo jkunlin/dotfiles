@@ -984,6 +984,8 @@ if (has('nvim'))
 endif
 xnoremap <silent> v <c-c>
 
+nnoremap <c-g> 1<c-g>
+
 " vsnip
 " imap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
 " smap <expr> <CR>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<CR>'
