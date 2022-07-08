@@ -1078,6 +1078,7 @@ nnoremap <c-g> 1<c-g>
 " let g:UltiSnipsExpandTrigger="<CR>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", $HOME."/.vim/mysnippets"]
 
 " nvim-cmp
 nnoremap <silent> K <Cmd>lua vim.lsp.buf.hover()<CR>
