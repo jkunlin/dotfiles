@@ -55,6 +55,7 @@ Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'kevinhwang91/promise-async'
 Plug 'kevinhwang91/nvim-ufo'
 Plug 'anuvyklack/hydra.nvim'
+Plug 'b0o/incline.nvim'
 
 " ----------------------------------------------------------------------------
 " appearance
@@ -1005,6 +1006,11 @@ Hydra({
 	},
 })
 
+------------------------------------------------------------------------------
+-- b0o/incline.nvim
+------------------------------------------------------------------------------
+require('incline').setup()
+
 END
 
 set encoding=UTF-8
@@ -1048,7 +1054,7 @@ set splitbelow
 set splitright
 set updatetime=100
 set mouse=a
-set laststatus=2 "show status line even when only single window is opened
+set laststatus=3 "show status line even when only single window is opened
 " set statusline+=%{zoom#statusline()}
 colorscheme nord
 
