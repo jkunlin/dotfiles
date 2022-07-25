@@ -18,7 +18,7 @@ call plug#begin('~/.vim/bundle')
 " Plug 'dstein64/vim-startuptime'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'lewis6991/nvim-treesitter-context'
+Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
 " Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-lualine/lualine.nvim'
@@ -32,7 +32,9 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 Plug 'ray-x/lsp_signature.nvim'
-Plug 'williamboman/nvim-lsp-installer'
+" Plug 'williamboman/nvim-lsp-installer'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -243,7 +245,7 @@ Plug 'tpope/vim-obsession'
 " Plug 'rmagatti/auto-session'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
-Plug 'Pocco81/dap-buddy.nvim', { 'commit': '24923c3' }
+" Plug 'Pocco81/dap-buddy.nvim', { 'commit': '24923c3' }
 " Plug 'terryma/vim-multiple-cursors'
 Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-repeat'
@@ -304,6 +306,12 @@ call plug#end()
 lua << END
 
 -- require("copilot").setup { plugin_manager_path = os.getenv("HOME") .. "/.vim/bundle", }
+
+------------------------------------------------------------------------------
+-- mason
+------------------------------------------------------------------------------
+require("mason").setup()
+require("mason-lspconfig").setup()
 
 ------------------------------------------------------------------------------
 -- nvim-cmp
@@ -400,34 +408,11 @@ end
   --   })
   capabilities.offsetEncoding = { "utf-16" } -- TODO https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428
 
-  -- lsp_installer
-  local lsp_installer = require("nvim-lsp-installer")
-  -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
-  -- or if the server is already installed).
-  lsp_installer.on_server_ready(function(server)
-    local opts = {
-      capabilities = capabilities,
-      on_attach = custom_lsp_attach
-    }
-
-    -- (optional) Customize the options passed to the server
-    -- disable clangd diagnostics, since we use cppcheck
-    -- if server.name == "clangd" then
-    --     vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
-    -- end
-
-    -- This setup() function will take the provided server configuration and decorate it with the necessary properties
-    -- before passing it onwards to lspconfig.
-    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    server:setup(opts) -- this :setup() function is exactly[1] the same as lspconfig's setup() function
-  end)
-  
-  -- original (without lsp_installer)
-  -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  -- require('lspconfig')['clangd'].setup {
-  --   capabilities = capabilities,
-  --   on_attach = custom_lsp_attach
-  -- }
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig')['clangd'].setup {
+    capabilities = capabilities,
+    on_attach = custom_lsp_attach
+  }
 
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover, {
@@ -608,14 +593,14 @@ local dap = require('dap')
 dap.adapters.cppdbg = {
   id = 'cppdbg',
   type = 'executable',
-  command = vim.fn.stdpath("data") .. "/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7",
+  command = vim.fn.stdpath("data") .. "/mason/bin/OpenDebugAD7",
 }
 dap.configurations.cpp = {
   {
     name = "z3",
     type = "cppdbg",
     request = "launch",
-    program = os.getenv("HOME") .. '/smt/z3_code/build/z3',
+    program = os.getenv("HOME") .. '/smt/z3/build/z3',
   
     cwd = '${workspaceFolder}',
     stopOnEntry = true,
