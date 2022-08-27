@@ -58,6 +58,10 @@ Plug 'kevinhwang91/promise-async'
 Plug 'kevinhwang91/nvim-ufo'
 Plug 'anuvyklack/hydra.nvim'
 Plug 'b0o/incline.nvim'
+Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
+Plug 'SmiteshP/nvim-navic'
+Plug 'chipsenkbeil/distant.nvim'
+
 
 " ----------------------------------------------------------------------------
 " appearance
@@ -312,6 +316,7 @@ lua << END
 ------------------------------------------------------------------------------
 require("mason").setup()
 require("mason-lspconfig").setup()
+require("nvim-navic").setup()
 
 ------------------------------------------------------------------------------
 -- nvim-cmp
@@ -399,6 +404,7 @@ require("mason-lspconfig").setup()
         augroup END
       ]]
     end
+    require("nvim-navic").attach(client, bufnr)
 end
 
   -- setup lspconfig
@@ -489,7 +495,7 @@ require'nvim-treesitter.configs'.setup {
 }
 
 require'treesitter-context'.setup{
-    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+    enable = enabled, -- Enable this plugin (Can be enabled/disabled later via commands)
     throttle = true, -- Throttles plugin updates (may improve performance)
     max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
     patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
@@ -552,7 +558,11 @@ require'nvim-tree'.setup()
 ------------------------------------------------------------------------------
 -- lualine
 ------------------------------------------------------------------------------
+local navic = require("nvim-navic")
 require('lualine').setup {
+  sections = {
+    lualine_c = {'filename', { navic.get_location, cond = navic.is_available }},
+  },
   options = {
     -- ... your lualine config
     globalstatus = true,        -- enable global statusline (have a single statusline
@@ -600,7 +610,7 @@ dap.configurations.cpp = {
     name = "z3",
     type = "cppdbg",
     request = "launch",
-    program = os.getenv("HOME") .. '/smt/z3/build/z3',
+    program = os.getenv("HOME") .. '/smt/z3_code/build/z3',
   
     cwd = '${workspaceFolder}',
     stopOnEntry = true,
@@ -611,8 +621,7 @@ dap.configurations.cpp = {
           ignoreFailures = false
       },
       {
-          text = 'set args /home/linjk/smt/z3_code/build/bvtest.smt -tr:"th_rewriter_step" -tr:"rewriter_step"',
-          
+          text = 'set args /pub/data/linjk/smt/incremental/QF_BV/20170501-Heizmann-UltimateAutomizer/gcd_1_true-unreach-call_true-no-overflow.i.smt2',
           
           
           description = 'instance',
@@ -797,6 +806,7 @@ end
 ------------------------------------------------------------------------------
 -- symbols-outline
 ------------------------------------------------------------------------------
+require("symbols-outline").setup()
 vim.g.symbols_outline = {
   highlight_hovered_item = true,
   auto_preview = true,
@@ -994,7 +1004,63 @@ Hydra({
 ------------------------------------------------------------------------------
 -- b0o/incline.nvim
 ------------------------------------------------------------------------------
-require('incline').setup()
+require('incline').setup {
+  window = {
+    placement = {
+      horizontal = "right",
+      vertical = "top",
+    },
+  margin = {
+    vertical = 2,
+    },
+  }
+}
+
+------------------------------------------------------------------------------
+-- lspsaga
+------------------------------------------------------------------------------
+-- local saga = require 'lspsaga'
+--
+-- saga.init_lsp_saga({
+--   code_action_lightbulb = {
+--     enable = false,
+--   },
+-- })
+--
+-- vim.keymap.set("n", "gh", require("lspsaga.finder").lsp_finder, { silent = true,noremap = true })
+-- local action = require("lspsaga.codeaction")
+-- vim.keymap.set("n", "gf", action.code_action, { silent = true,noremap = true })
+-- vim.keymap.set("v", "gf", function()
+--     vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-U>", true, false, true))
+--     action.range_code_action()
+-- end, { silent = true,noremap =true })
+-- vim.keymap.set("n", "<leader>cd", require("lspsaga.diagnostic").show_line_diagnostics, { silent = true,noremap = true })
+-- vim.keymap.set("n", "[e", require("lspsaga.diagnostic").goto_prev, { silent = true, noremap =true })
+-- vim.keymap.set("n", "]e", require("lspsaga.diagnostic").goto_next, { silent = true, noremap =true })
+-- -- show hover doc and press twice will jumpto hover window
+-- vim.keymap.set("n", "K", require("lspsaga.hover").render_hover_doc, { silent = true })
+-- -- or use command
+-- vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
+-- vim.keymap.set("n", "<leader>rn", require("lspsaga.rename").lsp_rename, { silent = true,noremap = true })
+--
+-- local action = require("lspsaga.action")
+-- -- scroll down hover doc or scroll in definition preview
+-- vim.keymap.set("n", "<a-f>", function()
+--     action.smart_scroll_with_saga(1)
+-- end, { silent = true })
+-- -- scroll up hover doc
+-- vim.keymap.set("n", "<a-b>", function()
+--     action.smart_scroll_with_saga(-1)
+-- end, { silent = true })
+
+require('distant').setup {
+  -- Applies Chip's personal settings to every machine you connect to
+  --
+  -- 1. Ensures that distant servers terminate with no connections
+  -- 2. Provides navigation bindings for remote directories
+  -- 3. Provides keybinding to jump into a remote file's parent directory
+  ['*'] = require('distant.settings').chip_default()
+  }
 
 END
 
@@ -1121,7 +1187,7 @@ augroup end
 "   autocmd!
 "   autocmd CursorMoved * silent TSContextDisable
 " augroup end
-nnoremap <silent> gs <cmd>TSContextToggle<CR>
+" nnoremap <silent> <leader>ct <cmd>TSContextToggle<CR>
 
 nnoremap <silent> <leader>. :cd %:p:h<CR>
 nnoremap <leader>\ :vsplit<CR>
