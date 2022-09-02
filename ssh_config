@@ -36,3 +36,47 @@ Host ios3
 Host caisw
   HostName 192.168.20.16
   User caisw2020
+
+Host s1
+	HostName 192.168.100.1
+	User linjk
+
+Host s2
+	HostName 192.168.100.2
+	User linjk
+
+Host s3
+	HostName 192.168.20.70
+	User linjk
+
+Host s4
+	HostName 192.168.100.4
+	User linjk
+
+Host s5
+	HostName 192.168.100.5
+	User linjk
+
+Host s6
+	HostName 192.168.100.6
+	User linjk
+
+Host s7
+	HostName 192.168.100.7
+	User linjk
+
+Host s8
+	HostName 192.168.100.8
+	User linjk
+
+Host s9
+	HostName 192.168.100.9
+	User linjk
+
+
+Host s100
+	HostName 192.168.100.100
+	User linjk
+  ControlMaster auto
+  ControlPath /tmp/ssh_mux_%h_%p_%r
+  Ciphers aes128-cbc
