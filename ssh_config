@@ -73,10 +73,11 @@ Host s9
 	HostName 192.168.100.9
 	User linjk
 
-
 Host s100
 	HostName 192.168.100.100
 	User linjk
+
+Host *
   ControlMaster auto
   ControlPath /tmp/ssh_mux_%h_%p_%r
-  Ciphers aes128-cbc
+  # Ciphers aes128-cbc

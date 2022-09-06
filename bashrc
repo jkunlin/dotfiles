@@ -64,6 +64,8 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 ## cppcheck
 export PATH=$HOME/.local/cppcheck/bin:$PATH
 
+## mosh
+export PATH=$HOME/.local/mosh/bin:$PATH
 # Aliases
 # --------------------------------------------------------------------
 
