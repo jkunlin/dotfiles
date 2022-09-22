@@ -61,6 +61,11 @@ Plug 'b0o/incline.nvim'
 Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 Plug 'SmiteshP/nvim-navic'
 Plug 'chipsenkbeil/distant.nvim'
+Plug 'sindrets/diffview.nvim'
+
+Plug 'anuvyklack/middleclass'
+Plug 'anuvyklack/animation.nvim'
+Plug 'anuvyklack/windows.nvim'
 
 
 " ----------------------------------------------------------------------------
@@ -198,9 +203,9 @@ Plug 'mbbill/undotree', { 'do': 'mkdir ~/.undodir'}
 " Plug 'dhruvasagar/vim-zoom'
 "   nmap <silent> <Leader>z <Plug>(zoom-toggle)
 
-Plug 'troydm/zoomwintab.vim'
-  nmap  <Leader>z <cmd>ZoomWinTabToggle<CR>
-  let g:zoomwintab_hidetabbar = 0
+" Plug 'troydm/zoomwintab.vim'
+"   nmap  <Leader>z <cmd>ZoomWinTabToggle<CR>
+"   let g:zoomwintab_hidetabbar = 0
 
 " Plug 'justinmk/vim-gtfo'
   " let g:gtfo#terminals = { 'unix': 'alacritty --working-directory' }
@@ -433,7 +438,8 @@ end
 local null_ls = require("null-ls").null_ls
 require("null-ls").setup({
     sources = {
-      require("null-ls").builtins.diagnostics.cppcheck,
+      -- require("null-ls").builtins.diagnostics.cppcheck,
+      -- require("null-ls").builtins.formatting.clang_format,
     },
 })
 
@@ -491,6 +497,11 @@ require'nvim-treesitter.configs'.setup {
       ["[]"] = "@class.outer",
       },
     },
+  },
+
+  matchup = {
+    enable = true,              -- mandatory, false will disable the whole extension
+    disable_virtual_text = true,
   },
 }
 
@@ -806,16 +817,16 @@ end
 ------------------------------------------------------------------------------
 -- symbols-outline
 ------------------------------------------------------------------------------
+-- local opts = {
+--   highlight_hovered_item = true,
+--   auto_preview = true,
+--   position = 'right',
+--   relative_width = true,
+--   width = 40,
+--   show_numbers = false,
+--   preview_bg_highlight = 'Pmenu',
+-- }
 require("symbols-outline").setup()
-vim.g.symbols_outline = {
-  highlight_hovered_item = true,
-  auto_preview = true,
-  position = 'right',
-  relative_width = true,
-  width = 40,
-  show_numbers = false,
-  preview_bg_highlight = 'Pmenu',
-}
 
 
 ------------------------------------------------------------------------------
@@ -1011,6 +1022,7 @@ require('incline').setup {
       vertical = "top",
     },
   margin = {
+    horizontal = 0,
     vertical = 2,
     },
   }
@@ -1053,6 +1065,9 @@ require('incline').setup {
 --     action.smart_scroll_with_saga(-1)
 -- end, { silent = true })
 
+------------------------------------------------------------------------------
+-- distant
+------------------------------------------------------------------------------
 require('distant').setup {
   -- Applies Chip's personal settings to every machine you connect to
   --
@@ -1061,6 +1076,63 @@ require('distant').setup {
   -- 3. Provides keybinding to jump into a remote file's parent directory
   ['*'] = require('distant.settings').chip_default()
   }
+
+------------------------------------------------------------------------------
+-- bqf
+------------------------------------------------------------------------------
+vim.cmd([[
+    hi BqfPreviewBorder guifg=#50a14f ctermfg=71
+    hi link BqfPreviewRange Search
+]])
+
+require('bqf').setup({
+    auto_enable = true,
+    auto_resize_height = true, -- highly recommended enable
+    preview = {
+        win_height = 12,
+        win_vheight = 12,
+        delay_syntax = 80,
+        border_chars = {'┃', '┃', '━', '━', '┏', '┓', '┗', '┛', '█'},
+        should_preview_cb = function(bufnr, qwinid)
+            local ret = true
+            local bufname = vim.api.nvim_buf_get_name(bufnr)
+            local fsize = vim.fn.getfsize(bufname)
+            if fsize > 100 * 1024 then
+                -- skip file size greater than 100k
+                ret = false
+            elseif bufname:match('^fugitive://') then
+                -- skip fugitive buffer
+                ret = false
+            end
+            return ret
+        end
+    },
+    -- make `drop` and `tab drop` to become preferred
+    func_map = {
+        drop = 'o',
+        openc = 'O',
+        split = '<C-s>',
+        tabdrop = '<C-t>',
+        tabc = '',
+        ptogglemode = 'z,',
+    },
+    filter = {
+        fzf = {
+            action_for = {['ctrl-s'] = 'split', ['ctrl-t'] = 'tab drop'},
+            extra_opts = {'--bind', 'ctrl-o:toggle-all', '--prompt', '> '}
+        }
+    }
+})
+
+------------------------------------------------------------------------------
+-- windows.nvim
+------------------------------------------------------------------------------
+vim.o.winwidth = 20
+vim.o.winminwidth = 20
+vim.o.equalalways = false
+vim.keymap.set('n', '<C-w>z', '<Cmd>WindowsMaximize<CR>')
+vim.keymap.set('n', '<leader>z', '<Cmd>WindowsMaximize<CR>')
+require('windows').setup() 
 
 END
 
