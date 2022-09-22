@@ -23,7 +23,7 @@ done
 source ~/.bashrc
 
 [ -e ~/.ssh/config ] && mv -v ~/.ssh/config bak/ssh_config
-ln -sfv "$BASE"/ssh_config ~/.ssh/config
+mkdir -p ~/.ssh && ln -sfv "$BASE"/ssh_config ~/.ssh/config
 
 [ -e ~/.config/zathura/zathurarc ] && mv -v ~/.config/zathura/zathurarc bak/
 mkdir -p ~/.config/zathura && ln -sfv "$BASE/zathura_config" ~/.config/zathura/zathurarc
@@ -38,6 +38,26 @@ if [ ! -e ~/.tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   tmux source-file ~/.tmux.conf
 fi
+
+if [ ! -e ~/.fonts/SourceCodePro ]; then
+  mkdir -p ~/.fonts/SourceCodePro
+  $DL ~/.fonts/SourceCodePro/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
+  cd ~/.fonts/SourceCodePro
+  unzip SourceCodePro.zip
+  rm SourceCodePro.zip
+  cd -
+fi
+fc-cache -rv
+  
+if [ ! -e ~/.fonts/FiraCode ]; then
+  mkdir -p ~/.fonts/FiraCode
+  $DL ~/.fonts/FiraCode/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+  cd ~/.fonts/FiraCode
+  unzip FiraCode.zip
+  rm FiraCode.zip
+  cd -
+fi
+fc-cache -rv
 
 
 # install softwares

@@ -86,6 +86,7 @@ alias hc="history -c"
 alias which='type -p'
 alias k5='kill -9 %%'
 alias gv='vim +GV +"autocmd BufWipeout <buffer> qall"'
+alias openvpn='sudo openvpn --daemon --config ~/.openvpn/client.ovpn --auth-user-pass ~/.openvpn/pass'
 ext() {
   ext-all --exclude .git --exclude target --exclude "*.log"
 }
