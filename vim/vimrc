@@ -77,6 +77,8 @@ Plug 'ishan9299/nvim-solarized-lua'
 Plug 'folke/tokyonight.nvim'
 Plug 'rebelot/kanagawa.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'morhetz/gruvbox'
 Plug 'lukas-reineke/indent-blankline.nvim'
   let g:indent_blankline_filetype = ['c', 'cpp']
   let g:indent_blankline_use_treesitter = v:true
@@ -577,7 +579,7 @@ require('lualine').setup {
   options = {
     -- ... your lualine config
     globalstatus = true,        -- enable global statusline (have a single statusline
-    theme = 'nord'
+    -- theme = 'nord'
   }
 }
 
@@ -1179,7 +1181,8 @@ set updatetime=100
 set mouse=a
 set laststatus=3 "show status line even when only single window is opened
 " set statusline+=%{zoom#statusline()}
-colorscheme nord
+colorscheme PaperColor
+set background=light
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change
