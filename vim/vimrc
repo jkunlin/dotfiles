@@ -1181,8 +1181,9 @@ set updatetime=100
 set mouse=a
 set laststatus=3 "show status line even when only single window is opened
 " set statusline+=%{zoom#statusline()}
-colorscheme PaperColor
+colorscheme kanagawa
 set background=light
+hi MatchParen ctermbg=lightblue guibg=lightblue cterm=italic gui=italic
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change
