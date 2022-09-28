@@ -79,6 +79,7 @@ Plug 'rebelot/kanagawa.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'morhetz/gruvbox'
+Plug 'EdenEast/nightfox.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
   let g:indent_blankline_filetype = ['c', 'cpp']
   let g:indent_blankline_use_treesitter = v:true
@@ -1183,9 +1184,9 @@ set updatetime=100
 set mouse=a
 set laststatus=3 "show status line even when only single window is opened
 " set statusline+=%{zoom#statusline()}
-colorscheme PaperColor
+colorscheme dayfox
 set background=light
-" hi MatchParen ctermbg=lightblue guibg=lightblue cterm=italic gui=italic
+hi MatchParen ctermbg=lightblue guibg=lightred cterm=italic gui=italic
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change
