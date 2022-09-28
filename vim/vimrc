@@ -82,6 +82,8 @@ Plug 'morhetz/gruvbox'
 Plug 'lukas-reineke/indent-blankline.nvim'
   let g:indent_blankline_filetype = ['c', 'cpp']
   let g:indent_blankline_use_treesitter = v:true
+  let g:indent_blankline_show_trailing_blankline_indent = v:false
+  let g:indent_blankline_show_first_indent_level = v:false
 
 " ----------------------------------------------------------------------------
 " appearance
@@ -1151,7 +1153,7 @@ set autoindent
 set cindent
 set smartindent
 set tabstop=2
-set softtabstop=2
+set softtabstop=-1
 set shiftwidth=2
 set expandtab
 set smarttab
@@ -1181,9 +1183,9 @@ set updatetime=100
 set mouse=a
 set laststatus=3 "show status line even when only single window is opened
 " set statusline+=%{zoom#statusline()}
-colorscheme kanagawa
+colorscheme PaperColor
 set background=light
-hi MatchParen ctermbg=lightblue guibg=lightblue cterm=italic gui=italic
+" hi MatchParen ctermbg=lightblue guibg=lightblue cterm=italic gui=italic
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change
@@ -1224,7 +1226,6 @@ nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> [e <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]e <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> <space>rn :lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> cmd vim.lsp.buf.formatting()<CR>
 command! -nargs=0 Format :lua vim.lsp.buf.formatting()<CR>
 
 " symbols-outline
