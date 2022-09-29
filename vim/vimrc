@@ -1186,7 +1186,8 @@ set laststatus=3 "show status line even when only single window is opened
 " set statusline+=%{zoom#statusline()}
 colorscheme dayfox
 set background=light
-hi MatchParen ctermbg=lightblue guibg=lightred cterm=italic gui=italic
+hi MatchParen ctermbg=lightblue guibg=lightgreen cterm=italic gui=italic
+hi clear CurSearch
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change
