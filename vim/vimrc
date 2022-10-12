@@ -22,7 +22,7 @@ Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'numToStr/Comment.nvim'
 " Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-lualine/lualine.nvim'
-Plug 'akinsho/bufferline.nvim'
+" Plug 'akinsho/bufferline.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 " Plug 'rmagatti/goto-preview'
 Plug 'nvim-lua/plenary.nvim'
@@ -83,7 +83,7 @@ Plug 'EdenEast/nightfox.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
   let g:indent_blankline_filetype = ['c', 'cpp']
   let g:indent_blankline_use_treesitter = v:true
-  let g:indent_blankline_show_trailing_blankline_indent = v:false
+  " let g:indent_blankline_show_trailing_blankline_indent = v:false
   let g:indent_blankline_show_first_indent_level = v:false
 
 " ----------------------------------------------------------------------------
@@ -589,11 +589,11 @@ require('lualine').setup {
 ------------------------------------------------------------------------------
 -- bufferline
 ------------------------------------------------------------------------------
-require("bufferline").setup{
-  options = {
-    -- mode = 'tabs'
-    }
-}
+-- require("bufferline").setup{
+--   options = {
+--     -- mode = 'tabs'
+--     }
+-- }
 
 ------------------------------------------------------------------------------
 -- nvim-web-devicons
@@ -924,10 +924,14 @@ vim.keymap.set({'n'}, '<leader>rW', builtin.grep_string)
 
 -- Falling back to find_files if git_files can't find a .git directory
 project_files = function()
-  local opts = {} -- define here if you want to define something
-  local ok = pcall(require"telescope.builtin".git_files, opts)
-  if not ok then require"telescope.builtin".find_files(opts) end
+  local in_git_repo = vim.fn.systemlist"git rev-parse --is-inside-work-tree"[1] == 'true'
+  if in_git_repo then
+    require("telescope.builtin").git_files()
+  else
+    require("telescope.builtin").find_files()
+  end
 end
+
 vim.keymap.set({'n'}, '<leader>f', project_files, {noremap = true, silent = true})
 vim.keymap.set({'n'}, '<leader>F', builtin.find_files)
 -- vim.keymap.set({'n'}, '<leader>f', builtin.git_files)
@@ -1137,7 +1141,12 @@ vim.o.winminwidth = 20
 vim.o.equalalways = false
 vim.keymap.set('n', '<C-w>z', '<Cmd>WindowsMaximize<CR>')
 vim.keymap.set('n', '<leader>z', '<Cmd>WindowsMaximize<CR>')
-require('windows').setup() 
+vim.keymap.set('n', '<C-w>a', '<Cmd>WindowsToggleAutowidth<CR>')
+require('windows').setup {
+  autowidth = {			--		       |windows.autowidth|
+    enable = false
+  }
+}
 
 END
 
@@ -1187,7 +1196,7 @@ set laststatus=3 "show status line even when only single window is opened
 colorscheme dayfox
 set background=light
 hi MatchParen ctermbg=lightblue guibg=lightgreen cterm=italic gui=italic
-hi clear CurSearch
+" hi clear CurSearch
 
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
     " notification after file change

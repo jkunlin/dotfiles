@@ -20,6 +20,12 @@ for rc in *rc tmux.conf alacritty.yml; do
   [ -e ~/."$rc" ] && mv -v ~/."$rc" bak/."$rc"
   ln -sfv "$BASE/$rc" ~/."$rc"
 done
+
+mkdir -pv bak
+terminalrc=$HOME/.config/xfce4/terminal/terminalrc
+[ -e $terminalrc ] && mv -v $terminalrc bak/terminalrc
+ln -sfv "$BASE/xfce4_terminal" $terminalrc
+
 source ~/.bashrc
 
 [ -e ~/.ssh/config ] && mv -v ~/.ssh/config bak/ssh_config
