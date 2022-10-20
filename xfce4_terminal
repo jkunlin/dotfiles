@@ -1,6 +1,6 @@
 [Configuration]
 BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
-BackgroundDarkness=1,000000
+BackgroundDarkness=1.000000
 FontName=SauceCodePro Nerd Font Mono 14
 MiscAlwaysShowTabs=FALSE
 MiscBell=FALSE
@@ -8,7 +8,7 @@ MiscBellUrgent=FALSE
 MiscBordersDefault=TRUE
 MiscCursorBlinks=FALSE
 MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK
-MiscDefaultGeometry=80x24
+MiscDefaultGeometry=120x24
 MiscInheritGeometry=FALSE
 MiscMenubarDefault=FALSE
 MiscMouseAutohide=FALSE
