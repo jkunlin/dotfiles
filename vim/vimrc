@@ -26,7 +26,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 " Plug 'rmagatti/goto-preview'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'TimUntersberger/neogit'
+" Plug 'TimUntersberger/neogit'
 Plug 'akinsho/toggleterm.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
@@ -71,6 +71,9 @@ Plug 'anuvyklack/windows.nvim'
 " ----------------------------------------------------------------------------
 " appearance
 " ----------------------------------------------------------------------------
+Plug 'MunifTanjim/nui.nvim'
+Plug 'rcarriga/nvim-notify'
+Plug 'folke/noice.nvim'
 Plug 'arcticicestudio/nord-vim'
 " Plug 'shaunsingh/nord.nvim'
 Plug 'ishan9299/nvim-solarized-lua'
@@ -90,7 +93,7 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 " appearance
 " ----------------------------------------------------------------------------
 Plug 'machakann/vim-highlightedyank'
-Plug 'google/vim-searchindex'
+" Plug 'google/vim-searchindex'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'kshenoy/vim-signature'
@@ -418,7 +421,7 @@ require("nvim-navic").setup()
 end
 
   -- setup lspconfig
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities(), {
   --   snippetSupport = false,
   --   })
@@ -871,7 +874,7 @@ require("which-key").setup {
 ------------------------------------------------------------------------------
 -- neogit
 ------------------------------------------------------------------------------
-require('neogit').setup {}
+-- require('neogit').setup {}
 
 ------------------------------------------------------------------------------
 -- telescope
@@ -913,6 +916,7 @@ require('telescope').setup {
   },
 }
 require('telescope').load_extension('fzf')
+require("telescope").load_extension("noice")
 
 local builtin = require("telescope.builtin")
 vim.keymap.set({'n'}, '<leader><leader>', builtin.commands)
@@ -1148,6 +1152,16 @@ require('windows').setup {
   }
 }
 
+
+------------------------------------------------------------------------------
+-- noice
+------------------------------------------------------------------------------
+require("noice").setup({
+  cmdline = {
+    view = "cmdline",
+  },
+})
+
 END
 
 set encoding=UTF-8
@@ -1305,7 +1319,7 @@ nnoremap <silent> - :vertical resize -5<cr>
 " nnoremap <silent> <leader>= :resize +5<cr>
 " nnoremap <silent> <leader>- :resize -5<cr>
 
-nnoremap <leader>w :update<cr>
+nnoremap <silent> <leader>w :update<cr>
 nnoremap <Leader>q :q<cr>
 nnoremap <Leader>Q :qa!<cr>
 
