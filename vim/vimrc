@@ -67,6 +67,8 @@ Plug 'anuvyklack/middleclass'
 Plug 'anuvyklack/animation.nvim'
 Plug 'anuvyklack/windows.nvim'
 
+Plug 'joechrisellis/lsp-format-modifications.nvim'
+
 
 " ----------------------------------------------------------------------------
 " appearance
@@ -83,23 +85,24 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'morhetz/gruvbox'
 Plug 'EdenEast/nightfox.nvim'
-Plug 'lukas-reineke/indent-blankline.nvim'
-  let g:indent_blankline_filetype = ['c', 'cpp']
-  let g:indent_blankline_use_treesitter = v:true
-  " let g:indent_blankline_show_trailing_blankline_indent = v:false
-  let g:indent_blankline_show_first_indent_level = v:false
+" indent-blankline causes cursor disappear for dayfox
+" Plug 'lukas-reineke/indent-blankline.nvim'
+  " let g:indent_blankline_filetype = ['c', 'cpp']
+  " let g:indent_blankline_use_treesitter = v:true
+  " " let g:indent_blankline_show_trailing_blankline_indent = v:false
+  " let g:indent_blankline_show_first_indent_level = v:false
 
 " ----------------------------------------------------------------------------
 " appearance
 " ----------------------------------------------------------------------------
 Plug 'machakann/vim-highlightedyank'
-" Plug 'google/vim-searchindex'
+Plug 'google/vim-searchindex'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'kshenoy/vim-signature'
-" Plug 'airblade/vim-gitgutter'
-Plug 'mhinz/vim-signify'
-    let g:signify_sign_change = '~'
+Plug 'airblade/vim-gitgutter'
+" Plug 'mhinz/vim-signify'
+"     let g:signify_sign_change = '~'
 Plug 'tpope/vim-fugitive'
 Plug 'kevinhwang91/nvim-bqf'
 Plug 'folke/which-key.nvim'
@@ -447,8 +450,15 @@ local null_ls = require("null-ls").null_ls
 require("null-ls").setup({
     sources = {
       -- require("null-ls").builtins.diagnostics.cppcheck,
-      -- require("null-ls").builtins.formatting.clang_format,
+      require("null-ls").builtins.formatting.clang_format,
     },
+    on_attach = function(client, bufnr)
+    -- your usual configuration — options, keymaps, etc
+    -- ...
+
+    local lsp_format_modifications = require"lsp-format-modifications"
+    lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
+    end
 })
 
 ------------------------------------------------------------------------------
@@ -610,10 +620,10 @@ require'nvim-web-devicons'.setup {
 ------------------------------------------------------------------------------
 -- indent_blankline
 ------------------------------------------------------------------------------
-require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
-    show_current_context = true,
-}
+-- require("indent_blankline").setup {
+--     -- for example, context is off by default, use this to turn it on
+--     show_current_context = true,
+-- }
 
 ------------------------------------------------------------------------------
 -- dap ccppr_vsc
@@ -1156,11 +1166,11 @@ require('windows').setup {
 ------------------------------------------------------------------------------
 -- noice
 ------------------------------------------------------------------------------
-require("noice").setup({
-  cmdline = {
-    view = "cmdline",
-  },
-})
+-- require("noice").setup({
+--   cmdline = {
+--     view = "cmdline",
+--   },
+-- })
 
 END
 
