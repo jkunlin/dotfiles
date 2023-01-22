@@ -35,6 +35,7 @@ Plug 'ray-x/lsp_signature.nvim'
 " Plug 'williamboman/nvim-lsp-installer'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'jay-babu/mason-null-ls.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -311,11 +312,6 @@ Plug 'junegunn/vim-easy-align',  { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
         \  't': { 'pattern': '\t',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 }
         \}
 
-Plug 'chrisbra/vim-diff-enhanced'
-  if &diff
-    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-  endif
-
 " Initialize plugin system
 call plug#end()
 
@@ -333,6 +329,35 @@ lua << END
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("nvim-navic").setup()
+
+------------------------------------------------------------------------------
+-- null-ls
+------------------------------------------------------------------------------
+local null_ls = require("null-ls")
+null_ls.setup({
+    sources = {
+        -- null_ls.builtins.formatting.clang_format,
+    },
+    -- on_attach = function(client, bufnr)
+    --   local lsp_format_modifications = require"lsp-format-modifications"
+    --   lsp_format_modifications.attach(client, bufnr, { format_on_save = true })
+    -- end
+})
+-- local lsp_formatting = function(bufnr)
+--     vim.lsp.buf.format({
+--         filter = function(client)
+--             -- apply whatever logic you want (in this example, we'll only use null-ls)
+--             return true
+--         end,
+--         bufnr = bufnr,
+--     })
+-- end
+require("mason-null-ls").setup({
+    ensure_installed = nil,
+    automatic_installation = true,
+    automatic_setup = false,
+})
+
 
 ------------------------------------------------------------------------------
 -- nvim-cmp
@@ -356,17 +381,17 @@ require("nvim-navic").setup()
       else
         fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
       end
-    end, { "i", "s" }),
+    end, { "i", "s", "c" }),
 
     ["<S-Tab>"] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_prev_item()
       end
-    end, { "i", "s" }),
+    end, { "i", "s", "c" }),
 
     ["<CR>"] = cmp.mapping(function(fallback)
       cmp_ultisnips_mappings.compose { "expand" } (fallback)
-    end, { "i", "s" }),
+    end, { "i", "s", "c" }),
 
 
       ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
@@ -420,6 +445,21 @@ require("nvim-navic").setup()
         augroup END
       ]]
     end
+
+     -- set formatexpr and tagfunc to keep using Vim default mappings for formatting and jumping to a tag
+		if client.server_capabilities.definitionProvider then
+				vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+		end
+
+		if client.server_capabilities.documentFormattingProvider then
+				vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+				-- Add this <leader> bound mapping so formatting the entire document is easier.
+        vim.api.nvim_set_keymap("n", "<leader>gq", ":lua vim.lsp.buf.format({async = true})<CR>", {noremap = true, silent = true})
+
+      local lsp_format_modifications = require"lsp-format-modifications"
+      lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
+		end
+
     require("nvim-navic").attach(client, bufnr)
 end
 
@@ -442,24 +482,6 @@ end
     border = "single"
     }
   )
-
-------------------------------------------------------------------------------
--- null-ls
-------------------------------------------------------------------------------
-local null_ls = require("null-ls").null_ls
-require("null-ls").setup({
-    sources = {
-      -- require("null-ls").builtins.diagnostics.cppcheck,
-      require("null-ls").builtins.formatting.clang_format,
-    },
-    on_attach = function(client, bufnr)
-    -- your usual configuration — options, keymaps, etc
-    -- ...
-
-    local lsp_format_modifications = require"lsp-format-modifications"
-    lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
-    end
-})
 
 ------------------------------------------------------------------------------
 -- lsp_signature.nvim
@@ -963,7 +985,7 @@ require("toggleterm").setup{
 ------------------------------------------------------------------------------
 -- nvim-ufo
 ------------------------------------------------------------------------------
-vim.wo.foldcolumn = '1'
+vim.wo.foldcolumn = '0'
 vim.wo.foldlevel = 99 -- feel free to decrease the value
 vim.wo.foldenable = true
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -1261,7 +1283,7 @@ nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> [e <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]e <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> <space>rn :lua vim.lsp.buf.rename()<CR>
-command! -nargs=0 Format :lua vim.lsp.buf.formatting()<CR>
+command! -nargs=0 Format :lua vim.lsp.buf.format()<CR>
 
 " symbols-outline
 nnoremap <silent> gt <cmd>SymbolsOutline<CR>
