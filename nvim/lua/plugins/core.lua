@@ -40,13 +40,13 @@ return {
     },
     -- stylua: ignore
     keys = {
-      -- {
-      --   "<c-j>",
-      --   function()
-      --     return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<c-j>"
-      --   end,
-      --   expr = true, silent = true, mode = "i",
-      -- },
+      {
+        "<c-j>",
+        function()
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<c-j>"
+        end,
+        expr = true, silent = true, mode = "i",
+      },
       { "<c-j>", function() require("luasnip").jump(1) end, mode = "s" },
       { "<c-k>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
@@ -68,7 +68,7 @@ return {
       local cmp = require("cmp")
       cmp.setup({
         completion = {
-          completeopt = "menu,menuone,noinsert",
+          -- completeopt = "menu,menuone,noinsert",
         },
         snippet = {
           expand = function(args)
@@ -259,14 +259,16 @@ return {
   -- easily jump to any location and enhanced f/t motions for Leap
   {
     "ggandor/leap.nvim",
-    event = "VeryLazy",
+    -- event = "VeryLazy",
     dependencies = { { "ggandor/flit.nvim", opts = { labeled_modes = "nv" } } },
     config = function(_, opts)
       local leap = require("leap")
       for k, v in pairs(opts) do
         leap.opts[k] = v
       end
-      -- leap.add_default_mappings(true)
+      leap.add_default_mappings()
+      vim.keymap.del({ 'x', 'o' }, 'x')
+      vim.keymap.del({ 'x', 'o' }, 'X')
     end,
   },
 
@@ -536,10 +538,10 @@ return {
   {
     "christoomey/vim-tmux-navigator",
     keys = {
-      { "<c-h>", "<cmd>TmuxNavigateLeft", desc = "Tmux Navigate Left" },
-      { "<c-j>", "<cmd>TmuxNavigateDown", desc = "Tmux Navigate Down" },
-      { "<c-k>", "<cmd>TmuxNavigateUp", desc = "Tmux Navigate Up" },
-      { "<c-l>", "<cmd>TmuxNavigateRight", desc = "Tmux Navigate Right" },
+      { "<c-h>", "<cmd>TmuxNavigateLeft", mode = "n", desc = "Tmux Navigate Left" },
+      { "<c-j>", "<cmd>TmuxNavigateDown", mode = "n", desc = "Tmux Navigate Down" },
+      { "<c-k>", "<cmd>TmuxNavigateUp", mode = "n", desc = "Tmux Navigate Up" },
+      { "<c-l>", "<cmd>TmuxNavigateRight", mode = "n", desc = "Tmux Navigate Right" },
     },
     config = function()
       vim.g.tmux_navigator_no_mappings = 1

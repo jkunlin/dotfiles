@@ -138,7 +138,7 @@ return {
   -- indent guides for Neovim
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPost",
+    event = "BufReadPre",
     opts = {
       -- char = "▏",
       char = "│",
@@ -202,6 +202,7 @@ return {
   -- startify
   {
     "mhinz/vim-startify",
+    event = "VimEnter",
     config = function()
       vim.cmd[[
       let g:startify_files_number=5
