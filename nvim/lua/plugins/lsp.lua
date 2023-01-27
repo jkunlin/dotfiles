@@ -1,3 +1,5 @@
+local Util = require("util")
+
 return {
   -- lsp
   {
@@ -53,44 +55,13 @@ return {
       },
     },
 
-    config = function(plugin, opts)
+    config = function(_, opts)
       local servers = opts.servers
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-      local custom_lsp_attach = function(client, bufnr)
-        if client.server_capabilities.documentHighlightProvider then
-          vim.cmd([[
-          augroup lsp_document_highlight
-          autocmd! * <buffer>
-          autocmd! CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-          autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-          augroup END
-          ]])
-        end
-
-        -- set formatexpr and tagfunc to keep using Vim default mappings for formatting and jumping to a tag
-        if client.server_capabilities.definitionProvider then
-          vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
-        end
-
-        if client.server_capabilities.documentFormattingProvider then
-          vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-          -- Add this <leader> bound mapping so formatting the entire document is easier.
-          vim.api.nvim_set_keymap(
-            "n",
-            "<leader>gq",
-            ":lua vim.lsp.buf.format({async = true})<CR>",
-            { noremap = true, silent = true }
-          )
-
-          local lsp_format_modifications = require("lsp-format-modifications")
-          lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
-        end
-      end
 
       local function setup(server)
         local server_opts = servers[server] or {}
         server_opts.capabilities = capabilities
-        server_opts.on_attach = custom_lsp_attach
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
             return
@@ -129,18 +100,51 @@ return {
       require("mason-lspconfig").setup_handlers({ setup })
       require("lsp_signature").setup() -- TODO  replace with vim.lsp.buf.lsp_signature_help
 
-      -- keymaps
-      vim.keymap.set({ "n" }, "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-      vim.keymap.set({ "n" }, "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
-      vim.keymap.set({ "n" }, "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
-      vim.keymap.set({ "n" }, "g\\", "<cmd>vsplit<bar>lua vim.lsp.buf.definition()<cr>")
-      vim.keymap.set({ "n" }, "g-", "<cmd>split<bar>lua vim.lsp.buf.definition()<cr>")
-      vim.keymap.set({ "n" }, "gr", "<cmd>lua vim.lsp.buf.references()<cr>")
-      vim.keymap.set({ "n" }, "gf", "<cmd>lua vim.lsp.buf.code_action()<cr>")
-      vim.keymap.set({ "n" }, "[e", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
-      vim.keymap.set({ "n" }, "]e", "<cmd>lua vim.diagnostic.goto_next()<cr>")
-      vim.keymap.set({ "n" }, "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>")
-      vim.api.nvim_create_user_command("Format", "lua vim.lsp.buf.format()", { nargs = 0 })
+      -- custom on attach
+      local custom_lsp_attach = function(client, bufnr)
+        if client.server_capabilities.documentHighlightProvider then
+          vim.cmd([[
+          augroup lsp_document_highlight
+          autocmd! * <buffer>
+          autocmd! CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+          autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+          augroup END
+          ]])
+        end
+
+        -- set formatexpr and tagfunc to keep using Vim default mappings for formatting and jumping to a tag
+        if client.server_capabilities.definitionProvider then
+          vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+        end
+
+        if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+          -- Add this <leader> bound mapping so formatting the entire document is easier.
+          vim.api.nvim_set_keymap(
+            "n",
+            "<leader>gq",
+            ":lua vim.lsp.buf.format({async = true})<CR>",
+            { noremap = true, silent = true }
+          )
+
+          local lsp_format_modifications = require("lsp-format-modifications")
+          lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
+        end
+
+        -- keymaps
+        vim.keymap.set({ "n" }, "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
+        vim.keymap.set({ "n" }, "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+        vim.keymap.set({ "n" }, "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
+        vim.keymap.set({ "n" }, "g\\", "<cmd>vsplit<bar>lua vim.lsp.buf.definition()<cr>")
+        vim.keymap.set({ "n" }, "g-", "<cmd>split<bar>lua vim.lsp.buf.definition()<cr>")
+        vim.keymap.set({ "n" }, "gr", "<cmd>lua vim.lsp.buf.references()<cr>")
+        vim.keymap.set({ "n" }, "gf", "<cmd>lua vim.lsp.buf.code_action()<cr>")
+        vim.keymap.set({ "n" }, "[e", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
+        vim.keymap.set({ "n" }, "]e", "<cmd>lua vim.diagnostic.goto_next()<cr>")
+        vim.keymap.set({ "n" }, "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>")
+        vim.api.nvim_create_user_command("Format", "lua vim.lsp.buf.format()", { nargs = 0 })
+      end
+      Util.on_attach(custom_lsp_attach)
     end,
   },
 
