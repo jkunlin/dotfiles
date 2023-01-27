@@ -1,0 +1,61 @@
+#!/bin/bash
+
+cd $(dirname $BASH_SOURCE)
+BASE=$(pwd)
+
+if command -v curl 2>/dev/null; then
+  DL="curl --insecure -fLo"
+elif command -v wget 2>/dev/null; then
+  DL="wget -O"
+fi
+
+export GIT_SSL_NO_VERIFY=true
+
+# configuration
+mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.local/share/nvim ~/.local/share/nvim.bak
+ln -sf ~/dotfiles/nvim ~/.config/
+
+# nvim
+if ! command -v nvim 2>/dev/null; then
+  $DL ~/.local/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+  chmod u+x ~/.local/bin/nvim
+fi
+
+# dependence for plugins
+#####################################################
+mkdir -p ~/.local
+mkdir -p ~/.local/bin
+mkdir -p ~/.local/include
+mkdir -p ~/.local/lib
+mkdir -p ~/.local/libexec
+mkdir -p ~/.local/share
+
+mkdir -p $BASE/tmp
+
+# node
+if ! command -v node 2>/dev/null; then
+  curl -sL install-node.now.sh/lts | bash -s -- --prefix=$HOME/.local
+fi
+
+# yarn
+if ! command -v yarn 2>/dev/null; then
+  curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+fi
+
+# vale
+if ! command -v vale 2>/dev/null; then
+  $DL $BASE/tmp/vale_1.3.2_Linux_64-bit.tar.gz https://github.com/errata-ai/vale/releases/download/v1.3.2/vale_1.3.2_Linux_64-bit.tar.gz
+  tar xzf $BASE/tmp/vale_1.3.2_Linux_64-bit.tar.gz -C $BASE/tmp
+  mv $BASE/tmp/vale $HOME/.local/bin
+fi
+
+rm -rf $BASE/tmp
+
+# provider-python
+if command -v pip3 2>/dev/null; then 
+  pip3 install --user --upgrade pynvim
+  pip3 install --user neovim-remote
+elif command -v pip2 2>/dev/null; then
+  pip2 install --user --upgrade pynvim
+fi
