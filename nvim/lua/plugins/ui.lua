@@ -314,7 +314,7 @@ return {
   -- vim-smoothie
   {
     "psliwka/vim-smoothie",
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
 
   -- icons

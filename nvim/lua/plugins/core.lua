@@ -64,9 +64,9 @@ return {
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
     },
-    config = function()
+    opts = function()
       local cmp = require("cmp")
-      cmp.setup({
+      return {
         completion = {
           -- completeopt = "menu,menuone,noinsert",
         },
@@ -107,7 +107,12 @@ return {
           { name = "path" },
           { name = "cmdline" },
         }),
-      })
+      }
+    end,
+    config = function(_, opts)
+      local cmp = require("cmp")
+
+      cmp.setup(opts)
 
       -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline({ "/", "?" }, {
@@ -140,7 +145,7 @@ return {
   -- comment
   {
     "numToStr/Comment.nvim",
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("Comment").setup()
     end,
@@ -259,7 +264,7 @@ return {
   -- easily jump to any location and enhanced f/t motions for Leap
   {
     "ggandor/leap.nvim",
-    -- event = "VeryLazy",
+    event = "BufReadPost",
     dependencies = { { "ggandor/flit.nvim", opts = { labeled_modes = "nv" } } },
     config = function(_, opts)
       local leap = require("leap")
@@ -457,6 +462,7 @@ return {
   -- bqf
   {
     "kevinhwang91/nvim-bqf",
+    event = "BufReadPost",
     opts = {
       auto_enable = true,
       auto_resize_height = true, -- highly recommended enable
@@ -527,6 +533,7 @@ return {
   -- vim-matchup
   {
     "andymass/vim-matchup",
+    event = "BufReadPost",
   },
 
   -- tmux
@@ -573,6 +580,7 @@ return {
   -- vim-surround
   {
     "tpope/vim-surround",
+    event = "BufReadPost",
     config = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = {
@@ -592,6 +600,7 @@ return {
   -- delitMate
   {
     "Raimondi/delimitMate",
+    event = "BufReadPost",
     config = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = {
@@ -611,6 +620,7 @@ return {
   -- rsi.vim
   {
     "tpope/vim-rsi",
+    event = "BufReadPost",
   },
 
   -- 'voldikss/vim-translator'
@@ -625,6 +635,7 @@ return {
   -- vim-lexical
   {
     "reedes/vim-lexical",
+    event = "BufReadPost",
     config = function()
       vim.cmd([[let g:lexical#spell_key = 'z=']])
       vim.api.nvim_create_autocmd("FileType", {
@@ -665,6 +676,7 @@ return {
   -- fzf
   {
     "junegunn/fzf",
+    cmd = "FZF",
     build = "./install --all",
     dependencies = { "junegunn/fzf.vim" },
   },
@@ -672,6 +684,9 @@ return {
   -- toggleterm.nvim
   {
     "akinsho/toggleterm.nvim",
+    keys = {
+      {"<c-\\>", nil, desc = ""},
+    },
     opts = {
       direction = 'float',
       open_mapping = [[<c-\>]],
