@@ -318,7 +318,6 @@ return {
   -- fugitive
   {
     "tpope/vim-fugitive",
-    cmd = "Git",
   },
 
   -- vim-signature
@@ -545,12 +544,12 @@ return {
   {
     "christoomey/vim-tmux-navigator",
     keys = {
-      { "<c-h>", "<cmd>TmuxNavigateLeft", mode = "n", desc = "Tmux Navigate Left" },
-      { "<c-j>", "<cmd>TmuxNavigateDown", mode = "n", desc = "Tmux Navigate Down" },
-      { "<c-k>", "<cmd>TmuxNavigateUp", mode = "n", desc = "Tmux Navigate Up" },
-      { "<c-l>", "<cmd>TmuxNavigateRight", mode = "n", desc = "Tmux Navigate Right" },
+      { "<c-h>", "<cmd>TmuxNavigateLeft<cr>", mode = "n", desc = "Tmux Navigate Left" },
+      { "<c-j>", "<cmd>TmuxNavigateDown<cr>", mode = "n", desc = "Tmux Navigate Down" },
+      { "<c-k>", "<cmd>TmuxNavigateUp<cr>", mode = "n", desc = "Tmux Navigate Up" },
+      { "<c-l>", "<cmd>TmuxNavigateRight<cr>", mode = "n", desc = "Tmux Navigate Right" },
     },
-    config = function()
+    init = function()
       vim.g.tmux_navigator_no_mappings = 1
     end,
   },
@@ -559,11 +558,11 @@ return {
   {
     "mbbill/undotree",
     cmd = "UndotreeToggle",
-    build = "mkdir ~/.undodir",
+    build = "mkdir -p ~/.undodir",
     keys = {
       { "U", "<cmd>UndotreeToggle<cr>", desc = "Undotree Toggle" },
     },
-    config = function()
+    init = function()
       vim.g.undotree_WindowLayout = 2
       if vim.fn.has("persistent_undo") == 1 then
         vim.opt.undodir = "~/.undodir/"
