@@ -204,7 +204,9 @@ return {
           -- width = vim.o.columns, -- maximally available columns
           -- mirror = true,
           preview_cutoff = 30,
-          preview_height = 0.5, -- 50% of available lines
+          vertical = {
+            preview_height = 0.5, -- 50% of available lines
+          },
         },
         mappings = {
           n = {
