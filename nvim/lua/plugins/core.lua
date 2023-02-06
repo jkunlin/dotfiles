@@ -177,6 +177,7 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
+    lazy = false,
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     dependencies = {
@@ -264,7 +265,7 @@ return {
   -- easily jump to any location and enhanced f/t motions for Leap
   {
     "ggandor/leap.nvim",
-    event = "BufReadPost",
+    -- event = "BufReadPost",
     dependencies = { { "ggandor/flit.nvim", opts = { labeled_modes = "nv" } } },
     config = function(_, opts)
       local leap = require("leap")
@@ -558,14 +559,14 @@ return {
   {
     "mbbill/undotree",
     cmd = "UndotreeToggle",
-    build = "mkdir -p ~/.undodir",
+    build = "mkdir -p " .. os.getenv("HOME") ..  "/.undodir",
     keys = {
       { "U", "<cmd>UndotreeToggle<cr>", desc = "Undotree Toggle" },
     },
     init = function()
       vim.g.undotree_WindowLayout = 2
       if vim.fn.has("persistent_undo") == 1 then
-        vim.opt.undodir = "~/.undodir/"
+        vim.opt.undodir = os.getenv("HOME") .. "/.undodir/"
         vim.opt.undofile = true
       end
     end,

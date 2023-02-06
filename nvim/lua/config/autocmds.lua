@@ -90,16 +90,16 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = {
-    "dap-repl",
-  },
+vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(event)
-    vim.api.nvim_set_keymap("n", "n", "<cmd>lua require('dap').step_over()<cr>", { buffer = event.buf, noremap = true, silent = true })
-    vim.api.nvim_set_keymap("n", "s", "<cmd>lua require('dap').step_into()<cr>", { buffer = event.buf, noremap = true, silent = true })
-    vim.api.nvim_set_keymap("n", "S", "<cmd>lua require('dap').step_out()<cr>", { buffer = event.buf, noremap = true, silent = true })
-    vim.api.nvim_set_keymap("n", "o", "<cmd>lua require('dap').step_out()<cr>", { buffer = event.buf, noremap = true, silent = true })
-    vim.api.nvim_set_keymap("n", "c", "<cmd>lua require('dap').continue()<cr>", { buffer = event.buf, noremap = true, silent = true })
-    vim.api.nvim_set_keymap("i", "<c-k>", "<c-w>k", { buffer = event.buf, noremap = true, silent = true })
+    if vim.api.nvim_buf_get_option(0, 'filetype') == 'dap-repl' then
+      require('dap.ext.autocompl').attach()
+      vim.api.nvim_set_keymap("n", "n", "<cmd>lua require('dap').step_over()<cr>", { buffer = event.buf, noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "s", "<cmd>lua require('dap').step_into()<cr>", { buffer = event.buf, noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "S", "<cmd>lua require('dap').step_out()<cr>", { buffer = event.buf, noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "o", "<cmd>lua require('dap').step_out()<cr>", { buffer = event.buf, noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "c", "<cmd>lua require('dap').continue()<cr>", { buffer = event.buf, noremap = true, silent = true })
+      vim.api.nvim_set_keymap("i", "<c-k>", "<c-w>k", { buffer = event.buf, noremap = true, silent = true })
+    end
   end,
 })

@@ -77,6 +77,10 @@ Host s100
 	HostName 192.168.100.100
 	User linjk
 
+Host root
+HostName 47.104.142.40
+User root
+
 Host *
   ControlMaster auto
   ControlPath /tmp/ssh_mux_%h_%p_%r

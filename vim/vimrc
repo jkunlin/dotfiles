@@ -461,7 +461,7 @@ require("mason-null-ls").setup({
 		end
 
     require("nvim-navic").attach(client, bufnr)
-end
+  end
 
   -- setup lspconfig
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
