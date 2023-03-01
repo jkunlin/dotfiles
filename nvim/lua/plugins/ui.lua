@@ -62,6 +62,21 @@ return {
         end
       end
 
+      local function search_stat()
+        if vim.v.hlsearch == 1 then
+          local sinfo = vim.fn.searchcount({ maxcount = 0 })
+          local stat = sinfo.incomplete > 0 and "[?/?]"
+          or sinfo.total > 0 and ("[%s/%s]"):format(sinfo.current, sinfo.total)
+          or nil
+
+          return stat
+          -- if stat ~= nil then
+          --   return stat
+          -- end
+        end
+      end
+
+
       return {
         options = {
           theme = "auto",
@@ -70,7 +85,13 @@ return {
         },
         sections = {
           lualine_a = { "mode" },
-          lualine_b = { "branch" },
+          lualine_b = { "branch",
+            {
+              function() return search_stat() end,
+              cond = function() return search_stat() ~= nil end,
+              color = fg("Constant"),
+            },
+          },
           lualine_c = {
             {
               "diagnostics",

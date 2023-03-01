@@ -66,15 +66,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     version = false, -- last release is way too old and doesn't work on Windows
-    event = "BufReadPost",
-    keys = {
-      { "<c-space>", desc = "Increment selection" },
-      { "<bs>", desc = "Schrink selection", mode = "x" },
-    },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      "nvim-treesitter/nvim-treesitter-context",
-    },
+    -- event = "BufReadPost",
     opts = {
       enable = enabled, -- Enable this plugin (Can be enabled/disabled later via commands)
       throttle = true, -- Throttles plugin updates (may improve performance)

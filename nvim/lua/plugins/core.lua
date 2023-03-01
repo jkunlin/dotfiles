@@ -32,6 +32,7 @@ return {
       "rafamadriz/friendly-snippets",
       config = function()
         require("luasnip.loaders.from_vscode").lazy_load()
+        require("luasnip.loaders.from_snipmate").lazy_load()
       end,
     },
     opts = {
@@ -104,6 +105,7 @@ return {
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
+          { name = "path" },
         }),
       }
     end,
@@ -177,7 +179,6 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
-    lazy = false,
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     dependencies = {
@@ -265,7 +266,7 @@ return {
   -- easily jump to any location and enhanced f/t motions for Leap
   {
     "ggandor/leap.nvim",
-    -- event = "BufReadPost",
+    event = "BufReadPost",
     dependencies = { { "ggandor/flit.nvim", opts = { labeled_modes = "nv" } } },
     config = function(_, opts)
       local leap = require("leap")
@@ -295,9 +296,9 @@ return {
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
         ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>b"] = { name = "+buffer" },
+        -- ["<leader>b"] = { name = "+buffer" },
         ["<leader>c"] = { name = "+code" },
-        ["<leader>f"] = { name = "+file/find" },
+        -- ["<leader>f"] = { name = "+file/find" },
         ["<leader>g"] = { name = "+git" },
         ["<leader>gh"] = { name = "+hunks" },
         ["<leader>q"] = { name = "+quit/session" },
@@ -695,4 +696,28 @@ return {
       require("toggleterm").setup(opts)
     end
   },
+
+  -- chatgpt
+  {
+    "jackMort/ChatGPT.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    },
+    init = function()
+      vim.cmd([[let $OPENAI_API_KEY = "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"]])
+    end,
+    cmd = { "ChatGPT", "ChatGPTActAs", "ChatGPTEditWithInstructions" },
+    config = function()
+      require("chatgpt").setup({
+        -- optional configuration
+      })
+    end,
+  },
+
+  -- vim-indexed-search
+  -- {
+  --   "henrik/vim-indexed-search",
+  -- },
 }

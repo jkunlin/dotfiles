@@ -37,6 +37,32 @@ return {
               text = '-enable-pretty-printing',
               description = 'enable pretty printing',
               ignoreFailures = false
+            },
+            {
+              text = 'set args ~/cut_stock/input/small/cut_4733647496755019778_20532.json 1 20532',
+              description = 'instance',
+              ignoreFailures = false
+            }
+          },
+        },
+        {
+          name = "cut_stock_cut_width",
+          type = "cppdbg",
+          request = "launch",
+          program = os.getenv("HOME") .. '/cut_stock/cut_stock',
+
+          cwd = '${workspaceFolder}',
+          stopOnEntry = true,
+          setupCommands = {
+            {
+              text = '-enable-pretty-printing',
+              description = 'enable pretty printing',
+              ignoreFailures = false
+            },
+            {
+              text = 'set args input/small/cut_4733647496755019778_32734.json 1 32743',
+              description = 'instance',
+              ignoreFailures = false
             }
           },
         },
@@ -56,10 +82,8 @@ return {
             },
             {
               text = 'set args /pub/data/linjk/smt/incremental/QF_BV/20170501-Heizmann-UltimateAutomizer/gcd_1_true-unreach-call_true-no-overflow.i.smt2',
-
-
               description = 'instance',
-              ignoreFailures = flase
+              ignoreFailures = false
             },
           },
         },
@@ -81,7 +105,7 @@ return {
               text = 'set args /home/linjk/smt/2021_QF_BV/2017-BuchwaldFried/counterexample.dump.ia32_Mul_base_disp--Add32.load32.Mul32.Mulh_u32.0005.smt2 -v',
 
               description = 'instance',
-              ignoreFailures = flase
+              ignoreFailures = false
             },
           },
         },
@@ -106,7 +130,7 @@ return {
                 -- return vim.fn.input("args: ", 'set args ')
               end,
               description = 'args',
-              ignoreFailures = flase
+              ignoreFailures = false
             },
           },
         },

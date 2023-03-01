@@ -56,8 +56,8 @@ opt.ttimeout = true
 opt.ttimeoutlen = 100
 
 if vim.fn.has("nvim-0.9.0") == 1 then
-  opt.splitkeep = "screen"
-  opt.shortmess = "filnxtToOFWIcC"
+  -- opt.splitkeep = "screen"
+  opt.shortmess = "filnxtToOFWIcCS"
 end
 
 -- fix markdown indentation settings
