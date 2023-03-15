@@ -284,9 +284,9 @@ Plug 'kana/vim-textobj-user'
 " Plug 'brooth/far.vim'
 "   let g:far#source='rg'
 
-Plug 'tpope/vim-markdown'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-  nmap <leader>mp <Plug>MarkdownPreviewToggle
+" Plug 'tpope/vim-markdown'
+" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+"   nmap <leader>mp <Plug>MarkdownPreviewToggle
 
 Plug 'sk1418/HowMuch'
   "The scale of the result:
@@ -414,7 +414,6 @@ require("mason-null-ls").setup({
     }, {
       { name = 'buffer' },
       { name = 'path' },
-      { name = 'cmdline' },
     })
   })
 
@@ -461,7 +460,7 @@ require("mason-null-ls").setup({
 		end
 
     require("nvim-navic").attach(client, bufnr)
-  end
+end
 
   -- setup lspconfig
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -920,7 +919,9 @@ require('telescope').setup {
       -- width = vim.o.columns, -- maximally available columns
       -- mirror = true,
       preview_cutoff = 30,
-      preview_height = 0.5, -- 50% of available lines
+      vertical = {
+        preview_height = 0.5, -- 50% of available lines
+      },
     },
     mappings = {
       n = {
