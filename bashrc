@@ -56,10 +56,15 @@ export COPYFILE_DISABLE=true
 MANPATH=$MANPATH:$HOME/share/man
 
 ## java
-export JAVA_HOME=~/jdk-13.0.1
+# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export JAVA_HOME=$HOME/.local/jdk-19.0.2
 export CLASSPATH=.:${JAVA_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
-export _JAVA_AWT_WM_NONREPARENTING=1
+# export _JAVA_AWT_WM_NONREPARENTING=1
+
+## maven
+export M2_HOME=$HOME/.local/apache-maven-3.9.0
+export PATH=${M2_HOME}/bin:$PATH
 
 ## cppcheck
 export PATH=$HOME/.local/cppcheck/bin:$PATH
