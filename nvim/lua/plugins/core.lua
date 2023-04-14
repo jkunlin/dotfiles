@@ -727,6 +727,36 @@ return {
     end
   },
 
+  -- neoai
+  {
+    "Bryley/neoai.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+    cmd = {
+      "NeoAI",
+      "NeoAIOpen",
+      "NeoAIClose",
+      "NeoAIToggle",
+      "NeoAIContext",
+      "NeoAIContextOpen",
+      "NeoAIContextClose",
+      "NeoAIInject",
+      "NeoAIInjectCode",
+      "NeoAIInjectContext",
+      "NeoAIInjectContextCode",
+    },
+    keys = {
+      { "<leader>as", desc = "summarize text" },
+      { "<leader>ag", desc = "generate git message" },
+    },
+    config = function()
+      require("neoai").setup({
+        -- Options go here
+      })
+    end,
+  },
+
   -- chatgpt
   {
     "jackMort/ChatGPT.nvim",
@@ -736,7 +766,7 @@ return {
       "nvim-telescope/telescope.nvim"
     },
     init = function()
-      vim.cmd([[let $OPENAI_API_KEY = "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"]])
+      -- vim.cmd([[let $OPENAI_API_KEY = ""]]) // we can set api-key here
     end,
     cmd = { "ChatGPT", "ChatGPTActAs", "ChatGPTEditWithInstructions" },
     config = function()
