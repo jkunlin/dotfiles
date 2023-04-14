@@ -67,6 +67,12 @@ return {
     },
     opts = function()
       local cmp = require("cmp")
+      -- this function is for copilot
+      local has_words_before = function()
+        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+      end
       return {
         completion = {
           -- completeopt = "menu,menuone,noinsert",
@@ -88,7 +94,7 @@ return {
           ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
           ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if cmp.visible() and has_words_before() then
               cmp.select_next_item()
             else
               fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
@@ -102,6 +108,7 @@ return {
           end),
         }),
         sources = cmp.config.sources({
+          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
@@ -694,6 +701,29 @@ return {
     },
     config = function (_, opts)
       require("toggleterm").setup(opts)
+    end
+  },
+
+  -- copilot
+  -- {
+  --   "github/copilot.vim",
+  -- },
+  {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  },
+
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup()
     end
   },
 

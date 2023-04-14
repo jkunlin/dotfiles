@@ -21,6 +21,9 @@ snippet debug "ifndef DEBUG"
   $1
   #endif
 
+snippet once "Header guard"
+  #pragma once
+
 snippet forv "for each vertex"
   for (size_t v = 1; v < adjacency_list.size(); ++v) {
     $0

@@ -18,7 +18,7 @@ return {
       highlight = { enable = true },
       -- indent = { enable = true },
       context_commentstring = { enable = true, enable_autocmd = false },
-      ensure_installed = { "c", "cpp", "bash", "vim", "lua", "python", "help" },
+      ensure_installed = { "c", "cpp", "bash", "vim", "lua", "python", "vimdoc" },
       incremental_selection = {
         enable = true,
         keymaps = {

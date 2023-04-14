@@ -311,6 +311,43 @@ return {
     opts = { separator = " ", highlight = true, depth_limit = 5 },
   },
 
+  {
+    "SmiteshP/nvim-navbuddy",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "SmiteshP/nvim-navic",
+      "MunifTanjim/nui.nvim"
+    },
+    -- keys = {
+    --   { "<leader>nv", "<cmd>Navbuddy<cr>", desc = "Nav" },
+    -- },
+    config = function()
+      local actions = require("nvim-navbuddy.actions")
+      local navbuddy = require("nvim-navbuddy")
+      navbuddy.setup({
+        window = {
+          border = "double"
+        },
+        mappings = {
+          ["j"] = actions.next_sibling,
+          ["k"] = actions.previous_sibling,
+          ["h"] = actions.parent,
+          ["l"] = actions.children,
+
+        },
+        lsp = { auto_attach = true }
+      })
+
+      vim.keymap.set({ "n" }, "<leader>nv", "<cmd>Navbuddy<cr>")
+
+      -- Util.on_attach(function(client, buffer)
+      --   if client.server_capabilities.documentSymbolProvider then
+      --     require("nvim-navbuddy").attach(client, buffer)
+      --   end
+      -- end)
+    end
+  },
+
   -- incline
   {
     "b0o/incline.nvim",
