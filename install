@@ -77,6 +77,39 @@ mkdir -p ~/.local/share
 
 mkdir -p $BASE/tmp
 
+# clash
+if ! command -v $HOME/.local/bin/clash 2>/dev/null; then
+  $DL $BASE/tmp/clash-linux-amd64-v1.15.1.gz https://github.com/Dreamacro/clash/releases/download/v1.15.1/clash-linux-amd64-v1.15.1.gz
+  cd $BASE/tmp/
+  gzip -d clash-linux-amd64-v1.15.1.gz
+  chmod a+x clash-linux-amd64-v1.15.1
+  cp $BASE/tmp/clash-linux-amd64-v1.15.1 ~/.local/bin/clash
+  echo "请输入clash订阅地址："
+  read clash_config_url
+  mkdir -p ~/.config/clash
+  $DL ~/.config/clash/config.yaml $clash_config_url
+  echo "clash installed"
+  cd $BASE
+fi
+
+# proxychain-ng
+if ! command -v $HOME/.local/bin/proxychains4 2>/dev/null; then
+  $DL $BASE/tmp/proxychains-ng-4.16.tar.xz https://github.com/rofl0r/proxychains-ng/releases/download/v4.16/proxychains-ng-4.16.tar.xz
+  cd $BASE/tmp/
+  tar xf proxychains-ng-4.16.tar.xz
+  cd proxychains-ng-4.16
+  ./configure --prefix=$HOME/.local/ --sysconfdir=$HOME/.local/etc
+  make -j3
+  make install
+  make install-config
+  echo "请输入socks端口："
+  read port
+  sed -i '$d' $HOME/.local/etc/proxychains.conf
+  echo "socks5 127.0.0.1 $port" >> $HOME/.local/etc/proxychains.conf
+  echo "proxychain-ng installed"
+  cd $BASE
+fi
+
 # xcwd
 # if ! command -v xcwd 2>/dev/null; then
 #   curl --insecure -fLo $BASE/tmp/xcwd-master.zip https://github.com/schischi/xcwd/archive/master.zip
