@@ -270,6 +270,22 @@ return {
     end,
   },
 
+  -- harpoon for marking files
+  {
+    "ThePrimeagen/harpoon",
+    dependencies = "nvim-lua/plenary.nvim",
+    keys = {
+      { "mh", nil, desc = "harpoon add file" },
+      { "mj", nil, desc = "harpoon jump to file" },
+    },
+    config = function()
+      require("harpoon").setup()
+      require("telescope").load_extension('harpoon')
+      vim.keymap.set({ "n" }, "mh", require("harpoon.mark").add_file , { noremap = true, silent = true })
+      vim.keymap.set({ "n" }, "mj", require("harpoon.ui").toggle_quick_menu)
+    end,
+  },
+
   -- easily jump to any location and enhanced f/t motions for Leap
   {
     "ggandor/leap.nvim",
