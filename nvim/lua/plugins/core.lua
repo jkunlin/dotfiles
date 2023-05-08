@@ -64,6 +64,7 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
+      "tzachar/cmp-ai",
     },
     opts = function()
       local cmp = require("cmp")
@@ -106,9 +107,20 @@ return {
               cmp.select_prev_item()
             end
           end),
+
+          -- ['<C-x>'] = cmp.mapping(
+          --   cmp.mapping.complete({
+          --     config = {
+          --       sources = cmp.config.sources({
+          --         { name = 'cmp_ai', }
+          --       })
+          --     }
+          --   }),
+          --   { 'i' }),
         }),
         sources = cmp.config.sources({
-          { name = "copilot" },
+          -- { name = "cmp_ai" },
+          -- { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
@@ -805,6 +817,28 @@ return {
       })
     end,
   },
+
+  -- {
+  --   'tzachar/cmp-ai',
+  --   dependencies = 'nvim-lua/plenary.nvim',
+  --   config = function()
+  --     local cmp_ai = require('cmp_ai.config')
+  --
+  --     cmp_ai:setup({
+  --       -- max_lines = 1000,
+  --       -- provider = 'HF',
+  --       max_lines = 300,
+  --       provider = 'OpenAI',
+  --       model = 'gpt-3.5-turbo',
+  --       run_on_every_keystroke = false,
+  --       ignored_file_types = {
+  --         -- default is not to ignore
+  --         -- uncomment to ignore in lua:
+  --         -- lua = true
+  --       },
+  --     })
+  --   end
+  -- },
 
   -- vim-indexed-search
   -- {

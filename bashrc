@@ -77,6 +77,7 @@ export PATH=$HOME/.local/ampl:$PATH
 
 ## scip
 export PATH=$HOME/.local/SCIPOptSuite-8.0.3-Linux/bin:$PATH
+export SCIPOPTDIR=$HOME/.local/SCIPOptSuite-8.0.3-Linux/
 
 # Aliases
 # --------------------------------------------------------------------
