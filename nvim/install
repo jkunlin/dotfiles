@@ -35,12 +35,14 @@ mkdir -p $BASE/tmp
 
 # node
 if ! command -v node 2>/dev/null; then
-  curl -sL install-node.now.sh/lts | bash -s -- --prefix=$HOME/.local
+  $DL $BASE/tmp/install-node.sh https://install-node.now.sh/lts
+  bash $BASE/tmp/install-node.sh --prefix=$HOME/.local
 fi
 
 # yarn
 if ! command -v yarn 2>/dev/null; then
-  curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+  $DL $BASE/tmp/yarn-install.sh https://yarnpkg.com/install.sh
+  bash $BASE/tmp/yarn-install.sh
 fi
 
 # vale
