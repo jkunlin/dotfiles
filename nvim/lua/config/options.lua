@@ -49,6 +49,7 @@ opt.updatetime = 100 -- save swap file and trigger CursorHold
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- minimum window width
 opt.wrap = true -- enable line wrap
+opt.diffopt:append("linematch:60") -- https://github.com/neovim/neovim/pull/14537
 
 opt.swapfile = false
 opt.scrolloff = 5
