@@ -147,14 +147,26 @@ if ! command -v parallel 2>/dev/null; then
 fi
 
 # runsolver
-if ! command -v runsolver 2>/dev/null; then
-  cd $BASE/tmp
-  $DL runsolver-3.3.4.tar.bz2 https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.3.4.tar.bz2
-  tar xjf runsolver-3.3.4.tar.bz2
-  cd runsolver/src
-  make -j
-  cp runsolver ~/.local/bin
-  cd ../../..
+# if ! command -v runsolver 2>/dev/null; then
+#   cd $BASE/tmp
+#   $DL runsolver-3.3.4.tar.bz2 https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.3.4.tar.bz2
+#   tar xjf runsolver-3.3.4.tar.bz2
+#   cd runsolver/src
+#   make -j
+#   cp runsolver ~/.local/bin
+#   cd ../../..
+# fi
+
+# anaconda
+if ! command -v anaconda 2>/dev/null; then
+	$DL $BASE/tmp/anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
+	bash $BASE/tmp/anaconda.sh
+fi
+
+# tmux
+if ! command -v tmux 2>/dev/null; then
+	$DL ~/.local/bin/tmux https://github.com/jkunlin/tmux-appimage/releases/download/run-4/tmux
+	chmod a+x ~/.local/bin/tmux
 fi
 
 # rm -r $BASE/tmp
