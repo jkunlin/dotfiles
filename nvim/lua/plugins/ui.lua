@@ -300,6 +300,9 @@ return {
   {
     "SmiteshP/nvim-navic",
     lazy = true,
+    dependencies = {
+      "neovim/nvim-lspconfig",
+    },
     init = function()
       vim.g.navic_silence = true
       Util.on_attach(function(client, buffer)
@@ -322,18 +325,10 @@ return {
     --   { "<leader>nv", "<cmd>Navbuddy<cr>", desc = "Nav" },
     -- },
     config = function()
-      local actions = require("nvim-navbuddy.actions")
       local navbuddy = require("nvim-navbuddy")
       navbuddy.setup({
         window = {
           border = "double"
-        },
-        mappings = {
-          ["j"] = actions.next_sibling,
-          ["k"] = actions.previous_sibling,
-          ["h"] = actions.parent,
-          ["l"] = actions.children,
-
         },
         lsp = { auto_attach = true }
       })
