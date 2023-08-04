@@ -629,18 +629,22 @@ return {
   {
     "mbbill/undotree",
     cmd = "UndotreeToggle",
-    build = "mkdir -p " .. os.getenv("HOME") ..  "/.undodir",
     keys = {
       { "U", "<cmd>UndotreeToggle<cr>", desc = "Undotree Toggle" },
     },
     init = function()
       vim.g.undotree_WindowLayout = 2
       if vim.fn.has("persistent_undo") == 1 then
-        vim.opt.undodir = os.getenv("HOME") .. "/.undodir/"
+        local undodir = vim.loop.os_homedir() .. "/.undodir"
+        if not vim.fn.isdirectory(undodir) then
+          vim.fn.mkdir(undodir, "p")
+        end
+        vim.opt.undodir = undodir
         vim.opt.undofile = true
       end
     end,
   },
+
 
   -- vim-obsession
   {
