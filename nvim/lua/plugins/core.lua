@@ -121,6 +121,7 @@ return {
         sources = cmp.config.sources({
           -- { name = "cmp_ai" },
           -- { name = "copilot" },
+          -- { name = "codeium" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
@@ -767,6 +768,34 @@ return {
     },
     config = function (_, opts)
       require("toggleterm").setup(opts)
+    end
+  },
+
+  -- codeium
+  -- {
+  --   "Exafunction/codeium.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "hrsh7th/nvim-cmp",
+  --   },
+  --   config = function()
+  --     require("codeium").setup({
+  --     })
+  --   end
+  -- },
+
+  -- codeium
+  {
+    'Exafunction/codeium.vim',
+    event = 'BufEnter',
+    config = function()
+      vim.g.codeium_disable_bindings = 1
+      -- Change '<C-g>' here to any keycode you like.
+      -- vim.keymap.set('i', '<M-p>', function() return vim.fn['codeium#Complete']() end, { noremap = true, expr = true })
+      vim.keymap.set('i', '<M-[>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+      vim.keymap.set('i', '<M-]>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+      vim.keymap.set('i', '<M-\\>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+      -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
     end
   },
 
