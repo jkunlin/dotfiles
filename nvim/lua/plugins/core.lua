@@ -587,6 +587,8 @@ return {
     cmd = {
       "DiffviewOpen",
     },
+    opts = {git_cmd = {vim.loop.os_homedir() ..  "/dotfiles/git"}},
+    config = true,
   },
 
   -- linediff
