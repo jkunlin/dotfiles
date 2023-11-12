@@ -52,8 +52,10 @@ return {
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
+          if cmp.visible() and cmp.get_active_entry() then -- select the first item
             cmp.select_next_item()
+          elseif cmp.visible() and (cmp.get_active_entry() == nil) then
+            cmp.select_next_item({ count = 0 })
           elseif has_words_before() then
             cmp.complete()
           else
@@ -67,6 +69,17 @@ return {
             fallback()
           end
         end, { "i", "s" }),
+        ["<CR>"] = cmp.mapping({
+          i = function(fallback)
+            if cmp.visible() and cmp.get_active_entry() then
+              cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+            else
+              fallback()
+            end
+          end,
+          s = cmp.mapping.confirm({ select = true }),
+          c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+        }),
       })
     end,
   },
