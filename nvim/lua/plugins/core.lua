@@ -52,9 +52,9 @@ return {
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() and cmp.get_active_entry() then -- select the first item
+          if cmp.visible() and cmp.get_active_entry() then
             cmp.select_next_item()
-          elseif cmp.visible() and (cmp.get_active_entry() == nil) then
+          elseif cmp.visible() and (cmp.get_active_entry() == nil) then -- select the first item
             cmp.select_next_item({ count = 0 })
           elseif has_words_before() then
             cmp.complete()

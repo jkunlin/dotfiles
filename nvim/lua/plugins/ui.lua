@@ -3,6 +3,22 @@ return {
     "EdenEast/nightfox.nvim",
   },
 
+  {
+    "folke/noice.nvim",
+    opts = {
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = "written",
+          },
+          opts = { skip = true },
+        },
+      },
+    },
+  },
+
   -- { "folke/noice.nvim", enabled = false },
   -- { "rcarriga/nvim-notify", enabled = false },
   -- { "stevearc/dressing.nvim", enabled = false },

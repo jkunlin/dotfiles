@@ -20,6 +20,8 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.dap.core" },
     { import = "lazyvim.plugins.extras.coding.codeium" },
     { import = "lazyvim.plugins.extras.editor.navic" },
+    { import = "lazyvim.plugins.extras.formatting.black" },
+
     -- import/override with your plugins
     { import = "plugins" },
   },

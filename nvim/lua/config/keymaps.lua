@@ -7,6 +7,7 @@ vim.keymap.set({ "n", "x" }, "gw", "*N")
 vim.keymap.set({ "n" }, "<leader>w", "<cmd>update<cr><esc>", { desc = "Save file" })
 
 -- quit
+vim.keymap.del("n", "<leader>qq")
 vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>Q", "<cmd>:qa!<cr>", { desc = "Quit all" })
 
@@ -15,6 +16,10 @@ vim.keymap.set("i", "jk", "<esc>", { desc = "Escape" })
 vim.keymap.set("t", "jk", "<c-\\><c-n>", { desc = "Escape" })
 
 -- Windows
+vim.keymap.del("n", "<leader>ww")
+vim.keymap.del("n", "<leader>wd")
+vim.keymap.del("n", "<leader>w-")
+vim.keymap.del("n", "<leader>w|")
 vim.keymap.set("n", "=", "<cmd>vertical resize +5", { desc = "Window resize +5" })
 vim.keymap.set("n", "-", "<cmd>vertical resize -5", { desc = "Window resize -5" })
 vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Virtical split" })

@@ -5,5 +5,6 @@ local opt = vim.opt
 
 opt.relativenumber = false
 opt.splitkeep = "cursor"
-opt.shortmess:append({ S = true })
+opt.shortmess:append({ S = true, s = true }) -- S for search, s for hit-enter message
 opt.wrap = true
+opt.swapfile = false
