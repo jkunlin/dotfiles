@@ -42,22 +42,14 @@ return {
     "hrsh7th/nvim-cmp",
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
-      local has_words_before = function()
-        unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
+      opts.completion.completeopt = "menu,menuone,noselect, noinsert"
 
       local cmp = require("cmp")
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() and cmp.get_active_entry() then
+          if cmp.visible() then
             cmp.select_next_item()
-          elseif cmp.visible() and (cmp.get_active_entry() == nil) then -- select the first item
-            cmp.select_next_item({ count = 0 })
-          elseif has_words_before() then
-            cmp.complete()
           else
             fallback()
           end
@@ -114,9 +106,9 @@ return {
       },
     },
     keys = {
-      { "<leader><leader>", "<cmd>Telescope commands<cr>", desc = "Commands" },
+      { "<leader>:", "<cmd>Telescope commands<cr>", desc = "Commands" },
+      { "<leader>;", "<cmd>Telescope commands<cr>", desc = "Commands" },
       { "<leader>j", "<cmd>Telescope jumplist<cr>", desc = "Jumplist" },
-      { "<leader>rg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
       { "<leader>`", "<cmd>Telescope marks<cr>", desc = "Marks" },
       {
         "<leader>rw",
@@ -126,20 +118,6 @@ return {
         desc = "grep current word",
       },
       { "<leader>rW", "<cmd>Telescope grep_string<cr>", desc = "Grep string" },
-      -- Falling back to find_files if git_files can't find a .git directory
-      {
-        "<leader>f",
-        function()
-          local in_git_repo = vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
-          if in_git_repo then
-            require("telescope.builtin").git_files()
-          else
-            require("telescope.builtin").find_files()
-          end
-        end,
-        desc = "find files in dir",
-      },
-      { "<leader>F", "<cmd>Telescope find_files<cr>", desc = "find project files" },
     },
   },
 
@@ -411,6 +389,23 @@ return {
     },
   },
 
+  -- delete keymap for <leader>w and <leader>q
+  {
+    "folke/which-key.nvim",
+
+    opts = function(_, opts)
+      opts.defaults["<leader>w"] = nil
+      opts.defaults["<leader>q"] = nil
+    end,
+  },
+
+  {
+    "folke/persistence.nvim",
+    keys = function()
+      return {}
+    end,
+  },
+
   -- toggleterm.nvim
   -- {
   --   "akinsho/toggleterm.nvim",
@@ -427,23 +422,23 @@ return {
   -- },
 
   -- codeium
-  -- {
-  --   "Exafunction/codeium.vim",
-  --   event = "BufEnter",
-  --   config = function()
-  --     vim.g.codeium_disable_bindings = 1
-  --     -- Change '<C-g>' here to any keycode you like.
-  --     -- vim.keymap.set('i', '<M-p>', function() return vim.fn['codeium#Complete']() end, { noremap = true, expr = true })
-  --     vim.keymap.set("i", "<M-[>", function()
-  --       return vim.fn["codeium#CycleCompletions"](1)
-  --     end, { expr = true })
-  --     vim.keymap.set("i", "<M-]>", function()
-  --       return vim.fn["codeium#CycleCompletions"](-1)
-  --     end, { expr = true })
-  --     vim.keymap.set("i", "<M-\\>", function()
-  --       return vim.fn["codeium#Accept"]()
-  --     end, { expr = true })
-  --     -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
-  --   end,
-  -- },
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+    config = function()
+      vim.g.codeium_disable_bindings = 1
+      -- Change '<C-g>' here to any keycode you like.
+      -- vim.keymap.set('i', '<M-p>', function() return vim.fn['codeium#Complete']() end, { noremap = true, expr = true })
+      vim.keymap.set("i", "<M-[>", function()
+        return vim.fn["codeium#CycleCompletions"](1)
+      end, { expr = true })
+      vim.keymap.set("i", "<M-]>", function()
+        return vim.fn["codeium#CycleCompletions"](-1)
+      end, { expr = true })
+      vim.keymap.set("i", "<M-\\>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true })
+      -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+    end,
+  },
 }

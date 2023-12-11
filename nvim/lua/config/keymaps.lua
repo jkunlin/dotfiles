@@ -3,7 +3,6 @@
 -- Add any additional keymaps here
 
 vim.keymap.set({ "n", "x" }, "gw", "*N")
-
 vim.keymap.set({ "n" }, "<leader>w", "<cmd>update<cr><esc>", { desc = "Save file" })
 
 -- quit
@@ -20,8 +19,8 @@ vim.keymap.del("n", "<leader>ww")
 vim.keymap.del("n", "<leader>wd")
 vim.keymap.del("n", "<leader>w-")
 vim.keymap.del("n", "<leader>w|")
-vim.keymap.set("n", "=", "<cmd>vertical resize +5", { desc = "Window resize +5" })
-vim.keymap.set("n", "-", "<cmd>vertical resize -5", { desc = "Window resize -5" })
+vim.keymap.set("n", "=", "<cmd>vertical resize +5<cr>", { desc = "Window resize +5" })
+vim.keymap.set("n", "-", "<cmd>vertical resize -5<cr>", { desc = "Window resize -5" })
 vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Virtical split" })
 vim.keymap.set("n", "<leader>-", "<cmd>split<cr>", { desc = "Horizontal split" })
 vim.keymap.set("n", "<tab>", "<c-w>w", { desc = "Window next" })
@@ -36,8 +35,8 @@ vim.keymap.set("n", "]l", "<cmd>lnext<cr>", { desc = "Location next" })
 vim.keymap.set("n", "[l", "<cmd>lprev<cr>", { desc = "Location previous" })
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Buffer next" })
 vim.keymap.set("n", "[b", "<cmd>bprev<cr>", { desc = "Beffer previous" })
-vim.keymap.set("n", "]t", "<cmd>tnext<cr>", { desc = "Tab next" })
-vim.keymap.set("n", "[t", "<cmd>tprev<cr>", { desc = "Tab previous" })
+-- vim.keymap.set("n", "]t", "<cmd>tnext<cr>", { desc = "Tab next" })
+-- vim.keymap.set("n", "[t", "<cmd>tprev<cr>", { desc = "Tab previous" })
 
 -- :Root | Change directory to the root of the Git repository
 vim.cmd([[
@@ -54,8 +53,8 @@ vim.cmd([[
 ]])
 
 -- " Open new line below and above current line
-vim.keymap.set("n", "<leader>o", "o<esc>")
-vim.keymap.set("n", "<leader>O", "O<esc>")
+vim.keymap.set("n", "<leader>o", "o<esc>", { desc = "new line below" })
+vim.keymap.set("n", "<leader>O", "O<esc>", { desc = "new line above" })
 
 -- Others
 vim.keymap.set("n", "<c-g>", "1<c-g>", { desc = "Path of buffer" })
