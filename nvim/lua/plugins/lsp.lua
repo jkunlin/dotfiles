@@ -14,6 +14,14 @@ return {
       keys[#keys + 1] = { "g-", "<cmd>split<bar>lua vim.lsp.buf.definition()<cr>" }
       keys[#keys + 1] = { "gf", "<cmd>lua vim.lsp.buf.code_action()<cr>" }
       keys[#keys + 1] = { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>" }
+      keys[#keys + 1] = {
+        "gd",
+        function()
+          require("telescope.builtin").lsp_definitions({ reuse_win = false })
+        end,
+        desc = "Goto Definition",
+        has = "definition",
+      }
       vim.api.nvim_create_user_command("Format", "lua vim.lsp.buf.format()", { nargs = 0 })
     end,
 
