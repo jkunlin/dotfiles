@@ -185,7 +185,7 @@ return {
 
   -- hydra
   {
-    "anuvyklack/hydra.nvim",
+    "nvimtools/hydra.nvim",
     event = "BufReadPost",
     opts = {
       name = "Resize Windows",
