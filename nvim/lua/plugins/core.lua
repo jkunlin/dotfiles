@@ -406,6 +406,29 @@ return {
     end,
   },
 
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      {
+        "<leader>ha",
+        function()
+          require("harpoon"):list():append()
+          print("Add harpoon")
+        end,
+        desc = "Add harpoon mark",
+      },
+      {
+        "<leader>hj",
+        function()
+          require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
+        end,
+        desc = "Harpoon toogle quick menu",
+      },
+    },
+  },
+
   -- toggleterm.nvim
   -- {
   --   "akinsho/toggleterm.nvim",
