@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufEnter", {
   group = augroup("help_in_tab"),
   callback = function()
-    local ft = vim.api.nvim_buf_get_option(0, "filetype")
+    local ft = vim.api.nvim_get_option_value("filetype", {})
     if ft == "help" then
       vim.cmd([[
         wincmd T
@@ -43,7 +43,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("BufEnter", {
   group = augroup("dap_repl_keymap"),
   callback = function()
-    if vim.api.nvim_buf_get_option(0, "filetype") == "dap-repl" then
+    if vim.api.nvim_get_option_value("filetype", {}) == "dap-repl" then
       require("dap.ext.autocompl").attach()
       vim.api.nvim_buf_set_keymap(
         0,
@@ -88,11 +88,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
 require("lazyvim.util").lsp.on_attach(function(client, bufnr)
   -- set formatexpr and tagfunc to keep using Vim default mappings for formatting and jumping to a tag
   if client.server_capabilities.definitionProvider then
-    vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+    vim.api.nvim_set_option_value("tagfunc", "v:lua.vim.lsp.tagfunc", { buf = bufnr })
   end
 
   if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+    vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = bufnr })
     -- Add this <leader> bound mapping so formatting the entire document is easier.
     vim.api.nvim_set_keymap(
       "n",
