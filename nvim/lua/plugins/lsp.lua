@@ -1,8 +1,8 @@
 return {
-  {
-    "simrat39/symbols-outline.nvim",
-    keys = { { "gt", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
-  },
+  -- {
+  --   "simrat39/symbols-outline.nvim",
+  --   keys = { { "gt", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
+  -- },
 
   {
     "neovim/nvim-lspconfig",

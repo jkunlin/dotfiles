@@ -105,3 +105,11 @@ require("lazyvim.util").lsp.on_attach(function(client, bufnr)
     -- lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
   end
 end)
+
+-- Disable autoformat for lua files
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "cpp", "c" },
+  callback = function()
+    vim.b.autoformat = false
+  end,
+})
