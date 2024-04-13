@@ -427,6 +427,13 @@ return {
         desc = "Harpoon toogle quick menu",
       },
     },
+    config = function()
+      require("harpoon"):setup()
+    end,
+  },
+
+  {
+    "mechatroner/rainbow_csv",
   },
 
   -- toggleterm.nvim
