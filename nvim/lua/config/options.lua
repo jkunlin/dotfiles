@@ -10,6 +10,7 @@ opt.wrap = true
 opt.swapfile = false
 opt.diffopt:append("linematch:60") -- https://github.com/neovim/neovim/pull/14537
 
+opt.clipboard = "unnamedplus" -- Sync with system clipboard
 vim.g.clipboard = {
   name = "OSC 52",
   copy = {
@@ -22,3 +23,15 @@ vim.g.clipboard = {
   },
   cache_enabled = 1,
 }
+
+-- vim.g.clipboard = {
+--   name = "myClipboard",
+--   copy = {
+--     ["+"] = { "tmux", "load-buffer", "-" },
+--     ["*"] = { "tmux", "load-buffer", "-" },
+--   },
+--   paste = {
+--     ["+"] = { "tmux", "save-buffer", "-" },
+--     ["*"] = { "tmux", "save-buffer", "-" },
+--   },
+-- }
