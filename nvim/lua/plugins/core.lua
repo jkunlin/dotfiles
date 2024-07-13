@@ -463,6 +463,21 @@ return {
       vim.g.copilot_no_tab_map = true
     end,
   },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    cmd = {
+      "CopilotChat",
+      "CopilotChatExplain",
+      "CopilotChatReview",
+      "CopilotChatFix",
+      "CopilotChatOptimize",
+      "CopilotChatDocs",
+      "CopilotChatTests",
+      "CopilotChatFixDiagnostic",
+      "CopilotChatCommit",
+      "CopilotChatCommitStaged",
+    },
+  },
   -- codeium
   -- {
   --   "Exafunction/codeium.vim",

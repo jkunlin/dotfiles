@@ -40,10 +40,42 @@ return {
           },
         }
       end
+      dap.adapters.cppdbg = {
+        id = "cppdbg",
+        type = "executable",
+        -- command = "/absolute/path/to/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+        command = vim.fn.stdpath("data") .. "/mason/bin/OpenDebugAD7",
+      }
       for _, lang in ipairs({ "c", "cpp" }) do
         dap.configurations[lang] = {
           {
-            name = "stp",
+            name = "tmp-coredump",
+            type = "cppdbg",
+            request = "launch",
+            program = os.getenv("HOME") .. "/lp/SeedMIP/main",
+            -- coreDumpPath = function()
+            --   return vim.fn.input("Path to coredump: ", "/var/lib/apport/coredump/", "file")
+            -- end,
+            coreDumpPath = function()
+              local directory = "/var/lib/apport/coredump/"
+              local scan_command = "ls -t " .. directory .. " | head -n1"
+              local handle = io.popen(scan_command)
+              local result = handle:read("*a")
+              handle:close()
+              local newest_file = result:gsub("\n$", "") -- 去除结果字符串末尾的换行符
+              return directory .. "/" .. newest_file
+            end,
+            cwd = "${workspaceFolder}",
+            stopOnEntry = true,
+            -- setupCommands = {
+            --   {
+            --     text = "-enable-pretty-printing",
+            --     description = "enable pretty printing",
+            --     ignoreFailures = false,
+            --   },
+          },
+          {
+            name = "stp-coredump",
             type = "cppdbg",
             request = "launch",
             program = os.getenv("HOME") .. "/smt/stp/build/stp",
@@ -82,7 +114,7 @@ return {
                 ignoreFailures = false,
               },
               {
-                text = "set args /home/linjk/smt/stp/build/test.smt2",
+                text = "set args  /pub/netdisk1/linjk/smt/bv/benchmarks/QF_BV-42472/Sage2/bench_14903.smt2",
                 description = "instance",
                 ignoreFailures = false,
               },
