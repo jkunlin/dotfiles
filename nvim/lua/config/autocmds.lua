@@ -123,3 +123,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     copy_to_unnamed(vim.v.event.regcontents)
   end,
 })
+
+-- Ensure copilot.vim is installed and configured
+-- if pcall(require, "copilot") then
+-- end
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("CopilotWorkspace", { clear = true }),
+  callback = function()
+    local root_dir = require("lazyvim.util").root()
+    if root_dir then
+      vim.g.copilot_workspace_folders = { root_dir }
+    end
+  end,
+})

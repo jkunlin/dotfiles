@@ -15,10 +15,10 @@ vim.keymap.set("i", "jk", "<esc>", { desc = "Escape" })
 vim.keymap.set("t", "jk", "<c-\\><c-n>", { desc = "Escape" })
 
 -- Windows
-vim.keymap.del("n", "<leader>ww")
+-- vim.keymap.del("n", "<leader>ww")
 vim.keymap.del("n", "<leader>wd")
-vim.keymap.del("n", "<leader>w-")
-vim.keymap.del("n", "<leader>w|")
+-- vim.keymap.del("n", "<leader>w-")
+-- vim.keymap.del("n", "<leader>w|")
 vim.keymap.set("n", "=", "<cmd>vertical resize +5<cr>", { desc = "Window resize +5" })
 vim.keymap.set("n", "-", "<cmd>vertical resize -5<cr>", { desc = "Window resize -5" })
 vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Virtical split" })
