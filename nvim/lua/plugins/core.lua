@@ -63,7 +63,7 @@ return {
         end, { "i", "s" }),
         ["<CR>"] = cmp.mapping({
           i = function(fallback)
-            if cmp.visible() and cmp.get_active_entry() then
+            if cmp.visible() and cmp.get_selected_entry() then
               cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
             else
               fallback()
@@ -106,8 +106,8 @@ return {
       },
     },
     keys = {
-      { "<leader>:", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "<leader>;", "<cmd>Telescope commands<cr>", desc = "Commands" },
+      { "<leader>:", "<cmd>Telescope commands<cr>", desc = "Commands", mode = { "n", "v" } },
+      { "<leader>;", "<cmd>Telescope commands<cr>", desc = "Commands", mode = { "n", "v" } },
       { "<leader>j", "<cmd>Telescope jumplist<cr>", desc = "Jumplist" },
       { "<leader>`", "<cmd>Telescope marks<cr>", desc = "Marks" },
       {
@@ -452,50 +452,205 @@ return {
   -- },
 
   -- copliot
-  {
-    "github/copilot.vim",
-    config = function()
-      vim.keymap.set("i", "<M-\\>", "copilot#Accept()", {
-        expr = true,
-        replace_keycodes = false,
-        desc = "Copilot Accept",
-      })
-      vim.g.copilot_no_tab_map = true
-    end,
-  },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    cmd = {
-      "CopilotChat",
-      "CopilotChatExplain",
-      "CopilotChatReview",
-      "CopilotChatFix",
-      "CopilotChatOptimize",
-      "CopilotChatDocs",
-      "CopilotChatTests",
-      "CopilotChatFixDiagnostic",
-      "CopilotChatCommit",
-      "CopilotChatCommitStaged",
-    },
-  },
-  -- codeium
   -- {
-  --   "Exafunction/codeium.vim",
-  --   event = "BufEnter",
+  --   "github/copilot.vim",
   --   config = function()
-  --     vim.g.codeium_disable_bindings = 1
-  --     -- Change '<C-g>' here to any keycode you like.
-  --     -- vim.keymap.set('i', '<M-p>', function() return vim.fn['codeium#Complete']() end, { noremap = true, expr = true })
-  --     vim.keymap.set("i", "<M-[>", function()
-  --       return vim.fn["codeium#CycleCompletions"](1)
-  --     end, { expr = true })
-  --     vim.keymap.set("i", "<M-]>", function()
-  --       return vim.fn["codeium#CycleCompletions"](-1)
-  --     end, { expr = true })
-  --     vim.keymap.set("i", "<M-\\>", function()
-  --       return vim.fn["codeium#Accept"]()
-  --     end, { expr = true })
-  --     -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+  --     vim.keymap.set("i", "<M-\\>", "copilot#Accept()", {
+  --       expr = true,
+  --       replace_keycodes = false,
+  --       desc = "Copilot Accept",
+  --     })
+  --     vim.g.copilot_no_tab_map = true
   --   end,
   -- },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   cmd = {
+  --     "CopilotChat",
+  --     "CopilotChatExplain",
+  --     "CopilotChatReview",
+  --     "CopilotChatFix",
+  --     "CopilotChatOptimize",
+  --     "CopilotChatDocs",
+  --     "CopilotChatTests",
+  --     "CopilotChatFixDiagnostic",
+  --     "CopilotChatCommit",
+  --     "CopilotChatCommitStaged",
+  --   },
+  --   -- opts = {
+  --   --   mappings = {
+  --   --     submit_prompt = { normal = "<CR>", insert = "<C-CR>" },
+  --   --   },
+  --   --   system_prompt = require("CopilotChat.prompts").COPILOT_INSTRUCTIONS .. "\nReply in Chinese.",
+  --   -- },
+  --   opts = function(_, opts)
+  --     opts.mappings =
+  --       vim.tbl_extend("force", opts.mappings or {}, { submit_prompt = { normal = "<CR>", insert = "<C-CR>" } })
+  --
+  --     local copilot_instructions = require("CopilotChat.prompts").COPILOT_INSTRUCTIONS
+  --     local sentences = {}
+  --
+  --     -- Split copilot_instructions into sentences
+  --     for sentence in copilot_instructions:gmatch("([^%.]+)") do
+  --       table.insert(sentences, sentence)
+  --     end
+  --
+  --     -- Insert "Reply in Chinese" into the second last sentence
+  --     sentences[#sentences - 1] = sentences[#sentences - 1] .. "\nYou shuold response in Chinese"
+  --
+  --     -- Join the sentences back together
+  --     local new_copilot_instructions = table.concat(sentences, ".")
+  --
+  --     opts.system_prompt = new_copilot_instructions
+  --   end,
+  --   keys = {
+  --     {
+  --       "<leader>ac",
+  --       function()
+  --         return require("CopilotChat").toggle()
+  --       end,
+  --       desc = "Toggle (CopilotChat)",
+  --       mode = { "n", "v" },
+  --     },
+  --     {
+  --       "<leader>aa",
+  --       false,
+  --       mode = { "n", "v" },
+  --     },
+  --   },
+  -- },
+
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false, -- set this if you want to always pull the latest change
+    opts = {
+      -- add any opts here
+      provider = "claude", -- openai, claude, copilot
+      auto_suggestions_provider = "openai",
+      -- openai = {
+      --   endpoint = "https://aihubmix.com/v1",
+      --   model = "claude-3-5-sonnet-20240620",
+      --   temperature = 0,
+      --   max_tokens = 4096,
+      -- },
+      openai = {
+        endpoint = "https://api.openai.com/v1",
+        model = "gpt-4o-mini",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 4096,
+        ["local"] = false,
+      },
+      claude = {
+        endpoint = "https://clauder.jkunlin.workers.dev",
+        model = "claude-3-5-sonnet-20240620",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 8000,
+        ["local"] = false,
+      },
+      highlights = {
+        diff = {
+          incoming = "DiffAdd", -- need have background color
+          current = "DiffDelete", -- need have background color
+        },
+      },
+      suggestion = {
+        accept = "<M-l>",
+        next = "<M-]>",
+        prev = "<M-[>",
+        dismiss = "<Esc>",
+      },
+      behaviour = {
+        auto_suggestions = false, -- Experimental stage
+        auto_set_highlight_group = true,
+        auto_set_keymaps = true,
+        auto_apply_diff_after_generation = false,
+        support_paste_from_clipboard = false,
+      },
+      mappings = {
+        -- show_sidebar = "<leader>aa",
+        ask = "<leader>aa",
+        edit = "<leader>ae",
+        refresh = "<leader>ar",
+
+        diff = {
+          ours = "co",
+          theirs = "ct",
+          none = "c0",
+          both = "cb",
+          next = "]x",
+          prev = "[x",
+        },
+        submit = {
+          normal = "<CR>",
+          insert = "<C-CR>",
+        },
+      },
+    },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make BUILD_FROM_SOURCE=true",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua", -- for providers='copilot'
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      -- {
+      --   -- Make sure to set this up properly if you have lazy=true
+      --   "MeanderingProgrammer/render-markdown.nvim",
+      --   opts = {
+      --     file_types = { "markdown", "Avante" },
+      --   },
+      --   ft = { "markdown", "Avante" },
+      -- },
+    },
+    config = function(_, opts)
+      require("avante_lib").load()
+      require("avante").setup(opts)
+    end,
+  },
+
+  -- codeium
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+    config = function()
+      vim.g.codeium_disable_bindings = 1
+      -- Change '<C-g>' here to any keycode you like.
+      -- vim.keymap.set('i', '<M-p>', function() return vim.fn['codeium#Complete']() end, { noremap = true, expr = true })
+      vim.keymap.set("i", "<M-[>", function()
+        return vim.fn["codeium#CycleCompletions"](1)
+      end, { expr = true })
+      vim.keymap.set("i", "<M-]>", function()
+        return vim.fn["codeium#CycleCompletions"](-1)
+      end, { expr = true })
+      vim.keymap.set("i", "<M-\\>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true })
+      -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+    end,
+  },
 }

@@ -3,22 +3,22 @@
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
 if command -v curl 2>/dev/null; then
-	DL="curl --insecure -fLo"
+  DL="curl --insecure -fLo"
 elif command -v wget 2>/dev/null; then
-	DL="wget -O"
+  DL="wget -O"
 fi
 
 # RC files
 # git-prompt
 if [ ! -e ~/.git-prompt.sh ]; then
-	$DL ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+  $DL ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 fi
 
 BASE=$(pwd)
 for rc in *rc tmux.conf alacritty.yml; do
-	mkdir -pv bak
-	[ -e ~/."$rc" ] && mv -v ~/."$rc" bak/."$rc"
-	ln -sfv "$BASE/$rc" ~/."$rc"
+  mkdir -pv bak
+  [ -e ~/."$rc" ] && mv -v ~/."$rc" bak/."$rc"
+  ln -sfv "$BASE/$rc" ~/."$rc"
 done
 
 mkdir -pv bak
@@ -41,27 +41,27 @@ git config --global user.email "jkunlin@gmail.com"
 git config --global user.name "jkunlin"
 
 if [ ! -e ~/.tmux/plugins/tpm ]; then
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-	tmux source-file ~/.tmux.conf
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  tmux source-file ~/.tmux.conf
 fi
 
 if [ ! -e ~/.fonts/SourceCodePro ]; then
-	mkdir -p ~/.fonts/SourceCodePro
-	$DL ~/.fonts/SourceCodePro/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
-	cd ~/.fonts/SourceCodePro
-	unzip SourceCodePro.zip
-	rm SourceCodePro.zip
-	cd -
+  mkdir -p ~/.fonts/SourceCodePro
+  $DL ~/.fonts/SourceCodePro/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
+  cd ~/.fonts/SourceCodePro
+  unzip SourceCodePro.zip
+  rm SourceCodePro.zip
+  cd -
 fi
 fc-cache -rv
 
 if [ ! -e ~/.fonts/FiraCode ]; then
-	mkdir -p ~/.fonts/FiraCode
-	$DL ~/.fonts/FiraCode/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
-	cd ~/.fonts/FiraCode
-	unzip FiraCode.zip
-	rm FiraCode.zip
-	cd -
+  mkdir -p ~/.fonts/FiraCode
+  $DL ~/.fonts/FiraCode/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+  cd ~/.fonts/FiraCode
+  unzip FiraCode.zip
+  rm FiraCode.zip
+  cd -
 fi
 fc-cache -rv
 
@@ -78,35 +78,35 @@ mkdir -p $BASE/tmp
 
 # clash
 if ! command -v $HOME/.local/bin/clash 2>/dev/null; then
-	$DL $BASE/tmp/clash-linux-amd64-v1.15.1.gz https://github.com/Dreamacro/clash/releases/download/v1.15.1/clash-linux-amd64-v1.15.1.gz
-	cd $BASE/tmp/
-	gzip -d clash-linux-amd64-v1.15.1.gz
-	chmod a+x clash-linux-amd64-v1.15.1
-	cp $BASE/tmp/clash-linux-amd64-v1.15.1 ~/.local/bin/clash
-	echo "请输入clash订阅地址："
-	read clash_config_url
-	mkdir -p ~/.config/clash
-	$DL ~/.config/clash/config.yaml $clash_config_url
-	echo "clash installed"
-	cd $BASE
+  $DL $BASE/tmp/clash-linux-amd64-v1.15.1.gz https://github.com/Dreamacro/clash/releases/download/v1.15.1/clash-linux-amd64-v1.15.1.gz
+  cd $BASE/tmp/
+  gzip -d clash-linux-amd64-v1.15.1.gz
+  chmod a+x clash-linux-amd64-v1.15.1
+  cp $BASE/tmp/clash-linux-amd64-v1.15.1 ~/.local/bin/clash
+  echo "请输入clash订阅地址："
+  read clash_config_url
+  mkdir -p ~/.config/clash
+  $DL ~/.config/clash/config.yaml $clash_config_url
+  echo "clash installed"
+  cd $BASE
 fi
 
 # proxychain-ng
 if ! command -v $HOME/.local/bin/proxychains4 2>/dev/null; then
-	$DL $BASE/tmp/proxychains-ng-4.16.tar.xz https://github.com/rofl0r/proxychains-ng/releases/download/v4.16/proxychains-ng-4.16.tar.xz
-	cd $BASE/tmp/
-	tar xf proxychains-ng-4.16.tar.xz
-	cd proxychains-ng-4.16
-	./configure --prefix=$HOME/.local/ --sysconfdir=$HOME/.local/etc
-	make -j3
-	make install
-	make install-config
-	echo "请输入socks端口："
-	read port
-	sed -i '$d' $HOME/.local/etc/proxychains.conf
-	echo "socks5 127.0.0.1 $port" >>$HOME/.local/etc/proxychains.conf
-	echo "proxychain-ng installed"
-	cd $BASE
+  $DL $BASE/tmp/proxychains-ng-4.16.tar.xz https://github.com/rofl0r/proxychains-ng/releases/download/v4.16/proxychains-ng-4.16.tar.xz
+  cd $BASE/tmp/
+  tar xf proxychains-ng-4.16.tar.xz
+  cd proxychains-ng-4.16
+  ./configure --prefix=$HOME/.local/ --sysconfdir=$HOME/.local/etc
+  make -j3
+  make install
+  make install-config
+  echo "请输入socks端口："
+  read port
+  sed -i '$d' $HOME/.local/etc/proxychains.conf
+  echo "socks5 127.0.0.1 $port" >>$HOME/.local/etc/proxychains.conf
+  echo "proxychain-ng installed"
+  cd $BASE
 fi
 
 # xcwd
@@ -121,28 +121,28 @@ fi
 
 # fd
 if ! command -v fd 2>/dev/null; then
-	$DL $BASE/tmp/fd_8.3.2_amd64.deb https://github.com/sharkdp/fd/releases/download/v8.3.2/fd_8.3.2_amd64.deb
-	dpkg -x $BASE/tmp/fd_8.3.2_amd64.deb $BASE/tmp
-	cp $BASE/tmp/usr/bin/fd ~/.local/bin
+  $DL $BASE/tmp/fd_8.3.2_amd64.deb https://github.com/sharkdp/fd/releases/download/v8.3.2/fd_8.3.2_amd64.deb
+  dpkg -x $BASE/tmp/fd_8.3.2_amd64.deb $BASE/tmp
+  cp $BASE/tmp/usr/bin/fd ~/.local/bin
 fi
 
 # rg
 if ! command -v rg 2>/dev/null; then
-	$DL $BASE/tmp/ripgrep_13.0.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
-	dpkg -x $BASE/tmp/ripgrep_13.0.0_amd64.deb $BASE/tmp
-	cp $BASE/tmp/usr/bin/rg ~/.local/bin
+  $DL $BASE/tmp/ripgrep_13.0.0_amd64.deb https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
+  dpkg -x $BASE/tmp/ripgrep_13.0.0_amd64.deb $BASE/tmp
+  cp $BASE/tmp/usr/bin/rg ~/.local/bin
 fi
 
 # parallel
 if ! command -v parallel 2>/dev/null; then
-	cd $BASE/tmp
-	$DL parallel-latest.tar.bz2 https://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2
-	tar xjf parallel-latest.tar.bz2
-	cd $(fd --maxdepth 1 parallel -t d)
-	./configure --prefix=$HOME/.local
-	make -j
-	make install
-	cd ../..
+  cd $BASE/tmp
+  $DL parallel-latest.tar.bz2 https://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2
+  tar xjf parallel-latest.tar.bz2
+  cd $(fd --maxdepth 1 parallel -t d)
+  ./configure --prefix=$HOME/.local
+  make -j
+  make install
+  cd ../..
 fi
 
 # runsolver
@@ -158,14 +158,24 @@ fi
 
 # anaconda
 if ! command -v anaconda 2>/dev/null; then
-	$DL $BASE/tmp/anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
-	bash $BASE/tmp/anaconda.sh
+  $DL $BASE/tmp/anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
+  bash $BASE/tmp/anaconda.sh
 fi
 
 # tmux
 if ! command -v tmux 2>/dev/null; then
-	$DL ~/.local/bin/tmux https://github.com/jkunlin/tmux-appimage/releases/download/run-4/tmux
-	chmod a+x ~/.local/bin/tmux
+  $DL ~/.local/bin/tmux https://github.com/jkunlin/tmux-appimage/releases/download/run-4/tmux
+  chmod a+x ~/.local/bin/tmux
+fi
+
+# cargo
+curl https://sh.rustup.rs -sSf | sh
+
+# lazygit
+if ! command -v lazygit 2>/dev/null; then
+  $DL $BASE/tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.43.1/lazygit_0.43.1_Linux_x86_64.tar.gz
+  cp $BASE/tmp/lazygit ~/.local/bin
+  chmod a+x ~/.local/bin/lazygit
 fi
 
 # rm -r $BASE/tmp

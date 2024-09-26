@@ -52,6 +52,7 @@ export PATH=$HOME/texlive2017/2017/bin/x86_64-linux:$PATH
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+source "$HOME/.cargo/env"
 
 ### OS X
 export COPYFILE_DISABLE=true
@@ -96,7 +97,8 @@ alias l='ls'
 alias ll='ls -alF'
 alias vi='vim'
 alias vi2='vi -O2 '
-alias nv='nvim'
+alias nv='proxychains4 -q nvim'
+alias git='proxychains4 -q git'
 alias em='emacsclient -n -c -a ""'
 alias hc="history -c"
 alias which='type -p'

@@ -136,3 +136,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
   end,
 })
+
+-- color for copilot suggestions
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "dayfox",
+  -- group = ...,
+  callback = function()
+    vim.api.nvim_set_hl(0, "CopilotSuggestion", {
+      link = "DiffAdd",
+      force = true,
+    })
+  end,
+})

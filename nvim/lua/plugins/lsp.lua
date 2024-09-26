@@ -17,7 +17,7 @@ return {
       keys[#keys + 1] = {
         "gd",
         function()
-          require("telescope.builtin").lsp_definitions({ reuse_win = false })
+          require("telescope.builtin").lsp_definitions()
         end,
         desc = "Goto Definition",
         has = "definition",
