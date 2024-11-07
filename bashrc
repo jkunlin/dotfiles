@@ -83,6 +83,10 @@ export PATH=$HOME/.local/mosh/bin:$PATH
 export PATH=$HOME/.local/SCIPOptSuite-8.0.3-Linux/bin:$PATH
 export SCIPOPTDIR=$HOME/.local/SCIPOptSuite-8.0.3-Linux/
 
+## tailscale
+export PATH=$HOME/.local/tailscale_1.76.1_amd64:$PATH
+alias tsd='tailscaled --tun=userspace-networking --socket=$HOME/tailscaled.sock'
+alias ts='tailscale --socket=$HOME/tailscaled.sock'
 # Aliases
 # --------------------------------------------------------------------
 
@@ -105,6 +109,8 @@ alias which='type -p'
 alias k5='kill -9 %%'
 alias gv='vim +GV +"autocmd BufWipeout <buffer> qall"'
 alias openvpn='sudo openvpn --daemon --config ~/.openvpn/client.ovpn --auth-user-pass ~/.openvpn/pass'
+alias bfg='java -jar ~/.local/bin/bfg-1.14.0.jar'
+alias black='~/.local/share/nvim/mason/bin/black'
 ext() {
   ext-all --exclude .git --exclude target --exclude "*.log"
 }

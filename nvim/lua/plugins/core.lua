@@ -38,8 +38,12 @@ return {
     end,
   },
 
+  { "hrsh7th/nvim-cmp", enabled = false },
   {
-    "hrsh7th/nvim-cmp",
+    -- "hrsh7th/nvim-cmp",
+    "iguanacucumber/magazine.nvim",
+    enabled = true,
+    name = "nvim-cmp", -- Otherwise highlighting gets messed up
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       opts.completion.completeopt = "menu,menuone,noselect, noinsert"
@@ -69,12 +73,62 @@ return {
               fallback()
             end
           end,
-          s = cmp.mapping.confirm({ select = true }),
-          c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+          -- s = cmp.mapping.confirm({ select = true }),
+          c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+          s = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
         }),
       })
     end,
   },
+
+  -- {
+  --   "saghen/blink.cmp",
+  --   enable = false,
+  --   lazy = false, -- lazy loading handled internally
+  --   -- optional: provides snippets for the snippet source
+  --   dependencies = "rafamadriz/friendly-snippets",
+  --
+  --   -- use a release tag to download pre-built binaries
+  --   -- version = "v0.*",
+  --   -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+  --   build = "cargo build --release",
+  --
+  --   opts = {
+  --     -- for keymap, all values may be string | string[]
+  --     -- use an empty table to disable a keymap
+  --     keymap = {
+  --       show = "<C-space>",
+  --       hide = "<C-e>",
+  --       accept = "<CR>",
+  --       select_prev = { "<S-Tab>", "<Up>", "<C-p>" },
+  --       select_next = { "<Tab>", "<Down>", "<C-n>" },
+  --
+  --       show_documentation = {},
+  --       hide_documentation = {},
+  --       scroll_documentation_up = "<C-b>",
+  --       scroll_documentation_down = "<C-f>",
+  --
+  --       snippet_forward = "<c-j>",
+  --       snippet_backward = "<c-k>",
+  --     },
+  --     highlight = {
+  --       -- sets the fallback highlight groups to nvim-cmp's highlight groups
+  --       -- useful for when your theme doesn't support blink.cmp
+  --       -- will be removed in a future release, assuming themes add support
+  --       use_nvim_cmp_as_default = true,
+  --     },
+  --     -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+  --     -- adjusts spacing to ensure icons are aligned
+  --     nerd_font_variant = "normal",
+  --
+  --     -- experimental auto-brackets support
+  --     -- accept = { auto_brackets = { enabled = true } }
+  --
+  --     -- experimental signature help support
+  --     -- trigger = { signature_help = { enabled = true } }
+  --   },
+  -- },
+  -- { "hrsh7th/nvim-cmp", enabled = false },
 
   {
     "nvim-telescope/telescope.nvim",
@@ -392,7 +446,6 @@ return {
   -- delete keymap for <leader>w and <leader>q
   {
     "folke/which-key.nvim",
-
     opts = function(_, opts)
       opts.defaults["<leader>w"] = nil
       opts.defaults["<leader>q"] = nil
@@ -414,21 +467,52 @@ return {
       {
         "<leader>ha",
         function()
-          require("harpoon"):list():append()
+          require("harpoon"):list():add()
           print("Add harpoon")
         end,
         desc = "Add harpoon mark",
       },
+      -- {
+      --   "<leader>hj",
+      --   -- function()
+      --   --   require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
+      --   -- end,
+      --   "<cmd>Telescope harpoon marks<cr>",
+      --   desc = "Harpoon toogle quick menu",
+      -- },
       {
         "<leader>hj",
-        function()
-          require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
-        end,
-        desc = "Harpoon toogle quick menu",
+        nil,
+        { desc = "Open harpoon window" },
       },
     },
     config = function()
-      require("harpoon"):setup()
+      local harpoon = require("harpoon")
+      harpoon:setup({})
+
+      -- basic telescope configuration
+      local conf = require("telescope.config").values
+      local function toggle_telescope(harpoon_files)
+        local file_paths = {}
+        for _, item in ipairs(harpoon_files.items) do
+          table.insert(file_paths, item.value)
+        end
+
+        require("telescope.pickers")
+          .new({}, {
+            prompt_title = "Harpoon",
+            finder = require("telescope.finders").new_table({
+              results = file_paths,
+            }),
+            previewer = conf.file_previewer({}),
+            sorter = conf.generic_sorter({}),
+          })
+          :find()
+      end
+
+      vim.keymap.set("n", "<leader>hj", function()
+        toggle_telescope(harpoon:list())
+      end, { desc = "Open harpoon window" })
     end,
   },
 
@@ -527,8 +611,8 @@ return {
     version = false, -- set this if you want to always pull the latest change
     opts = {
       -- add any opts here
-      provider = "claude", -- openai, claude, copilot
-      auto_suggestions_provider = "openai",
+      provider = "openai", -- openai, claude, copilot
+      auto_suggestions_provider = "claude",
       -- openai = {
       --   endpoint = "https://aihubmix.com/v1",
       --   model = "claude-3-5-sonnet-20240620",
@@ -537,12 +621,20 @@ return {
       -- },
       openai = {
         endpoint = "https://api.openai.com/v1",
-        model = "gpt-4o-mini",
+        model = "o1-mini",
         timeout = 30000, -- Timeout in milliseconds
         temperature = 0,
         max_tokens = 4096,
         ["local"] = false,
       },
+      -- openai = {
+      --   endpoint = "https://api.deepseek.com/v1",
+      --   model = "deepseek-coder",
+      --   timeout = 30000, -- Timeout in milliseconds
+      --   temperature = 0,
+      --   max_tokens = 4096,
+      --   ["local"] = false,
+      -- },
       claude = {
         endpoint = "https://clauder.jkunlin.workers.dev",
         model = "claude-3-5-sonnet-20240620",
@@ -556,12 +648,6 @@ return {
           incoming = "DiffAdd", -- need have background color
           current = "DiffDelete", -- need have background color
         },
-      },
-      suggestion = {
-        accept = "<M-l>",
-        next = "<M-]>",
-        prev = "<M-[>",
-        dismiss = "<Esc>",
       },
       behaviour = {
         auto_suggestions = false, -- Experimental stage
@@ -587,6 +673,12 @@ return {
         submit = {
           normal = "<CR>",
           insert = "<C-CR>",
+        },
+        suggestion = {
+          accept = "<M-Bslash>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<Esc>",
         },
       },
     },
@@ -647,10 +739,28 @@ return {
       vim.keymap.set("i", "<M-]>", function()
         return vim.fn["codeium#CycleCompletions"](-1)
       end, { expr = true })
-      vim.keymap.set("i", "<M-\\>", function()
+      vim.keymap.set("i", "<M-Bslash>", function()
         return vim.fn["codeium#Accept"]()
       end, { expr = true })
       -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
     end,
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      keywords = {
+        WARN = { icon = " ", color = "warning", alt = { "WARNING", "CHECK" } },
+      },
+      highlight = {
+        pattern = {
+          -- NOTE(xyz):
+          [[.*<((KEYWORDS)%(\(.{-1,}\))?):]],
+          -- TODO 123:
+          [[.*<((KEYWORDS)%(\s+\d+)?):]],
+        },
+      },
+    },
   },
 }

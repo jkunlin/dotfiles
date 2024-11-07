@@ -73,6 +73,22 @@ Host s9
 	HostName 192.168.100.9
 	User linjk
 
+Host s10
+	HostName 192.168.100.10
+	User linjk
+
+Host pubuser
+	HostName 192.168.100.10
+	User pubuser
+
+Host s11
+	HostName 192.168.100.11
+	User linjk
+
+Host pubuser2
+	HostName 192.168.100.11
+	User pubuser2
+
 Host s100
 	HostName 192.168.100.100
 	User linjk
