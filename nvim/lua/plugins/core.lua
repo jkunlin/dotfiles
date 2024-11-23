@@ -38,12 +38,12 @@ return {
     end,
   },
 
-  { "hrsh7th/nvim-cmp", enabled = false },
+  -- { "hrsh7th/nvim-cmp", enabled = false },
   {
-    -- "hrsh7th/nvim-cmp",
-    "iguanacucumber/magazine.nvim",
-    enabled = true,
-    name = "nvim-cmp", -- Otherwise highlighting gets messed up
+    "hrsh7th/nvim-cmp",
+    -- "iguanacucumber/magazine.nvim",
+    -- enabled = true,
+    -- name = "nvim-cmp", -- Otherwise highlighting gets messed up
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       opts.completion.completeopt = "menu,menuone,noselect, noinsert"
@@ -204,18 +204,6 @@ return {
   -- { "airblade/vim-gitgutter" },
   { "tpope/vim-fugitive" },
   { "kshenoy/vim-signature" },
-
-  {
-    "folke/todo-comments.nvim",
-    -- stylua: ignore
-    keys = {
-      { "]t",         function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-      { "<leader>xt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
-      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
-      { "<leader>st", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
-    },
-  },
 
   -- windows.nvim
   {
@@ -472,14 +460,13 @@ return {
         end,
         desc = "Add harpoon mark",
       },
-      -- {
-      --   "<leader>hj",
-      --   -- function()
-      --   --   require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
-      --   -- end,
-      --   "<cmd>Telescope harpoon marks<cr>",
-      --   desc = "Harpoon toogle quick menu",
-      -- },
+      {
+        "<leader>hm",
+        function()
+          require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
+        end,
+        desc = "Harpoon toogle quick menu",
+      },
       {
         "<leader>hj",
         nil,
@@ -749,6 +736,14 @@ return {
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    -- stylua: ignore
+    keys = {
+      { "]t",         function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
+      { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
+      { "<leader>xt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
+      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
+      { "<leader>st", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
+    },
     opts = {
       keywords = {
         WARN = { icon = " ", color = "warning", alt = { "WARNING", "CHECK" } },
