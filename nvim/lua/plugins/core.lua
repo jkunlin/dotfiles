@@ -420,32 +420,54 @@ return {
       },
     },
     config = function()
+      -- 确保已经安装了必要的插件
       local harpoon = require("harpoon")
-      harpoon:setup({})
+      local fzf_lua = require("fzf-lua")
 
-      -- basic telescope configuration
-      local conf = require("telescope.config").values
-      local function toggle_telescope(harpoon_files)
+      -- 创建一个函数来使用fzf-lua显示harpoon标记的文件
+      local function toggle_fzf_harpoon()
+        -- 获取harpoon列表中的所有项目
+        local harpoon_files = harpoon:list()
         local file_paths = {}
+
+        -- 提取文件路径
         for _, item in ipairs(harpoon_files.items) do
           table.insert(file_paths, item.value)
         end
 
-        require("telescope.pickers")
-          .new({}, {
-            prompt_title = "Harpoon",
-            finder = require("telescope.finders").new_table({
-              results = file_paths,
-            }),
-            previewer = conf.file_previewer({}),
-            sorter = conf.generic_sorter({}),
-          })
-          :find()
+        -- 如果没有标记的文件，显示提示信息
+        if #file_paths == 0 then
+          vim.notify("No files in Harpoon list", vim.log.levels.INFO)
+          return
+        end
+
+        -- 使用fzf-lua显示文件列表
+        fzf_lua.fzf_exec(file_paths, {
+          prompt = "Harpoon Files❯ ",
+          actions = {
+            -- 回车时打开选中的文件
+            ["default"] = function(selected)
+              vim.cmd("edit " .. selected[1])
+            end,
+          },
+          -- 自定义fzf选项
+          fzf_opts = {
+            -- 在顶部显示预览窗口
+            ["--preview-window"] = "up:60%",
+            ["--layout"] = "reverse",
+          },
+          -- 启用文件预览
+          previewer = "builtin",
+          -- 自定义提示信息
+          prompt_title = "Harpoon Files",
+        })
       end
 
-      vim.keymap.set("n", "<leader>hj", function()
-        toggle_telescope(harpoon:list())
-      end, { desc = "Open harpoon window" })
+      -- 设置快捷键
+      vim.keymap.set("n", "<leader>hj", toggle_fzf_harpoon, {
+        desc = "Open Harpoon files with FZF",
+        silent = true,
+      })
     end,
   },
 
