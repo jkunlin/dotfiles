@@ -92,47 +92,32 @@ return {
   },
 
   {
-    "nvim-telescope/telescope.nvim",
-    opts = {
-      defaults = {
-        mappings = {
-          n = {
-            ["q"] = "close",
-          },
-          i = {
-            ["<esc>"] = "close",
-          },
-        },
-      },
-      pickers = {
-        find_files = {
-          mappings = {
-            n = {
-              ["cd"] = function(prompt_bufnr)
-                local selection = require("telescope.actions.state").get_selected_entry()
-                local dir = vim.fn.fnamemodify(selection.path, ":p:h")
-                require("telescope.actions").close(prompt_bufnr)
-                -- Depending on what you want put `cd`, `lcd`, `tcd`
-                vim.cmd(string.format("silent lcd %s", dir))
-              end,
-            },
-          },
-        },
-      },
-    },
+    "ibhagwan/fzf-lua",
     keys = {
-      { "<leader>:", "<cmd>Telescope commands<cr>", desc = "Commands", mode = { "n", "v" } },
-      { "<leader>;", "<cmd>Telescope commands<cr>", desc = "Commands", mode = { "n", "v" } },
-      { "<leader>j", "<cmd>Telescope jumplist<cr>", desc = "Jumplist" },
-      { "<leader>`", "<cmd>Telescope marks<cr>", desc = "Marks" },
       {
-        "<leader>rw",
+        "<leader>:",
         function()
-          require("telescope.builtin").grep_string({ search_dirs = { vim.fn.expand("%:p") } })
+          require("fzf-lua").commands()
         end,
-        desc = "grep current word",
+        desc = "Commands",
+        mode = { "n", "v" },
       },
-      { "<leader>rW", "<cmd>Telescope grep_string<cr>", desc = "Grep string" },
+      {
+        "<leader>;",
+        function()
+          require("fzf-lua").commands()
+        end,
+        desc = "Commands",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>`",
+        function()
+          require("fzf-lua").marks()
+        end,
+        desc = "Commands",
+        mode = { "n", "v" },
+      },
     },
   },
 
