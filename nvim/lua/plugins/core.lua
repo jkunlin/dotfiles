@@ -1,134 +1,95 @@
 return {
   -- snippets
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-        require("luasnip.loaders.from_snipmate").lazy_load()
-      end,
-    },
-    keys = function()
-      return {
-        {
-          "<c-j>",
-          function()
-            return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<c-j>"
-          end,
-          expr = true,
-          silent = true,
-          mode = "i",
-        },
-        {
-          "<c-j>",
-          function()
-            require("luasnip").jump(1)
-          end,
-          mode = "s",
-        },
-        {
-          "<c-k>",
-          function()
-            require("luasnip").jump(-1)
-          end,
-          mode = { "i", "s" },
-        },
-      }
-    end,
-  },
-
-  -- { "hrsh7th/nvim-cmp", enabled = false },
-  {
-    "hrsh7th/nvim-cmp",
-    -- "iguanacucumber/magazine.nvim",
-    -- enabled = true,
-    -- name = "nvim-cmp", -- Otherwise highlighting gets messed up
-    ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
-      opts.completion.completeopt = "menu,menuone,noselect, noinsert"
-
-      local cmp = require("cmp")
-
-      opts.mapping = vim.tbl_extend("force", opts.mapping, {
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        ["<CR>"] = cmp.mapping({
-          i = function(fallback)
-            if cmp.visible() and cmp.get_selected_entry() then
-              cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-            else
-              fallback()
-            end
-          end,
-          -- s = cmp.mapping.confirm({ select = true }),
-          c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-          s = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-        }),
-      })
-    end,
-  },
+  -- {
+  --   "L3MON4D3/LuaSnip",
+  --   dependencies = {
+  --     "rafamadriz/friendly-snippets",
+  --     config = function()
+  --       require("luasnip.loaders.from_vscode").lazy_load()
+  --       require("luasnip.loaders.from_snipmate").lazy_load()
+  --     end,
+  --   },
+  --   keys = function()
+  --     return {
+  --       {
+  --         "<c-j>",
+  --         function()
+  --           return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<c-j>"
+  --         end,
+  --         expr = true,
+  --         silent = true,
+  --         mode = "i",
+  --       },
+  --       {
+  --         "<c-j>",
+  --         function()
+  --           require("luasnip").jump(1)
+  --         end,
+  --         mode = "s",
+  --       },
+  --       {
+  --         "<c-k>",
+  --         function()
+  --           require("luasnip").jump(-1)
+  --         end,
+  --         mode = { "i", "s" },
+  --       },
+  --     }
+  --   end,
+  -- },
 
   -- {
-  --   "saghen/blink.cmp",
-  --   enable = false,
-  --   lazy = false, -- lazy loading handled internally
-  --   -- optional: provides snippets for the snippet source
-  --   dependencies = "rafamadriz/friendly-snippets",
+  --   "hrsh7th/nvim-cmp",
+  --   ---@param opts cmp.ConfigSchema
+  --   opts = function(_, opts)
+  --     opts.completion.completeopt = "menu,menuone,noselect, noinsert"
   --
-  --   -- use a release tag to download pre-built binaries
-  --   -- version = "v0.*",
-  --   -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-  --   build = "cargo build --release",
+  --     local cmp = require("cmp")
   --
-  --   opts = {
-  --     -- for keymap, all values may be string | string[]
-  --     -- use an empty table to disable a keymap
-  --     keymap = {
-  --       show = "<C-space>",
-  --       hide = "<C-e>",
-  --       accept = "<CR>",
-  --       select_prev = { "<S-Tab>", "<Up>", "<C-p>" },
-  --       select_next = { "<Tab>", "<Down>", "<C-n>" },
-  --
-  --       show_documentation = {},
-  --       hide_documentation = {},
-  --       scroll_documentation_up = "<C-b>",
-  --       scroll_documentation_down = "<C-f>",
-  --
-  --       snippet_forward = "<c-j>",
-  --       snippet_backward = "<c-k>",
-  --     },
-  --     highlight = {
-  --       -- sets the fallback highlight groups to nvim-cmp's highlight groups
-  --       -- useful for when your theme doesn't support blink.cmp
-  --       -- will be removed in a future release, assuming themes add support
-  --       use_nvim_cmp_as_default = true,
-  --     },
-  --     -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-  --     -- adjusts spacing to ensure icons are aligned
-  --     nerd_font_variant = "normal",
-  --
-  --     -- experimental auto-brackets support
-  --     -- accept = { auto_brackets = { enabled = true } }
-  --
-  --     -- experimental signature help support
-  --     -- trigger = { signature_help = { enabled = true } }
-  --   },
+  --     opts.mapping = vim.tbl_extend("force", opts.mapping, {
+  --       ["<Tab>"] = cmp.mapping(function(fallback)
+  --         if cmp.visible() then
+  --           cmp.select_next_item()
+  --         else
+  --           fallback()
+  --         end
+  --       end, { "i", "s" }),
+  --       ["<S-Tab>"] = cmp.mapping(function(fallback)
+  --         if cmp.visible() then
+  --           cmp.select_prev_item()
+  --         else
+  --           fallback()
+  --         end
+  --       end, { "i", "s" }),
+  --       ["<CR>"] = cmp.mapping({
+  --         i = function(fallback)
+  --           if cmp.visible() and cmp.get_selected_entry() then
+  --             cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+  --           else
+  --             fallback()
+  --           end
+  --         end,
+  --         -- s = cmp.mapping.confirm({ select = true }),
+  --         c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+  --         s = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+  --       }),
+  --     })
+  --   end,
   -- },
-  -- { "hrsh7th/nvim-cmp", enabled = false },
+
+  {
+    "saghen/blink.cmp",
+    ---@class PluginLspOpts
+    opts = {
+      signature = { enabled = true },
+      keymap = {
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<C-k>"] = { "snippet_forward", "fallback" },
+        ["<C-j>"] = { "snippet_backward", "fallback" },
+      },
+    },
+  },
 
   {
     "nvim-telescope/telescope.nvim",
