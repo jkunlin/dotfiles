@@ -469,17 +469,17 @@ return {
   -- },
 
   -- copliot
-  -- {
-  --   "github/copilot.vim",
-  --   config = function()
-  --     vim.keymap.set("i", "<M-\\>", "copilot#Accept()", {
-  --       expr = true,
-  --       replace_keycodes = false,
-  --       desc = "Copilot Accept",
-  --     })
-  --     vim.g.copilot_no_tab_map = true
-  --   end,
-  -- },
+  {
+    "github/copilot.vim",
+    config = function()
+      vim.keymap.set("i", "<M-Bslash>", "copilot#Accept()", {
+        expr = true,
+        replace_keycodes = false,
+        desc = "Copilot Accept",
+      })
+      vim.g.copilot_no_tab_map = true
+    end,
+  },
   -- {
   --   "CopilotC-Nvim/CopilotChat.nvim",
   --   cmd = {
@@ -544,14 +544,8 @@ return {
     version = false, -- set this if you want to always pull the latest change
     opts = {
       -- add any opts here
-      provider = "openai", -- openai, claude, copilot
+      provider = "copilot", -- openai, claude, copilot
       auto_suggestions_provider = "claude",
-      -- openai = {
-      --   endpoint = "https://aihubmix.com/v1",
-      --   model = "claude-3-5-sonnet-20240620",
-      --   temperature = 0,
-      --   max_tokens = 4096,
-      -- },
       openai = {
         endpoint = "https://api.openai.com/v1",
         model = "o1-mini",
@@ -560,22 +554,14 @@ return {
         max_tokens = 4096,
         ["local"] = false,
       },
-      -- openai = {
-      --   endpoint = "https://api.deepseek.com/v1",
-      --   model = "deepseek-coder",
+      -- claude = {
+      --   endpoint = "https://clauder.jkunlin.workers.dev",
+      --   model = "claude-3-5-sonnet-20240620",
       --   timeout = 30000, -- Timeout in milliseconds
       --   temperature = 0,
-      --   max_tokens = 4096,
+      --   max_tokens = 8000,
       --   ["local"] = false,
       -- },
-      claude = {
-        endpoint = "https://clauder.jkunlin.workers.dev",
-        model = "claude-3-5-sonnet-20240620",
-        timeout = 30000, -- Timeout in milliseconds
-        temperature = 0,
-        max_tokens = 8000,
-        ["local"] = false,
-      },
       highlights = {
         diff = {
           incoming = "DiffAdd", -- need have background color
@@ -659,25 +645,25 @@ return {
   },
 
   -- codeium
-  {
-    "Exafunction/codeium.vim",
-    event = "BufEnter",
-    config = function()
-      vim.g.codeium_disable_bindings = 1
-      -- Change '<C-g>' here to any keycode you like.
-      -- vim.keymap.set('i', '<M-p>', function() return vim.fn['codeium#Complete']() end, { noremap = true, expr = true })
-      vim.keymap.set("i", "<M-[>", function()
-        return vim.fn["codeium#CycleCompletions"](1)
-      end, { expr = true })
-      vim.keymap.set("i", "<M-]>", function()
-        return vim.fn["codeium#CycleCompletions"](-1)
-      end, { expr = true })
-      vim.keymap.set("i", "<M-Bslash>", function()
-        return vim.fn["codeium#Accept"]()
-      end, { expr = true })
-      -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
-    end,
-  },
+  -- {
+  --   "Exafunction/codeium.vim",
+  --   event = "BufEnter",
+  --   config = function()
+  --     vim.g.codeium_disable_bindings = 1
+  --     -- Change '<C-g>' here to any keycode you like.
+  --     -- vim.keymap.set('i', '<M-p>', function() return vim.fn['codeium#Complete']() end, { noremap = true, expr = true })
+  --     vim.keymap.set("i", "<M-[>", function()
+  --       return vim.fn["codeium#CycleCompletions"](1)
+  --     end, { expr = true })
+  --     vim.keymap.set("i", "<M-]>", function()
+  --       return vim.fn["codeium#CycleCompletions"](-1)
+  --     end, { expr = true })
+  --     vim.keymap.set("i", "<M-Bslash>", function()
+  --       return vim.fn["codeium#Accept"]()
+  --     end, { expr = true })
+  --     -- vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+  --   end,
+  -- },
 
   {
     "folke/todo-comments.nvim",
