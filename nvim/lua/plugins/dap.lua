@@ -52,7 +52,7 @@ return {
             name = "tmp-coredump",
             type = "cppdbg",
             request = "launch",
-            program = os.getenv("HOME") .. "/lp/SeedMIP/main",
+            program = os.getenv("HOME") .. "/bom/unsatCore/seednife_api7",
             -- coreDumpPath = function()
             --   return vim.fn.input("Path to coredump: ", "/var/lib/apport/coredump/", "file")
             -- end,
@@ -67,12 +67,6 @@ return {
             end,
             cwd = "${workspaceFolder}",
             stopOnEntry = true,
-            -- setupCommands = {
-            --   {
-            --     text = "-enable-pretty-printing",
-            --     description = "enable pretty printing",
-            --     ignoreFailures = false,
-            --   },
           },
           {
             name = "stp-coredump",
@@ -116,6 +110,26 @@ return {
               {
                 text = "set args  /pub/netdisk1/linjk/smt/bv/benchmarks/QF_BV-42472/Sage2/bench_14903.smt2",
                 description = "instance",
+                ignoreFailures = false,
+              },
+            },
+          },
+          {
+            name = "seedmip",
+            type = "cppdbg",
+            request = "launch",
+            program = os.getenv("HOME") .. "/lp/SeedMIP/test/main",
+            cwd = "${workspaceFolder}",
+            stopOnEntry = true,
+            setupCommands = {
+              {
+                text = "-enable-pretty-printing",
+                description = "enable pretty printing",
+                ignoreFailures = false,
+              },
+              {
+                text = "set solib-search-path /home/linjk/lp/SeedMIP/build/debug/lib/libSeedMIP.so",
+                description = "Set shared library search path",
                 ignoreFailures = false,
               },
             },

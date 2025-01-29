@@ -107,12 +107,12 @@ require("lazyvim.util").lsp.on_attach(function(client, bufnr)
 end)
 
 -- Disable autoformat for lua files
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "cpp", "c" },
-  callback = function()
-    vim.b.autoformat = false
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "FileType" }, {
+--   pattern = { "cpp", "c" },
+--   callback = function()
+--     vim.b.autoformat = false
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()

@@ -82,6 +82,7 @@ return {
     ---@class PluginLspOpts
     opts = {
       signature = { enabled = true },
+      completion = { list = { selection = { preselect = false, auto_insert = true } } },
       keymap = {
         ["<Tab>"] = { "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
@@ -475,6 +476,14 @@ return {
     "mechatroner/rainbow_csv",
   },
 
+  {
+    "folke/snacks.nvim",
+    ---@type snacks.Config
+    opts = {
+      scroll = { enabled = false },
+    },
+  },
+
   -- toggleterm.nvim
   -- {
   --   "akinsho/toggleterm.nvim",
@@ -575,6 +584,9 @@ return {
         temperature = 0,
         max_tokens = 4096,
         ["local"] = false,
+      },
+      copilot = {
+        model = "claude-3.5-sonnet",
       },
       -- claude = {
       --   endpoint = "https://clauder.jkunlin.workers.dev",
