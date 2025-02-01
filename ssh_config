@@ -1,42 +1,3 @@
-Host ios
-  HostName 192.168.1.43
-  User jkunlin
-
-Host mcqios
-  HostName 192.168.1.43
-  User mcq
-
-Host citios
-  HostName 192.168.1.43
-  User cit
-
-Host rn
-  HostName 168.235.78.27
-  User jkunlin
-  Port 1708
-  
-Host dc
-  HostName 192.168.2.30
-  User jkunlin
-  Port 3360
-
-Host dell
-  HostName 192.168.2.30
-  User jkunlin
-  Port 336
-
-Host ios2
-  HostName 192.168.1.180
-  User sunsy
-
-Host ios3
-  HostName 192.168.1.181
-  User sunsy
-
-Host caisw
-  HostName 192.168.20.16
-  User caisw2020
-
 Host s1
 	HostName 192.168.100.1
 	User linjk
@@ -46,7 +7,7 @@ Host s2
 	User linjk
 
 Host s3
-	HostName 192.168.20.70
+	HostName 192.168.100.3
 	User linjk
 
 Host s4
@@ -89,15 +50,56 @@ Host pubuser2
 	HostName 192.168.100.11
 	User pubuser2
 
+Host s12
+	HostName 192.168.100.12
+	User linjk
+
+Host s13
+	HostName 192.168.100.13
+	User linjk
+
+Host s14
+	HostName 192.168.100.14
+	User linjk
+
+Host s15
+	HostName 192.168.100.15
+	User linjk
+
 Host s100
 	HostName 192.168.100.100
 	User linjk
 
-Host root
-HostName 47.104.142.40
-User root
+Host optimizer
+	HostName 192.168.100.100
+	User optimizer
 
-Host *
-  ControlMaster auto
-  ControlPath /tmp/ssh_mux_%h_%p_%r
-  # Ciphers aes128-cbc
+Host toptimizer
+	HostName seed100
+	User optimizer
+
+Host ts100
+	HostName seed100
+	User linjk
+
+Host root
+	HostName 47.104.142.40
+	User ecs-user	
+
+Host gpt
+	HostName 47.104.142.40
+	User linjk
+
+Host rn
+	HostName 168.235.78.27
+	User jkunlin
+	Port 1708
+
+Host sp
+	HostName 103.163.186.90
+	User root
+	Port 1708
+
+Host gt
+  HostName 139.224.0.22
+  User root

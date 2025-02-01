@@ -54,6 +54,11 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 source "$HOME/.cargo/env"
 
+## Ghostty
+if [[ "$TERM_PROGRAM" == "Ghostty" ]]; then
+  export TERM=xterm-256color
+fi
+
 ### OS X
 export COPYFILE_DISABLE=true
 
