@@ -595,9 +595,16 @@ return {
       behaviour = {
         enable_fastapply = true, -- Enable Fast Apply feature
       },
+      highlights = {
+        diff = {
+          incoming = "DiffAdd",   -- need have background color
+          current = "DiffChange", -- need have background color
+        },
+      },
+
       -- add any opts here
       -- for example
-      provider = "copilot",
+      provider = "moonshot",
       providers = {
         copilot = {
           model = "claude-3.5-sonnet"
@@ -612,7 +619,8 @@ return {
           },
         },
         moonshot = {
-          endpoint = "https://api.moonshot.ai/v1",
+          -- endpoint = "https://api.moonshot.ai/v1",
+          endpoint = "https://api.moonshot.cn/v1",
           model = "kimi-k2-0711-preview",
           timeout = 30000, -- Timeout in milliseconds
           extra_request_body = {

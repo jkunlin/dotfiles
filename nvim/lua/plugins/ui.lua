@@ -26,13 +26,6 @@ return {
   -- { "akinsho/bufferline.nvim", enabled = false },
   -- { "MunifTanjim/nui.nvim", enabled = false },
 
-  -- Configure LazyVim to load gruvbox
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "dayfox",
-    },
-  },
 
   {
     "nvim-lualine/lualine.nvim",
