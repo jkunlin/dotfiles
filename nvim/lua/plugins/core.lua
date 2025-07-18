@@ -166,9 +166,9 @@ return {
       "anuvyklack/animation.nvim",
     },
     keys = {
-      { "<c-w>z", "<Cmd>WindowsMaximize<CR>", desc = "Maximum windows" },
-      { "<leader>z", "<Cmd>WindowsMaximize<CR>", desc = "Maximum windows" },
-      { "<c-w>a", "<Cmd>WindowsToggleAutowidth<CR>", desc = "Toggle windows autowidth" },
+      { "<c-w>z",    "<Cmd>WindowsMaximize<CR>",        desc = "Maximum windows" },
+      { "<leader>z", "<Cmd>WindowsMaximize<CR>",        desc = "Maximum windows" },
+      { "<c-w>a",    "<Cmd>WindowsToggleAutowidth<CR>", desc = "Toggle windows autowidth" },
     },
     opts = {
       autowidth = { enable = false },
@@ -191,17 +191,17 @@ return {
       },
       heads = {
         -- resizing window
-        { "h", "<C-w>3<" },
-        { "l", "<C-w>3>" },
-        { "k", "<C-w>2+" },
-        { "j", "<C-w>2-" },
+        { "h",     "<C-w>3<" },
+        { "l",     "<C-w>3>" },
+        { "k",     "<C-w>2+" },
+        { "j",     "<C-w>2-" },
 
         -- equalize window sizes
-        { "=", "<C-w>=" },
+        { "=",     "<C-w>=" },
 
         -- exit this Hydra
-        { "q", nil, { exit = true, nowait = true } },
-        { "<Esc>", nil, { exit = true, nowait = true } },
+        { "q",     nil,      { exit = true, nowait = true } },
+        { "<Esc>", nil,      { exit = true, nowait = true } },
       },
     },
     config = function(_, opts)
@@ -285,9 +285,9 @@ return {
   {
     "christoomey/vim-tmux-navigator",
     keys = {
-      { "<c-h>", "<cmd>TmuxNavigateLeft<cr>", mode = "n", desc = "Tmux Navigate Left" },
-      { "<c-j>", "<cmd>TmuxNavigateDown<cr>", mode = "n", desc = "Tmux Navigate Down" },
-      { "<c-k>", "<cmd>TmuxNavigateUp<cr>", mode = "n", desc = "Tmux Navigate Up" },
+      { "<c-h>", "<cmd>TmuxNavigateLeft<cr>",  mode = "n", desc = "Tmux Navigate Left" },
+      { "<c-j>", "<cmd>TmuxNavigateDown<cr>",  mode = "n", desc = "Tmux Navigate Down" },
+      { "<c-k>", "<cmd>TmuxNavigateUp<cr>",    mode = "n", desc = "Tmux Navigate Up" },
       { "<c-l>", "<cmd>TmuxNavigateRight<cr>", mode = "n", desc = "Tmux Navigate Right" },
     },
     init = function()
@@ -325,8 +325,8 @@ return {
   {
     "voldikss/vim-translator",
     keys = {
-      { "<leader>tw", "<Plug>TranslateW", desc = "Translate word" },
-      { "<leader>tw", "<Plug>TranslateWV", mode = "v", desc = "Translate word" },
+      { "<leader>tw", "<Plug>TranslateW",  desc = "Translate word" },
+      { "<leader>tw", "<Plug>TranslateWV", mode = "v",             desc = "Translate word" },
     },
   },
 
@@ -377,8 +377,8 @@ return {
     "echasnovski/mini.surround",
     opts = {
       mappings = {
-        add = "ys", -- Add surrounding in Normal and Visual modes
-        delete = "ds", -- Delete surrounding
+        add = "ys",     -- Add surrounding in Normal and Visual modes
+        delete = "ds",  -- Delete surrounding
         replace = "cs", -- Replace surrounding
       },
     },
@@ -575,54 +575,93 @@ return {
   -- },
 
   {
-  "yetone/avante.nvim",
-  -- 如果您想从源代码构建，请执行 `make BUILD_FROM_SOURCE=true`
-  build = "make BUILD_FROM_SOURCE=true",
-  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- 对于 Windows
-  event = "VeryLazy",
-  version = false, -- 永远不要将此值设置为 "*"！永远不要！
-  ---@module 'avante'
-  ---@type avante.Config
-  opts = {
-    provider = "copilot",
-  },
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "MunifTanjim/nui.nvim",
-    --- 以下依赖项是可选的，
-    "echasnovski/mini.pick", -- 用于文件选择器提供者 mini.pick
-    "nvim-telescope/telescope.nvim", -- 用于文件选择器提供者 telescope
-    "hrsh7th/nvim-cmp", -- avante 命令和提及的自动完成
-    "ibhagwan/fzf-lua", -- 用于文件选择器提供者 fzf
-    "nvim-tree/nvim-web-devicons", -- 或 echasnovski/mini.icons
-    "zbirenbaum/copilot.lua", -- 用于 providers='copilot'
-    {
-      -- 支持图像粘贴
-      "HakonHarnes/img-clip.nvim",
-      event = "VeryLazy",
-      opts = {
-        -- 推荐设置
-        default = {
-          embed_image_as_base64 = false,
-          prompt_for_file_name = false,
-          drag_and_drop = {
-            insert_mode = true,
+    "yetone/avante.nvim",
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- ⚠️ must add this setting! ! !
+    build = function()
+      -- conditionally use the correct build system for the current OS
+      if vim.fn.has("win32") == 1 then
+        return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+      else
+        return "make BUILD_FROM_SOURCE=true"
+      end
+    end,
+    event = "VeryLazy",
+    lazy = false,
+    version = false, -- Never set this value to "*"! Never!
+    ---@module 'avante'
+    ---@type avante.Config
+    opts = {
+      behaviour = {
+        enable_fastapply = true, -- Enable Fast Apply feature
+      },
+      -- add any opts here
+      -- for example
+      provider = "copilot",
+      providers = {
+        copilot = {
+          model = "claude-3.5-sonnet"
+        },
+        claude = {
+          endpoint = "https://api.anthropic.com",
+          model = "claude-sonnet-4-20250514",
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 20480,
           },
-          -- Windows 用户必需
-          use_absolute_path = true,
+        },
+        moonshot = {
+          endpoint = "https://api.moonshot.ai/v1",
+          model = "kimi-k2-0711-preview",
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 32768,
+          },
         },
       },
     },
-    {
-      -- 如果您有 lazy=true，请确保正确设置
-      'MeanderingProgrammer/render-markdown.nvim',
-      opts = {
-        file_types = { "markdown", "Avante" },
+
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "echasnovski/mini.pick",         -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+      "stevearc/dressing.nvim",        -- for input provider dressing
+      "folke/snacks.nvim",             -- for input provider snacks
+      "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua",        -- for providers='copilot'
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
       },
-      ft = { "markdown", "Avante" },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
     },
   },
-},
 
   -- codeium
   -- {
