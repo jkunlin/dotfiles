@@ -149,7 +149,13 @@ return {
   -- git
   -- { "lewis6991/gitsigns.nvim", enabled = false },
   -- { "airblade/vim-gitgutter" },
-  { "tpope/vim-fugitive" },
+  {
+    "tpope/vim-fugitive",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Git vertical diff split" },
+    },
+  },
   { "kshenoy/vim-signature" },
 
   -- windows.nvim
@@ -569,114 +575,54 @@ return {
   -- },
 
   {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    lazy = false,
-    version = false, -- set this if you want to always pull the latest change
-    opts = {
-      -- add any opts here
-      provider = "copilot", -- openai, claude, copilot
-      auto_suggestions_provider = "claude",
-      openai = {
-        endpoint = "https://api.openai.com/v1",
-        model = "o1-mini",
-        timeout = 30000, -- Timeout in milliseconds
-        temperature = 0,
-        max_tokens = 4096,
-        ["local"] = false,
-      },
-      copilot = {
-        model = "claude-3.5-sonnet",
-      },
-      -- claude = {
-      --   endpoint = "https://clauder.jkunlin.workers.dev",
-      --   model = "claude-3-5-sonnet-20240620",
-      --   timeout = 30000, -- Timeout in milliseconds
-      --   temperature = 0,
-      --   max_tokens = 8000,
-      --   ["local"] = false,
-      -- },
-      highlights = {
-        diff = {
-          incoming = "DiffAdd", -- need have background color
-          current = "DiffDelete", -- need have background color
-        },
-      },
-      behaviour = {
-        auto_suggestions = false, -- Experimental stage
-        auto_set_highlight_group = true,
-        auto_set_keymaps = true,
-        auto_apply_diff_after_generation = false,
-        support_paste_from_clipboard = false,
-      },
-      mappings = {
-        -- show_sidebar = "<leader>aa",
-        ask = "<leader>aa",
-        edit = "<leader>ae",
-        refresh = "<leader>ar",
-
-        diff = {
-          ours = "co",
-          theirs = "ct",
-          none = "c0",
-          both = "cb",
-          next = "]x",
-          prev = "[x",
-        },
-        submit = {
-          normal = "<CR>",
-          insert = "<C-CR>",
-        },
-        suggestion = {
-          accept = "<M-Bslash>",
-          next = "<M-]>",
-          prev = "<M-[>",
-          dismiss = "<Esc>",
-        },
-      },
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make BUILD_FROM_SOURCE=true",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
-      -- {
-      --   -- Make sure to set this up properly if you have lazy=true
-      --   "MeanderingProgrammer/render-markdown.nvim",
-      --   opts = {
-      --     file_types = { "markdown", "Avante" },
-      --   },
-      --   ft = { "markdown", "Avante" },
-      -- },
-    },
-    config = function(_, opts)
-      require("avante_lib").load()
-      require("avante").setup(opts)
-    end,
+  "yetone/avante.nvim",
+  -- 如果您想从源代码构建，请执行 `make BUILD_FROM_SOURCE=true`
+  build = "make BUILD_FROM_SOURCE=true",
+  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- 对于 Windows
+  event = "VeryLazy",
+  version = false, -- 永远不要将此值设置为 "*"！永远不要！
+  ---@module 'avante'
+  ---@type avante.Config
+  opts = {
+    provider = "copilot",
   },
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "MunifTanjim/nui.nvim",
+    --- 以下依赖项是可选的，
+    "echasnovski/mini.pick", -- 用于文件选择器提供者 mini.pick
+    "nvim-telescope/telescope.nvim", -- 用于文件选择器提供者 telescope
+    "hrsh7th/nvim-cmp", -- avante 命令和提及的自动完成
+    "ibhagwan/fzf-lua", -- 用于文件选择器提供者 fzf
+    "nvim-tree/nvim-web-devicons", -- 或 echasnovski/mini.icons
+    "zbirenbaum/copilot.lua", -- 用于 providers='copilot'
+    {
+      -- 支持图像粘贴
+      "HakonHarnes/img-clip.nvim",
+      event = "VeryLazy",
+      opts = {
+        -- 推荐设置
+        default = {
+          embed_image_as_base64 = false,
+          prompt_for_file_name = false,
+          drag_and_drop = {
+            insert_mode = true,
+          },
+          -- Windows 用户必需
+          use_absolute_path = true,
+        },
+      },
+    },
+    {
+      -- 如果您有 lazy=true，请确保正确设置
+      'MeanderingProgrammer/render-markdown.nvim',
+      opts = {
+        file_types = { "markdown", "Avante" },
+      },
+      ft = { "markdown", "Avante" },
+    },
+  },
+},
 
   -- codeium
   -- {

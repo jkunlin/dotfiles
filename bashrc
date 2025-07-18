@@ -46,6 +46,8 @@ ulimit -c unlimited
 ### Global
 export GOPATH=~/.gosrc
 mkdir -p $GOPATH
+export PATH=$HOME/.local/neovim/bin:$PATH
+export PATH=$HOME/.local/node/bin:$PATH
 export PATH=$HOME/.local/bin:$HOME/.yarn/bin:/usr/local/bin:$PATH
 export PATH=$HOME/texlive2017/2017/bin/x86_64-linux:$PATH
 # export PATH=$HOME/.local/share/nvim/dapinstall/ccppr_vsc/gdb-10.2/gdb:$PATH
@@ -54,8 +56,27 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 source "$HOME/.cargo/env"
 
+## proxy
+CLASH_HTTP_PORT="6890"
+CLASH_SOCKS_PORT="6891"
+PROXY_HOST="127.0.0.1"
+
+export http_proxy="http://${PROXY_HOST}:${CLASH_HTTP_PORT}"
+export https_proxy="http://${PROXY_HOST}:${CLASH_HTTP_PORT}"
+export ftp_proxy="http://${PROXY_HOST}:${CLASH_HTTP_PORT}"
+export all_proxy="socks5://${PROXY_HOST}:${CLASH_SOCKS_PORT}" # 供支持 socks 的应用使用
+
+export HTTP_PROXY="${http_proxy}"
+export HTTPS_PROXY="${https_proxy}"
+export FTP_PROXY="${ftp_proxy}"
+export ALL_PROXY="${all_proxy}"
+
+# 不需要代理的地址 (本地地址，局域网地址等)
+export no_proxy="localhost,127.0.0.1,::1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12"
+export NO_PROXY="${no_proxy}"
+
 ## Ghostty
-if [[ "$TERM_PROGRAM" == "Ghostty" ]]; then
+if [[ "$TERM" == "xterm-ghostty" ]]; then
   export TERM=xterm-256color
 fi
 

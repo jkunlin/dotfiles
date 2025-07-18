@@ -50,7 +50,6 @@ if ! command -v node 2>/dev/null; then
   ln -sf "$NODE_DIR/bin/npm" "$HOME/.local/bin/npm"
   ln -sf "$NODE_DIR/bin/npx" "$HOME/.local/bin/npx"
 fi
-eixt
 
 # node
 # if ! command -v node 2>/dev/null; then
