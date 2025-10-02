@@ -69,10 +69,10 @@ return {
             stopOnEntry = true,
           },
           {
-            name = "stp-coredump",
+            name = "coredump",
             type = "cppdbg",
             request = "launch",
-            program = os.getenv("HOME") .. "/smt/stp/build/stp",
+            program = os.getenv("HOME") .. "/seedmath/ibm/ibrl/ibrl",
             -- coreDumpPath = function()
             --   return vim.fn.input("Path to coredump: ", "/var/lib/apport/coredump/", "file")
             -- end,
@@ -165,7 +165,7 @@ return {
 
       dap.adapters.python = {
         type = "executable",
-        command = "python",
+        command = "python3",
         args = { "-m", "debugpy.adapter" },
       }
 
@@ -192,7 +192,38 @@ return {
             "200",
           },
         },
+        {
+          name = "AutoPlantWarehouseScheduler",
+          type = "python",
+          request = "launch",
+          module = "algorithm.integration.my_integration_solver",
+          cwd = os.getenv("HOME") .. "/seedmath/ibm/AutoPlantWarehouseScheduler",
+          console = "integratedTerminal",
+          justMyCode = false,
+          stopOnEntry = false,
+          -- python = "python3",
+          -- pythonPath = "python3",
+          subProcess = true,
+        },
+        {
+          name = "tmp",
+          type = "python",
+          request = "launch",
+          module = "algorithm.integration.zone_name_generator",
+          cwd = os.getenv("HOME") .. "/seedmath/ibm/AutoPlantWarehouseScheduler",
+          console = "integratedTerminal",
+          justMyCode = false,
+          stopOnEntry = false,
+          -- python = "python3",
+          -- pythonPath = "python3",
+          subProcess = true,
+        },
       }
     end,
   },
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    enabled = false,
+  },
+
 }

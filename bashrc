@@ -48,6 +48,7 @@ export GOPATH=~/.gosrc
 mkdir -p $GOPATH
 export PATH=$HOME/.local/neovim/bin:$PATH
 export PATH=$HOME/.local/node/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/.local/bin:$HOME/.yarn/bin:/usr/local/bin:$PATH
 export PATH=$HOME/texlive2017/2017/bin/x86_64-linux:$PATH
 # export PATH=$HOME/.local/share/nvim/dapinstall/ccppr_vsc/gdb-10.2/gdb:$PATH

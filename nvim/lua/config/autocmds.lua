@@ -15,16 +15,16 @@ vim.api.nvim_create_autocmd({ "BufReadPre" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("cpp_header_swithch"),
-  pattern = {
-    "c",
-    "cpp",
-  },
-  callback = function(event)
-    vim.keymap.set("n", "<leader>a", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = event.buf, silent = true })
-  end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--   group = augroup("cpp_header_swithch"),
+--   pattern = {
+--     "c",
+--     "cpp",
+--   },
+--   callback = function(event)
+--     vim.keymap.set("n", "<leader>a", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = event.buf, silent = true })
+--   end,
+-- })
 
 -- Help in new tabs
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -149,7 +149,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
-vim.api.nvim_create_autocmd("ColorScheme", {
+vim.api.nvim_create_autocmd("BufEnter", {
   callback = function()
     vim.api.nvim_set_hl(0, "AvanteToBeDeletedWOStrikethrough", { link = "DiffDelete" })
   end,

@@ -86,7 +86,13 @@ return {
       keymap = {
         ["<Tab>"] = { "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
-        ["<C-k>"] = { "snippet_forward", "fallback" },
+        ["<C-k>"] = {
+          "snippet_forward",
+          function() -- sidekick next edit suggestion
+            return require("sidekick").nes_jump_or_apply()
+          end,
+          "fallback"
+        },
         ["<C-j>"] = { "snippet_backward", "fallback" },
       },
     },
@@ -374,7 +380,7 @@ return {
   },
 
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     opts = {
       mappings = {
         add = "ys",     -- Add surrounding in Normal and Visual modes
@@ -422,6 +428,11 @@ return {
       },
       {
         "<leader>hj",
+        nil,
+        { desc = "Open harpoon window" },
+      },
+      {
+        "<leader>fh",
         nil,
         { desc = "Open harpoon window" },
       },
@@ -475,6 +486,10 @@ return {
         desc = "Open Harpoon files with FZF",
         silent = true,
       })
+      vim.keymap.set("n", "<leader>fh", toggle_fzf_harpoon, {
+        desc = "Open Harpoon files with FZF",
+        silent = true,
+      })
     end,
   },
 
@@ -509,7 +524,7 @@ return {
   {
     "github/copilot.vim",
     config = function()
-      vim.keymap.set("i", "<M-Bslash>", "copilot#Accept()", {
+      vim.keymap.set("i", "<C-Bslash>", "copilot#Accept()", {
         expr = true,
         replace_keycodes = false,
         desc = "Copilot Accept",
@@ -574,99 +589,156 @@ return {
   --   },
   -- },
 
+  -- {
+  --   "yetone/avante.nvim",
+  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --   -- ⚠️ must add this setting! ! !
+  --   build = function()
+  --     -- conditionally use the correct build system for the current OS
+  --     if vim.fn.has("win32") == 1 then
+  --       return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+  --     else
+  --       return "make BUILD_FROM_SOURCE=true"
+  --     end
+  --   end,
+  --   event = "VeryLazy",
+  --   lazy = false,
+  --   version = false, -- Never set this value to "*"! Never!
+  --   ---@module 'avante'
+  --   ---@type avante.Config
+  --   opts = {
+  --     behaviour = {
+  --       enable_fastapply = true, -- Enable Fast Apply feature
+  --     },
+  --     highlights = {
+  --       diff = {
+  --         incoming = "DiffAdd",   -- need have background color
+  --         current = "DiffChange", -- need have background color
+  --       },
+  --     },
+  --
+  --     -- add any opts here
+  --     -- for example
+  --     provider = "moonshot",
+  --     providers = {
+  --       copilot = {
+  --         model = "claude-3.5-sonnet"
+  --       },
+  --       claude = {
+  --         endpoint = "https://api.anthropic.com",
+  --         model = "claude-sonnet-4-20250514",
+  --         timeout = 30000, -- Timeout in milliseconds
+  --         extra_request_body = {
+  --           temperature = 0.75,
+  --           max_tokens = 20480,
+  --         },
+  --       },
+  --       moonshot = {
+  --         -- endpoint = "https://api.moonshot.ai/v1",
+  --         endpoint = "https://api.moonshot.cn/v1",
+  --         model = "kimi-k2-turbo-preview",
+  --         timeout = 30000, -- Timeout in milliseconds
+  --         extra_request_body = {
+  --           temperature = 0.75,
+  --           max_tokens = 32768,
+  --         },
+  --       },
+  --     },
+  --   },
+  --
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     --- The below dependencies are optional,
+  --     "nvim-mini/mini.pick",         -- for file_selector provider mini.pick
+  --     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+  --     "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
+  --     "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+  --     "stevearc/dressing.nvim",        -- for input provider dressing
+  --     "folke/snacks.nvim",             -- for input provider snacks
+  --     "nvim-tree/nvim-web-devicons",   -- or nvim-mini/mini.icons
+  --     "zbirenbaum/copilot.lua",        -- for providers='copilot'
+  --     {
+  --       -- support for image pasting
+  --       "HakonHarnes/img-clip.nvim",
+  --       event = "VeryLazy",
+  --       opts = {
+  --         -- recommended settings
+  --         default = {
+  --           embed_image_as_base64 = false,
+  --           prompt_for_file_name = false,
+  --           drag_and_drop = {
+  --             insert_mode = true,
+  --           },
+  --           -- required for Windows users
+  --           use_absolute_path = true,
+  --         },
+  --       },
+  --     },
+  --     {
+  --       -- Make sure to set this up properly if you have lazy=true
+  --       'MeanderingProgrammer/render-markdown.nvim',
+  --       opts = {
+  --         file_types = { "markdown", "Avante" },
+  --       },
+  --       ft = { "markdown", "Avante" },
+  --     },
+  --   },
+  -- },
   {
-    "yetone/avante.nvim",
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    -- ⚠️ must add this setting! ! !
-    build = function()
-      -- conditionally use the correct build system for the current OS
-      if vim.fn.has("win32") == 1 then
-        return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
-      else
-        return "make BUILD_FROM_SOURCE=true"
-      end
-    end,
-    event = "VeryLazy",
-    lazy = false,
-    version = false, -- Never set this value to "*"! Never!
-    ---@module 'avante'
-    ---@type avante.Config
+    "folke/sidekick.nvim",
     opts = {
-      behaviour = {
-        enable_fastapply = true, -- Enable Fast Apply feature
-      },
-      highlights = {
-        diff = {
-          incoming = "DiffAdd",   -- need have background color
-          current = "DiffChange", -- need have background color
-        },
-      },
-
-      -- add any opts here
-      -- for example
-      provider = "moonshot",
-      providers = {
-        copilot = {
-          model = "claude-3.5-sonnet"
-        },
-        claude = {
-          endpoint = "https://api.anthropic.com",
-          model = "claude-sonnet-4-20250514",
-          timeout = 30000, -- Timeout in milliseconds
-          extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 20480,
-          },
-        },
-        moonshot = {
-          -- endpoint = "https://api.moonshot.ai/v1",
-          endpoint = "https://api.moonshot.cn/v1",
-          model = "kimi-k2-0711-preview",
-          timeout = 30000, -- Timeout in milliseconds
-          extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 32768,
-          },
+      -- add any options here
+      cli = {
+        mux = {
+          backend = "tmux",
+          enabled = true,
         },
       },
     },
-
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "echasnovski/mini.pick",         -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
-      "ibhagwan/fzf-lua",              -- for file_selector provider fzf
-      "stevearc/dressing.nvim",        -- for input provider dressing
-      "folke/snacks.nvim",             -- for input provider snacks
-      "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua",        -- for providers='copilot'
+    -- stylua: ignore
+    keys = {
       {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
+        "<C-k>",
+        function()
+          -- if there is a next edit, jump to it, otherwise apply it if any
+          if not require("sidekick").nes_jump_or_apply() then
+            return "<C-k>" -- fallback to normal key
+          end
+        end,
+        expr = true,
+        desc = "Goto/Apply Next Edit Suggestion",
       },
       {
-        -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
+        "<leader>as",
+        function() require("sidekick.cli").send({ selection = true }) end,
+        mode = { "v" },
+        desc = "Sidekick Send Visual Selection",
+      },
+      {
+        "<leader>ap",
+        function() require("sidekick.cli").prompt() end,
+        mode = { "n", "v" },
+        desc = "Sidekick Select Prompt",
+      },
+      {
+        "<leader>af",
+        function() require("sidekick.cli").send({ prompt = "file", submit = false }) end,
+        mode = { "n", "v" },
+        desc = "Sidekick Select Prompt",
+      },
+      {
+        "<c-.>",
+        function() require("sidekick.cli").focus() end,
+        mode = { "n", "x", "i", "t" },
+        desc = "Sidekick Switch Focus",
+      },
+      -- Example of a keybinding to open Claude directly
+      {
+        "<leader>ac",
+        function() require("sidekick.cli").toggle({ name = "codex", focus = true }) end,
+        desc = "Sidekick Codex Toggle",
+        mode = { "n", "v" },
       },
     },
   },

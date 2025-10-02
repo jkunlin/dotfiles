@@ -35,8 +35,8 @@ return {
         if vim.v.hlsearch == 1 then
           local sinfo = vim.fn.searchcount({ maxcount = 0 })
           local stat = sinfo.incomplete > 0 and "[?/?]"
-            or sinfo.total > 0 and ("[%s/%s]"):format(sinfo.current, sinfo.total)
-            or nil
+              or sinfo.total > 0 and ("[%s/%s]"):format(sinfo.current, sinfo.total)
+              or nil
 
           return stat
           -- if stat ~= nil then
@@ -118,4 +118,13 @@ return {
     "psliwka/vim-smoothie",
     event = "BufReadPost",
   },
+
+  {
+    'oribarilan/lensline.nvim',
+    tag = '1.0.0', -- or: branch = 'release/1.x' for latest non-breaking updates
+    event = 'LspAttach',
+    config = function()
+      require("lensline").setup()
+    end,
+  }
 }
