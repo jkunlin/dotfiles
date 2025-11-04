@@ -85,26 +85,26 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-require("lazyvim.util").lsp.on_attach(function(client, bufnr)
-  -- set formatexpr and tagfunc to keep using Vim default mappings for formatting and jumping to a tag
-  if client.server_capabilities.definitionProvider then
-    vim.api.nvim_set_option_value("tagfunc", "v:lua.vim.lsp.tagfunc", { buf = bufnr })
-  end
-
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = bufnr })
-    -- Add this <leader> bound mapping so formatting the entire document is easier.
-    vim.api.nvim_set_keymap(
-      "n",
-      "<leader>gq",
-      ":lua vim.lsp.buf.format({async = true})<CR>",
-      { noremap = true, silent = true }
-    )
-
-    -- local lsp_format_modifications = require("lsp-format-modifications")
-    -- lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
-  end
-end)
+-- require("lazyvim.util").lsp.on_attach(function(client, bufnr)
+--   -- set formatexpr and tagfunc to keep using Vim default mappings for formatting and jumping to a tag
+--   if client.server_capabilities.definitionProvider then
+--     vim.api.nvim_set_option_value("tagfunc", "v:lua.vim.lsp.tagfunc", { buf = bufnr })
+--   end
+--
+--   if client.server_capabilities.documentFormattingProvider then
+--     vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = bufnr })
+--     -- Add this <leader> bound mapping so formatting the entire document is easier.
+--     vim.api.nvim_set_keymap(
+--       "n",
+--       "<leader>gq",
+--       ":lua vim.lsp.buf.format({async = true})<CR>",
+--       { noremap = true, silent = true }
+--     )
+--
+--     -- local lsp_format_modifications = require("lsp-format-modifications")
+--     -- lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
+--   end
+-- end)
 
 -- Disable autoformat for lua files
 -- vim.api.nvim_create_autocmd({ "FileType" }, {

@@ -88,9 +88,9 @@ return {
         ["<S-Tab>"] = { "select_prev", "fallback" },
         ["<C-k>"] = {
           "snippet_forward",
-          function() -- sidekick next edit suggestion
-            return require("sidekick").nes_jump_or_apply()
-          end,
+          -- function() -- sidekick next edit suggestion
+          --   return require("sidekick").nes_jump_or_apply()
+          -- end,
           "fallback"
         },
         ["<C-j>"] = { "snippet_backward", "fallback" },

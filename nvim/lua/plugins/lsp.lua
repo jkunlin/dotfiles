@@ -37,12 +37,6 @@ return {
     -- },
 
     opts = function(_, opts)
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-      keys[#keys + 1] = { "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>" }
-      keys[#keys + 1] = { "g\\", "<cmd>vsplit<bar>lua vim.lsp.buf.definition()<cr>" }
-      keys[#keys + 1] = { "g-", "<cmd>split<bar>lua vim.lsp.buf.definition()<cr>" }
-      keys[#keys + 1] = { "gf", "<cmd>lua vim.lsp.buf.code_action()<cr>" }
-      keys[#keys + 1] = { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>" }
       -- keys[#keys + 1] = {
       --   "gd",
       --   function()
@@ -81,4 +75,34 @@ return {
   --     })
   --   end,
   -- },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    opts = {
+      add_messages = {
+        display_count = true,
+      },
+      multilines = {
+        enabled = true,
+      },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      diagnostics = { virtual_text = false },
+      servers = {
+        ["*"] = {
+          keys = {
+            { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>" },
+            { "g\\", "<cmd>vsplit<bar>lua vim.lsp.buf.definition()<cr>" },
+            { "g-", "<cmd>split><bar>lua vim.lsp.buf.definition()<cr>" },
+            { "gf", "<cmd>lua vim.lsp.buf.code_action()<cr>" },
+            { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>" },
+          },
+        },
+      },
+    },
+  },
 }

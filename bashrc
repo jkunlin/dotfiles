@@ -77,9 +77,9 @@ export no_proxy="localhost,127.0.0.1,::1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12
 export NO_PROXY="${no_proxy}"
 
 ## Ghostty
-if [[ "$TERM" == "xterm-ghostty" ]]; then
-  export TERM=xterm-256color
-fi
+# if [[ "$TERM" == "xterm-ghostty" ]]; then
+#   export TERM=xterm-256color
+# fi
 
 ### OS X
 export COPYFILE_DISABLE=true
@@ -88,7 +88,8 @@ MANPATH=$MANPATH:$HOME/share/man
 
 ## java
 # export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-export JAVA_HOME=$HOME/.local/jdk-19.0.2
+# export JAVA_HOME=$HOME/.local/jdk-19.0.2
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export CLASSPATH=.:${JAVA_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 # export _JAVA_AWT_WM_NONREPARENTING=1
@@ -129,6 +130,7 @@ alias ll='ls -alF'
 alias vi='vim'
 alias vi2='vi -O2 '
 alias nv='proxychains4 -q nvim'
+alias nvn='proxychains4 -q nvim --noplugin'
 alias git='proxychains4 -q git'
 alias em='emacsclient -n -c -a ""'
 alias hc="history -c"
@@ -162,7 +164,7 @@ fi
 
 ### Tmux
 source "$BASE/tmux.completion.bash"
-alias tmux="tmux -2"
+# alias tmux="tmux -2"
 alias tmuxls="ls $TMPDIR/tmux*/"
 tping() {
   for p in $(tmux list-windows -F "#{pane_id}"); do

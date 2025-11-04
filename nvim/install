@@ -73,7 +73,7 @@ fi
 # lua
 if ! command -v lua 2>/dev/null; then
   echo "Installing Lua to user directory..."
-  LUA_VERSION="5.4.6"
+  LUA_VERSION="5.1.5"
   LUA_ARCHIVE="lua-${LUA_VERSION}.tar.gz"
   LUA_URL="https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz"
   LUA_SRC_DIR="$BASE/tmp/lua-src"
