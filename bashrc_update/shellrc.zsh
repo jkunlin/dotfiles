@@ -55,18 +55,19 @@ zstyle ':vcs_info:*' enable git
 PS1='%F{blue}%n%f%F{green}@%f%F{yellow}%m%f%F{red}> %f%~%F{240}${vcs_info_msg_0_}%f '
 
 # Alternative: If you prefer the git-prompt.sh style
-if [ -f ~/.git-prompt.sh ]; then
-  GIT_PS1_SHOWDIRTYSTATE=true
-  GIT_PS1_SHOWSTASHSTATE=true
-  GIT_PS1_SHOWUNTRACKEDFILES=true
-  GIT_PS1_SHOWUPSTREAM="auto"
-  source ~/.git-prompt.sh
-
-  # Git prompt for zsh
-  precmd() {
-    __git_ps1 "%F{blue}%n%f%F{green}@%f%F{yellow}%m%f%F{red}> %f%~" " " " %F{240}(%s)%f"
-  }
-fi
+# DISABLED: This conflicts with the vcs_info system above and uses incompatible format codes
+# if [ -f ~/.git-prompt.sh ]; then
+#   GIT_PS1_SHOWDIRTYSTATE=true
+#   GIT_PS1_SHOWSTASHSTATE=true
+#   GIT_PS1_SHOWUNTRACKEDFILES=true
+#   GIT_PS1_SHOWUPSTREAM="auto"
+#   source ~/.git-prompt.sh
+#
+#   # Git prompt for zsh
+#   precmd() {
+#     __git_ps1 "%F{blue}%n%f%F{green}@%f%F{yellow}%m%f%F{red}> %f%~" " " " %F{240}(%s)%f"
+#   }
+# fi
 
 # Zsh Completion System
 # --------------------------------------------------------------------

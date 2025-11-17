@@ -30,10 +30,10 @@ mkdir -pv bak
 if [ -d "$BASE/bashrc_update" ]; then
   echo "Installing new modular shell configuration..."
 
-  # Copy the shell configuration modules
-  cp -v "$BASE/bashrc_update/shellrc.common" ~/.shellrc.common
-  cp -v "$BASE/bashrc_update/shellrc.bash" ~/.shellrc.bash
-  [ -f "$BASE/bashrc_update/shellrc.zsh" ] && cp -v "$BASE/bashrc_update/shellrc.zsh" ~/.shellrc.zsh
+  # Create symbolic links for shell configuration modules
+  ln -sfv "$BASE/bashrc_update/shellrc.common" ~/.shellrc.common
+  ln -sfv "$BASE/bashrc_update/shellrc.bash" ~/.shellrc.bash
+  [ -f "$BASE/bashrc_update/shellrc.zsh" ] && ln -sfv "$BASE/bashrc_update/shellrc.zsh" ~/.shellrc.zsh
 
   # Create simplified .bashrc that sources from home directory
   cat > ~/.bashrc << 'EOF'
