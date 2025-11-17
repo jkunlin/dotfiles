@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# .bashrc - Bash configuration entry point
+# ====================================================================
+# This file loads common shell configuration and bash-specific settings
+
+# Get the directory of this script
+BASHRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Load common shell configuration
+if [ -f "$BASHRC_DIR/shellrc.common" ]; then
+    source "$BASHRC_DIR/shellrc.common"
+fi
+
+# Load bash-specific configuration
+if [ -f "$BASHRC_DIR/shellrc.bash" ]; then
+    source "$BASHRC_DIR/shellrc.bash"
+fi
+
+# Load local customizations if they exist
+if [ -f "$HOME/.bashrc.local" ]; then
+    source "$HOME/.bashrc.local"
+fi

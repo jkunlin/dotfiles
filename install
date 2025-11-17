@@ -15,13 +15,67 @@ if [ ! -e ~/.git-prompt.sh ]; then
 fi
 
 BASE=$(pwd)
-for rc in *rc tmux.conf alacritty.yml; do
-  mkdir -pv bak
+
+# Handle new modular shell configuration
+mkdir -pv bak
+
+# Backup existing shell configs
+[ -e ~/.bashrc ] && mv -v ~/.bashrc bak/.bashrc
+[ -e ~/.zshrc ] && mv -v ~/.zshrc bak/.zshrc
+[ -e ~/.shellrc.common ] && mv -v ~/.shellrc.common bak/.shellrc.common
+[ -e ~/.shellrc.bash ] && mv -v ~/.shellrc.bash bak/.shellrc.bash
+[ -e ~/.shellrc.zsh ] && mv -v ~/.shellrc.zsh bak/.shellrc.zsh
+
+# Install new modular shell configuration
+if [ -d "$BASE/bashrc_update" ]; then
+  echo "Installing new modular shell configuration..."
+
+  # Copy the shell configuration modules
+  cp -v "$BASE/bashrc_update/shellrc.common" ~/.shellrc.common
+  cp -v "$BASE/bashrc_update/shellrc.bash" ~/.shellrc.bash
+  [ -f "$BASE/bashrc_update/shellrc.zsh" ] && cp -v "$BASE/bashrc_update/shellrc.zsh" ~/.shellrc.zsh
+
+  # Create simplified .bashrc that sources from home directory
+  cat > ~/.bashrc << 'EOF'
+#!/usr/bin/env bash
+# .bashrc - Bash configuration entry point
+
+# Load common shell configuration
+[ -f "$HOME/.shellrc.common" ] && source "$HOME/.shellrc.common"
+
+# Load bash-specific configuration
+[ -f "$HOME/.shellrc.bash" ] && source "$HOME/.shellrc.bash"
+
+# Load local customizations if they exist
+[ -f "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
+EOF
+
+  # Create simplified .zshrc if zsh config exists
+  if [ -f "$BASE/bashrc_update/zshrc.new" ]; then
+    cat > ~/.zshrc << 'EOF'
+#!/usr/bin/env zsh
+# .zshrc - Zsh configuration entry point
+
+# Load common shell configuration
+[ -f "$HOME/.shellrc.common" ] && source "$HOME/.shellrc.common"
+
+# Load zsh-specific configuration
+[ -f "$HOME/.shellrc.zsh" ] && source "$HOME/.shellrc.zsh"
+
+# Load local customizations if they exist
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+EOF
+  fi
+else
+  echo "New modular shell configuration not found, falling back to old bashrc..."
+  ln -sfv "$BASE/bashrc" ~/.bashrc
+fi
+
+# Handle other rc files
+for rc in vimrc tmux.conf alacritty.yml; do
   [ -e ~/."$rc" ] && mv -v ~/."$rc" bak/."$rc"
   ln -sfv "$BASE/$rc" ~/."$rc"
 done
-
-mkdir -pv bak
 terminalrc=$HOME/.config/xfce4/terminal/terminalrc
 [ -e $terminalrc ] && mv -v $terminalrc bak/terminalrc
 ln -sfv "$BASE/xfce4_terminal" $terminalrc

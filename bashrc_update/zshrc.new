@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# .zshrc - Zsh configuration entry point
+# ====================================================================
+# This file loads common shell configuration and zsh-specific settings
+
+# Get the directory of this script
+ZSHRC_DIR="${${(%):-%x}:h}"
+if [ -z "$ZSHRC_DIR" ] || [ "$ZSHRC_DIR" = "." ]; then
+    ZSHRC_DIR="$HOME/tmp/bashrc_update"
+fi
+
+# Load common shell configuration
+if [ -f "$ZSHRC_DIR/shellrc.common" ]; then
+    source "$ZSHRC_DIR/shellrc.common"
+fi
+
+# Load zsh-specific configuration
+if [ -f "$ZSHRC_DIR/shellrc.zsh" ]; then
+    source "$ZSHRC_DIR/shellrc.zsh"
+fi
+
+# Load local customizations if they exist
+if [ -f "$HOME/.zshrc.local" ]; then
+    source "$HOME/.zshrc.local"
+fi
