@@ -96,8 +96,8 @@ return {
         ["*"] = {
           keys = {
             { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>" },
-            { "g\\", "<cmd>vsplit<bar>lua vim.lsp.buf.definition()<cr>" },
-            { "g-", "<cmd>split><bar>lua vim.lsp.buf.definition()<cr>" },
+            { "g\\", "<cmd>vsplit<cr>gd" },
+            { "g-", "<cmd>split<cr>gd" },
             { "gf", "<cmd>lua vim.lsp.buf.code_action()<cr>" },
             { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>" },
           },
