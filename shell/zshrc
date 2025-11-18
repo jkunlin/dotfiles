@@ -6,7 +6,7 @@
 # Get the directory of this script
 ZSHRC_DIR="${${(%):-%x}:h}"
 if [ -z "$ZSHRC_DIR" ] || [ "$ZSHRC_DIR" = "." ]; then
-    ZSHRC_DIR="$HOME/tmp/bashrc_update"
+    ZSHRC_DIR="$HOME/dotfiles/shell"
 fi
 
 # Load common shell configuration
