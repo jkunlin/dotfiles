@@ -8,32 +8,42 @@
 # Detect current shell
 if [ -n "$ZSH_VERSION" ]; then
   CURRENT_SHELL="zsh"
-  # Get script directory for zsh - use ZSHRC_DIR if set by zshrc.new
-  if [ -n "$ZSHRC_DIR" ]; then
-    BASE="$ZSHRC_DIR"
-  elif [ -n "$0" ] && [ "$0" != "zsh" ] && [ "$0" != "-zsh" ]; then
+  # Get script directory for zsh
+  if [ -n "$0" ] && [ "$0" != "zsh" ] && [ "$0" != "-zsh" ]; then
+    # If sourced directly, get the directory
     BASE=$(dirname "$0")
+  elif [ -L "$HOME/.shellrc.common" ]; then
+    # If symlinked, follow the symlink
+    BASE=$(dirname $(readlink -f "$HOME/.shellrc.common" 2>/dev/null || readlink "$HOME/.shellrc.common"))
   else
-    BASE="$HOME/tmp/bashrc_update"
+    BASE="$HOME/dotfiles/shell"
   fi
 elif [ -n "$BASH_VERSION" ]; then
   CURRENT_SHELL="bash"
-  # Get script directory for bash - use BASHRC_DIR if set by bashrc.new
-  if [ -n "$BASHRC_DIR" ]; then
-    BASE="$BASHRC_DIR"
-  elif [ -n "$BASH_SOURCE" ]; then
+  # Get script directory for bash
+  if [ -n "$BASH_SOURCE" ]; then
     # Check if readlink exists and BASH_SOURCE is a symlink
     if command -v readlink >/dev/null 2>&1 && [ -L "$BASH_SOURCE" ]; then
-      BASE=$(dirname $(readlink "$BASH_SOURCE"))
+      # Follow symlink to get actual location
+      REAL_PATH=$(readlink -f "$BASH_SOURCE" 2>/dev/null || readlink "$BASH_SOURCE")
+      BASE=$(dirname "$REAL_PATH")
     else
       BASE=$(dirname "$BASH_SOURCE")
     fi
   else
-    BASE="$HOME/tmp/bashrc_update"
+    BASE="$HOME/dotfiles/shell"
   fi
 else
   CURRENT_SHELL="sh"
-  BASE="$HOME/tmp/bashrc_update"
+  BASE="$HOME/dotfiles/shell"
+fi
+
+# Set DOTFILES_BASE to the dotfiles root directory
+# BASE points to shell/, so DOTFILES_BASE is its parent
+if [ -d "$BASE/.." ]; then
+  DOTFILES_BASE=$(cd "$BASE/.." && pwd)
+else
+  DOTFILES_BASE="$HOME/dotfiles"
 fi
 
 # Environment variables
@@ -546,6 +556,7 @@ fs() {
 }
 
 # Z directory jumper integration
+# z.sh is now in the shell/ directory (same as this file)
 if [ -f "$BASE/z.sh" ]; then
   source "$BASE/z.sh"
   unalias z 2>/dev/null || true
@@ -589,7 +600,7 @@ if [ "$PLATFORM" = 'Darwin' ]; then
 
   # StackOverflow favorites
   so() {
-    $BASE/bin/stackoverflow-favorites |
+    $DOTFILES_BASE/bin/stackoverflow-favorites |
       fzf --ansi --reverse --with-nth ..-2 --tac --tiebreak index |
       awk '{print $NF}' | while read -r line; do
       open "$line"
@@ -658,7 +669,7 @@ gs() {
 }
 
 # Load extra configuration if exists
-EXTRA=$BASE/shellrc-extra
+EXTRA=$DOTFILES_BASE/shellrc-extra
 [ -f "$EXTRA" ] && source "$EXTRA"
 
 # Nix

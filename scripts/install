@@ -1,0 +1,268 @@
+#!/bin/bash
+# Dotfiles Installation Script
+# ====================================================================
+
+# Get the dotfiles root directory (parent of scripts/)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+echo "=== Dotfiles Installation ==="
+echo "Dotfiles root: $DOTFILES_ROOT"
+echo
+
+# Detect download tool
+if command -v curl 2>/dev/null; then
+  DL="curl --insecure -fLo"
+elif command -v wget 2>/dev/null; then
+  DL="wget -O"
+else
+  echo "Error: Neither curl nor wget found. Please install one of them."
+  exit 1
+fi
+
+# Create backup directory
+BACKUP_DIR="$DOTFILES_ROOT/archive/install-backup-$(date +%Y%m%d-%H%M%S)"
+mkdir -pv "$BACKUP_DIR"
+
+# Download git-prompt.sh if not exists
+if [ ! -e ~/.git-prompt.sh ]; then
+  echo "Downloading git-prompt.sh..."
+  $DL ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+fi
+
+# ====================================================================
+# Shell Configuration
+# ====================================================================
+
+echo
+echo "=== Installing Shell Configuration ==="
+
+# Backup existing shell configs
+[ -e ~/.bashrc ] && mv -v ~/.bashrc "$BACKUP_DIR/.bashrc"
+[ -e ~/.zshrc ] && mv -v ~/.zshrc "$BACKUP_DIR/.zshrc"
+[ -e ~/.shellrc.common ] && mv -v ~/.shellrc.common "$BACKUP_DIR/.shellrc.common"
+[ -e ~/.shellrc.bash ] && mv -v ~/.shellrc.bash "$BACKUP_DIR/.shellrc.bash"
+[ -e ~/.shellrc.zsh ] && mv -v ~/.shellrc.zsh "$BACKUP_DIR/.shellrc.zsh"
+
+# Create symbolic links for shell configuration modules
+ln -sfv "$DOTFILES_ROOT/shell/shellrc.common" ~/.shellrc.common
+ln -sfv "$DOTFILES_ROOT/shell/shellrc.bash" ~/.shellrc.bash
+ln -sfv "$DOTFILES_ROOT/shell/shellrc.zsh" ~/.shellrc.zsh
+
+# Create .bashrc entry point
+cat > ~/.bashrc << 'EOF'
+#!/usr/bin/env bash
+# .bashrc - Bash configuration entry point
+
+# Load common shell configuration
+[ -f "$HOME/.shellrc.common" ] && source "$HOME/.shellrc.common"
+
+# Load bash-specific configuration
+[ -f "$HOME/.shellrc.bash" ] && source "$HOME/.shellrc.bash"
+
+# Load local customizations if they exist
+[ -f "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
+EOF
+
+# Create .zshrc entry point
+cat > ~/.zshrc << 'EOF'
+#!/usr/bin/env zsh
+# .zshrc - Zsh configuration entry point
+
+# Load common shell configuration
+[ -f "$HOME/.shellrc.common" ] && source "$HOME/.shellrc.common"
+
+# Load zsh-specific configuration
+[ -f "$HOME/.shellrc.zsh" ] && source "$HOME/.shellrc.zsh"
+
+# Load local customizations if they exist
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+EOF
+
+echo "Shell configuration installed successfully"
+
+# ====================================================================
+# Terminal Emulators
+# ====================================================================
+
+echo
+echo "=== Installing Terminal Emulator Configurations ==="
+
+# Alacritty
+if [ -f "$DOTFILES_ROOT/terminal/alacritty.yml" ]; then
+  mkdir -p ~/.config/alacritty
+  [ -e ~/.config/alacritty/alacritty.yml ] && mv -v ~/.config/alacritty/alacritty.yml "$BACKUP_DIR/alacritty.yml"
+  ln -sfv "$DOTFILES_ROOT/terminal/alacritty.yml" ~/.config/alacritty/alacritty.yml
+fi
+
+# Wezterm
+if [ -f "$DOTFILES_ROOT/terminal/wezterm.lua" ]; then
+  [ -e ~/.wezterm.lua ] && mv -v ~/.wezterm.lua "$BACKUP_DIR/wezterm.lua"
+  ln -sfv "$DOTFILES_ROOT/terminal/wezterm.lua" ~/.wezterm.lua
+fi
+
+# XFCE4 Terminal
+if [ -f "$DOTFILES_ROOT/terminal/xfce4_terminal" ]; then
+  mkdir -p ~/.config/xfce4/terminal
+  terminalrc="$HOME/.config/xfce4/terminal/terminalrc"
+  [ -e "$terminalrc" ] && mv -v "$terminalrc" "$BACKUP_DIR/xfce4_terminalrc"
+  ln -sfv "$DOTFILES_ROOT/terminal/xfce4_terminal" "$terminalrc"
+fi
+
+echo "Terminal configurations installed successfully"
+
+# ====================================================================
+# Editors
+# ====================================================================
+
+echo
+echo "=== Installing Editor Configurations ==="
+
+# Vim
+if [ -d "$DOTFILES_ROOT/editors/vim" ] && [ -f "$DOTFILES_ROOT/editors/vim/vimrc" ]; then
+  [ -e ~/.vimrc ] && mv -v ~/.vimrc "$BACKUP_DIR/.vimrc"
+  ln -sfv "$DOTFILES_ROOT/editors/vim/vimrc" ~/.vimrc
+fi
+
+# Neovim (already in ~/.config/nvim typically, but can symlink)
+# Note: nvim config is usually kept in place or users manage it separately
+
+# Emacs
+if [ -f "$DOTFILES_ROOT/editors/emacs/custom-post.el" ]; then
+  mkdir -p ~/.emacs.d
+  [ -e ~/.emacs.d/custom-post.el ] && mv -v ~/.emacs.d/custom-post.el "$BACKUP_DIR/custom-post.el"
+  ln -sfv "$DOTFILES_ROOT/editors/emacs/custom-post.el" ~/.emacs.d/custom-post.el
+fi
+
+echo "Editor configurations installed successfully"
+
+# ====================================================================
+# Tools
+# ====================================================================
+
+echo
+echo "=== Installing Tool Configurations ==="
+
+# Tmux
+if [ -f "$DOTFILES_ROOT/tools/tmux.conf" ]; then
+  [ -e ~/.tmux.conf ] && mv -v ~/.tmux.conf "$BACKUP_DIR/.tmux.conf"
+  ln -sfv "$DOTFILES_ROOT/tools/tmux.conf" ~/.tmux.conf
+fi
+
+# Inputrc
+if [ -f "$DOTFILES_ROOT/tools/inputrc" ]; then
+  [ -e ~/.inputrc ] && mv -v ~/.inputrc "$BACKUP_DIR/.inputrc"
+  ln -sfv "$DOTFILES_ROOT/tools/inputrc" ~/.inputrc
+fi
+
+# SSH
+if [ -f "$DOTFILES_ROOT/tools/ssh_config" ]; then
+  mkdir -p ~/.ssh
+  [ -e ~/.ssh/config ] && mv -v ~/.ssh/config "$BACKUP_DIR/ssh_config"
+  ln -sfv "$DOTFILES_ROOT/tools/ssh_config" ~/.ssh/config
+fi
+
+# Zathura
+if [ -f "$DOTFILES_ROOT/tools/zathura_config" ]; then
+  mkdir -p ~/.config/zathura
+  [ -e ~/.config/zathura/zathurarc ] && mv -v ~/.config/zathura/zathurarc "$BACKUP_DIR/zathurarc"
+  ln -sfv "$DOTFILES_ROOT/tools/zathura_config" ~/.config/zathura/zathurarc
+fi
+
+# LaTeX
+if [ -f "$DOTFILES_ROOT/tools/latexmkrc" ]; then
+  [ -e ~/.latexmkrc ] && mv -v ~/.latexmkrc "$BACKUP_DIR/.latexmkrc"
+  ln -sfv "$DOTFILES_ROOT/tools/latexmkrc" ~/.latexmkrc
+fi
+
+echo "Tool configurations installed successfully"
+
+# ====================================================================
+# Git Configuration
+# ====================================================================
+
+echo
+echo "=== Configuring Git ==="
+
+git config --global user.email "jkunlin@gmail.com"
+git config --global user.name "jkunlin"
+
+echo "Git configuration completed"
+
+# ====================================================================
+# Tmux Plugin Manager
+# ====================================================================
+
+if [ ! -e ~/.tmux/plugins/tpm ]; then
+  echo
+  echo "=== Installing Tmux Plugin Manager ==="
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  echo "TPM installed. Press prefix + I in tmux to install plugins."
+fi
+
+# ====================================================================
+# Fonts
+# ====================================================================
+
+echo
+echo "=== Installing Fonts ==="
+
+# Source Code Pro
+if [ ! -e ~/.fonts/SourceCodePro ]; then
+  mkdir -p ~/.fonts/SourceCodePro
+  echo "Downloading Source Code Pro Nerd Font..."
+  $DL ~/.fonts/SourceCodePro/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
+  cd ~/.fonts/SourceCodePro
+  unzip -q SourceCodePro.zip
+  rm SourceCodePro.zip
+  cd - > /dev/null
+  echo "Source Code Pro installed"
+fi
+
+# Fira Code
+if [ ! -e ~/.fonts/FiraCode ]; then
+  mkdir -p ~/.fonts/FiraCode
+  echo "Downloading Fira Code Nerd Font..."
+  $DL ~/.fonts/FiraCode/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+  cd ~/.fonts/FiraCode
+  unzip -q FiraCode.zip
+  rm FiraCode.zip
+  cd - > /dev/null
+  echo "Fira Code installed"
+fi
+
+fc-cache -rv > /dev/null 2>&1
+echo "Font cache updated"
+
+# ====================================================================
+# Software Installation
+# ====================================================================
+
+echo
+echo "=== Software Installation ==="
+
+if [ -f "$DOTFILES_ROOT/scripts/install_software.sh" ]; then
+  read -p "Do you want to install software packages? (y/N) " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    bash "$DOTFILES_ROOT/scripts/install_software.sh"
+  else
+    echo "Skipping software installation"
+  fi
+else
+  echo "Warning: install_software.sh not found. Skipping software installation."
+fi
+
+# ====================================================================
+# Completion
+# ====================================================================
+
+echo
+echo "=== Installation Complete ==="
+echo "Backup location: $BACKUP_DIR"
+echo
+echo "To apply changes:"
+echo "  - For Bash: source ~/.bashrc"
+echo "  - For Zsh:  source ~/.zshrc"
+echo "  - Or simply restart your terminal"
+echo

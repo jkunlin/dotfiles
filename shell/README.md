@@ -121,6 +121,7 @@ source ~/shellrc.zsh
 
 ### 3. 函数
 - **ex**: 智能解压函数，支持多种压缩格式
+- **z**: 智能目录跳转，根据访问频率和历史快速跳转（需要 z.sh）
 - **fzf 集成**: 多个 fzf 相关的搜索和选择函数
 - **Git 函数**: `gf`, `gb`, `gt`, `gh`, `gr`, `gs` 等
 - **Tmux 函数**: `tt`, `fs`, `ftpane` 等
@@ -146,6 +147,7 @@ source ~/shellrc.zsh
 1. `repeat` 函数已重命名为 `repeat_cmd` 以避免与 zsh 内置命令冲突
 2. 某些 bash 特定的功能（如 `bind` 键绑定）在 zsh 中使用等效的 `bindkey`
 3. 补全系统在两个 shell 中有不同的实现
+4. 配置文件使用 `DOTFILES_BASE` 变量来引用 dotfiles 根目录中的共享文件（如 z.sh）
 
 ## 依赖项
 
@@ -157,6 +159,7 @@ source ~/shellrc.zsh
 - git - 版本控制
 - proxychains4 - 代理工具
 - conda - Python 环境管理
+- z.sh - 智能目录跳转工具（位于 dotfiles 根目录）
 
 ## 故障排除
 
@@ -182,3 +185,5 @@ rm ~/shellrc.*
 - 初始版本：将原始 bashrc 重构为模块化、兼容 bash 和 zsh 的配置系统
 - 修复了 zsh 中的函数名冲突问题（`repeat` → `repeat_cmd`）
 - 改进了脚本目录检测逻辑
+- 修复了 zsh 的 `__git_ps1` 格式代码不兼容问题
+- 添加 `DOTFILES_BASE` 变量以正确引用 dotfiles 根目录中的共享文件（z.sh 等）
