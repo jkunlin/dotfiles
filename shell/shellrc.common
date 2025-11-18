@@ -38,13 +38,7 @@ else
   BASE="$HOME/dotfiles/shell"
 fi
 
-# Set DOTFILES_BASE to the dotfiles root directory
-# BASE points to shell/, so DOTFILES_BASE is its parent
-if [ -d "$BASE/.." ]; then
-  DOTFILES_BASE=$(cd "$BASE/.." && pwd)
-else
-  DOTFILES_BASE="$HOME/dotfiles"
-fi
+DOTFILES_BASE="$HOME/dotfiles"
 
 # Environment variables
 # --------------------------------------------------------------------
@@ -557,8 +551,8 @@ fs() {
 
 # Z directory jumper integration
 # z.sh is now in the shell/ directory (same as this file)
-if [ -f "$BASE/z.sh" ]; then
-  source "$BASE/z.sh"
+if [ -f "$DOTFILES_BASE/shell/z.sh" ]; then
+  source "$DOTFILES_BASE/shell/z.sh"
   unalias z 2>/dev/null || true
   z() {
     [ $# -gt 0 ] && _z "$*" && return
