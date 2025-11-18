@@ -119,13 +119,10 @@ echo
 echo "=== Installing Editor Configurations ==="
 
 # Vim
-if [ -d "$DOTFILES_ROOT/editors/vim" ] && [ -f "$DOTFILES_ROOT/editors/vim/vimrc" ]; then
-  [ -e ~/.vimrc ] && mv -v ~/.vimrc "$BACKUP_DIR/.vimrc"
-  ln -sfv "$DOTFILES_ROOT/editors/vim/vimrc" ~/.vimrc
-fi
+# Note: users manage it separately
 
-# Neovim (already in ~/.config/nvim typically, but can symlink)
-# Note: nvim config is usually kept in place or users manage it separately
+# Neovim
+# Note: users manage it separately
 
 # Emacs
 if [ -f "$DOTFILES_ROOT/editors/emacs/custom-post.el" ]; then
@@ -156,11 +153,11 @@ if [ -f "$DOTFILES_ROOT/tools/inputrc" ]; then
 fi
 
 # SSH
-if [ -f "$DOTFILES_ROOT/tools/ssh_config" ]; then
-  mkdir -p ~/.ssh
-  [ -e ~/.ssh/config ] && mv -v ~/.ssh/config "$BACKUP_DIR/ssh_config"
-  ln -sfv "$DOTFILES_ROOT/tools/ssh_config" ~/.ssh/config
-fi
+# if [ -f "$DOTFILES_ROOT/tools/ssh_config" ]; then
+#   mkdir -p ~/.ssh
+#   [ -e ~/.ssh/config ] && mv -v ~/.ssh/config "$BACKUP_DIR/ssh_config"
+#   ln -sfv "$DOTFILES_ROOT/tools/ssh_config" ~/.ssh/config
+# fi
 
 # Zathura
 if [ -f "$DOTFILES_ROOT/tools/zathura_config" ]; then
@@ -207,51 +204,51 @@ fi
 echo
 echo "=== Installing Fonts ==="
 
-# Source Code Pro
-if [ ! -e ~/.fonts/SourceCodePro ]; then
-  mkdir -p ~/.fonts/SourceCodePro
-  echo "Downloading Source Code Pro Nerd Font..."
-  $DL ~/.fonts/SourceCodePro/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
-  cd ~/.fonts/SourceCodePro
-  unzip -q SourceCodePro.zip
-  rm SourceCodePro.zip
-  cd - > /dev/null
-  echo "Source Code Pro installed"
-fi
-
-# Fira Code
-if [ ! -e ~/.fonts/FiraCode ]; then
-  mkdir -p ~/.fonts/FiraCode
-  echo "Downloading Fira Code Nerd Font..."
-  $DL ~/.fonts/FiraCode/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
-  cd ~/.fonts/FiraCode
-  unzip -q FiraCode.zip
-  rm FiraCode.zip
-  cd - > /dev/null
-  echo "Fira Code installed"
-fi
-
-fc-cache -rv > /dev/null 2>&1
-echo "Font cache updated"
-
-# ====================================================================
-# Software Installation
-# ====================================================================
-
-echo
-echo "=== Software Installation ==="
-
-if [ -f "$DOTFILES_ROOT/scripts/install_software.sh" ]; then
-  read -p "Do you want to install software packages? (y/N) " -n 1 -r
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    bash "$DOTFILES_ROOT/scripts/install_software.sh"
-  else
-    echo "Skipping software installation"
-  fi
-else
-  echo "Warning: install_software.sh not found. Skipping software installation."
-fi
+# # Source Code Pro
+# if [ ! -e ~/.fonts/SourceCodePro ]; then
+#   mkdir -p ~/.fonts/SourceCodePro
+#   echo "Downloading Source Code Pro Nerd Font..."
+#   $DL ~/.fonts/SourceCodePro/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
+#   cd ~/.fonts/SourceCodePro
+#   unzip -q SourceCodePro.zip
+#   rm SourceCodePro.zip
+#   cd - > /dev/null
+#   echo "Source Code Pro installed"
+# fi
+# 
+# # Fira Code
+# if [ ! -e ~/.fonts/FiraCode ]; then
+#   mkdir -p ~/.fonts/FiraCode
+#   echo "Downloading Fira Code Nerd Font..."
+#   $DL ~/.fonts/FiraCode/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+#   cd ~/.fonts/FiraCode
+#   unzip -q FiraCode.zip
+#   rm FiraCode.zip
+#   cd - > /dev/null
+#   echo "Fira Code installed"
+# fi
+# 
+# fc-cache -rv > /dev/null 2>&1
+# echo "Font cache updated"
+# 
+# # ====================================================================
+# # Software Installation
+# # ====================================================================
+# 
+# echo
+# echo "=== Software Installation ==="
+# 
+# if [ -f "$DOTFILES_ROOT/scripts/install_software.sh" ]; then
+#   read -p "Do you want to install software packages? (y/N) " -n 1 -r
+#   echo
+#   if [[ $REPLY =~ ^[Yy]$ ]]; then
+#     bash "$DOTFILES_ROOT/scripts/install_software.sh"
+#   else
+#     echo "Skipping software installation"
+#   fi
+# else
+#   echo "Warning: install_software.sh not found. Skipping software installation."
+# fi
 
 # ====================================================================
 # Completion
