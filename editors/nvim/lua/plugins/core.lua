@@ -162,6 +162,13 @@ return {
       { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Git vertical diff split" },
     },
   },
+
+  {
+    "esmuellert/codediff.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    cmd = "CodeDiff",
+  },
+
   { "kshenoy/vim-signature" },
 
   -- windows.nvim
@@ -272,7 +279,7 @@ return {
     cmd = {
       "DiffviewOpen",
     },
-    opts = { git_cmd = { vim.loop.os_homedir() .. "/dotfiles/git" } },
+    opts = { git_cmd = { vim.loop.os_homedir() .. "/dotfiles/bin/git" } },
     config = true,
   },
 
