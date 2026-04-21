@@ -114,6 +114,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
 --   end,
 -- })
 
+-- Disable autoformat-on-save for Python buffers by default.
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("python_disable_autoformat"),
+  pattern = { "python" },
+  callback = function()
+    vim.b.autoformat = false
+  end,
+})
+
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank()

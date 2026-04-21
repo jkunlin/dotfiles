@@ -275,7 +275,8 @@ return {
 
   -- diffview
   {
-    "sindrets/diffview.nvim",
+    -- "sindrets/diffview.nvim",
+    "dlyongemallo/diffview.nvim",
     cmd = {
       "DiffviewOpen",
     },
