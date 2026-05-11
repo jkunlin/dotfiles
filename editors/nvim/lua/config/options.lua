@@ -8,7 +8,17 @@ opt.splitkeep = "cursor"
 opt.shortmess:append({ S = true, s = true }) -- S for search, s for hit-enter message
 opt.wrap = true
 opt.swapfile = false
-opt.diffopt:append("linematch:60") -- https://github.com/neovim/neovim/pull/14537
+-- opt.diffopt:append("linematch:60") -- https://github.com/neovim/neovim/pull/14537
+opt.diffopt = {
+  "internal",
+  "filler",
+  "closeoff",
+  "indent-heuristic",
+  "algorithm:histogram",
+  "inline:char",
+  "linematch:120",
+  "vertical",
+}
 
 -- opt.clipboard = "unnamedplus" -- Sync with system clipboard
 -- vim.g.clipboard = {

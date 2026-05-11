@@ -107,7 +107,8 @@ export PATH=$HOME/.local/cppcheck/bin:$PATH
 export PATH=$HOME/.local/mosh/bin:$PATH
 export PATH=$HOME/.local/SCIPOptSuite-8.0.3-Linux/bin:$PATH
 export SCIPOPTDIR=$HOME/.local/SCIPOptSuite-8.0.3-Linux/
-export PATH=$HOME/.local/tailscale_1.76.1_amd64:$PATH
+# export PATH=$HOME/.local/tailscale_1.76.1_amd64:$PATH
+export PATH=$HOME/.local/tailscale_1.96.4_amd64/:$PATH
 
 ## Compiler settings
 export CC=gcc-10
