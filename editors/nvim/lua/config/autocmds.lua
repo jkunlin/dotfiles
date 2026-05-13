@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ "BufReadPre" }, {
 --     "cpp",
 --   },
 --   callback = function(event)
---     vim.keymap.set("n", "<leader>a", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = event.buf, silent = true })
+--     vim.keymap.set("n", "<leader>a", "<cmd>ClangdSwitchSourceHeader<cr>", { buf = event.buf, silent = true })
 --   end,
 -- })
 
@@ -125,7 +125,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
-    vim.highlight.on_yank()
+    vim.hl.on_yank()
     local copy_to_unnamedplus = require("vim.ui.clipboard.osc52").copy("+")
     copy_to_unnamedplus(vim.v.event.regcontents)
     local copy_to_unnamed = require("vim.ui.clipboard.osc52").copy("*")

@@ -280,7 +280,7 @@ return {
     cmd = {
       "DiffviewOpen",
     },
-    opts = { git_cmd = { vim.loop.os_homedir() .. "/dotfiles/bin/git" } },
+    opts = { git_cmd = { vim.uv.os_homedir() .. "/dotfiles/bin/git" } },
     config = true,
   },
 
@@ -319,7 +319,7 @@ return {
     init = function()
       vim.g.undotree_WindowLayout = 2
       if vim.fn.has("persistent_undo") == 1 then
-        local undodir = vim.loop.os_homedir() .. "/.undodir"
+        local undodir = vim.uv.os_homedir() .. "/.undodir"
         if not vim.fn.isdirectory(undodir) then
           vim.fn.mkdir(undodir, "p")
         end
