@@ -25,16 +25,10 @@ vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Virtical split" }
 vim.keymap.set("n", "<leader>-", "<cmd>split<cr>", { desc = "Horizontal split" })
 vim.keymap.set("n", "<tab>", "<c-w>w", { desc = "Window next" })
 vim.keymap.set("n", "<s-tab>", "<c-w>W", { desc = "Window previous" })
-vim.keymap.set("n", "<c-p>", "<c-i>", { desc = "Jump list (to newer position)" })
-
 -- '[' and ']' keymaps
 vim.keymap.set("n", "<leader>c", "<cmd>cclose<bar>lclose<cr>", { desc = "Close Quickfix and Location" })
-vim.keymap.set("n", "]q", "<cmd>cnext<cr>", { desc = "Quickfix next" })
-vim.keymap.set("n", "[q", "<cmd>cprev<cr>", { desc = "Quickfix previous" })
 vim.keymap.set("n", "]l", "<cmd>lnext<cr>", { desc = "Location next" })
 vim.keymap.set("n", "[l", "<cmd>lprev<cr>", { desc = "Location previous" })
-vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Buffer next" })
-vim.keymap.set("n", "[b", "<cmd>bprev<cr>", { desc = "Beffer previous" })
 -- vim.keymap.set("n", "]t", "<cmd>tnext<cr>", { desc = "Tab next" })
 -- vim.keymap.set("n", "[t", "<cmd>tprev<cr>", { desc = "Tab previous" })
 
@@ -60,4 +54,3 @@ vim.keymap.set("n", "<leader>O", "O<esc>", { desc = "new line above" })
 vim.keymap.set("n", "<c-g>", "1<c-g>", { desc = "Path of buffer" })
 vim.keymap.set("v", "v", "<c-c>")
 vim.keymap.set("n", "<leader>.", "<cmd>cd %:p:h<cr>", { desc = "Change working direcotry" })
-vim.keymap.set("n", "Q", "@q", { desc = "qq to record, Q to replay" })

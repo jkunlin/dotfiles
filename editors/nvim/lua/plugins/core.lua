@@ -707,11 +707,11 @@ return {
     -- stylua: ignore
     keys = {
       {
-        "<C-k>",
+        "<M-k>",
         function()
           -- if there is a next edit, jump to it, otherwise apply it if any
           if not require("sidekick").nes_jump_or_apply() then
-            return "<C-k>" -- fallback to normal key
+            return "<M-k>" -- fallback to normal key
           end
         end,
         expr = true,
@@ -781,7 +781,6 @@ return {
       { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
       { "<leader>xt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
       { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
-      { "<leader>st", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
     },
     opts = {
       keywords = {
