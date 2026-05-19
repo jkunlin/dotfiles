@@ -280,7 +280,6 @@ return {
     cmd = {
       "DiffviewOpen",
     },
-    opts = { git_cmd = { vim.uv.os_homedir() .. "/dotfiles/bin/git" } },
     config = true,
   },
 
@@ -698,6 +697,11 @@ return {
     opts = {
       -- add any options here
       cli = {
+        win = {
+          keys = {
+            shift_enter = { "<S-CR>", "<C-j>", mode = "t", desc = "insert newline" },
+          },
+        },
         mux = {
           backend = "tmux",
           enabled = true,
