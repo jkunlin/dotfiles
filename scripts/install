@@ -131,6 +131,15 @@ if [ -f "$DOTFILES_ROOT/editors/emacs/custom-post.el" ]; then
   ln -sfv "$DOTFILES_ROOT/editors/emacs/custom-post.el" ~/.emacs.d/custom-post.el
 fi
 
+# Zed (config dir is ~/.config/zed on both macOS and Linux)
+if [ -f "$DOTFILES_ROOT/editors/zed/settings.json" ]; then
+  mkdir -p ~/.config/zed
+  [ -e ~/.config/zed/settings.json ] && mv -v ~/.config/zed/settings.json "$BACKUP_DIR/zed-settings.json"
+  [ -e ~/.config/zed/keymap.json ] && mv -v ~/.config/zed/keymap.json "$BACKUP_DIR/zed-keymap.json"
+  ln -sfv "$DOTFILES_ROOT/editors/zed/settings.json" ~/.config/zed/settings.json
+  ln -sfv "$DOTFILES_ROOT/editors/zed/keymap.json" ~/.config/zed/keymap.json
+fi
+
 echo "Editor configurations installed successfully"
 
 # ====================================================================

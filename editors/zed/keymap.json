@@ -1,0 +1,86 @@
+// Zed 键位 — 对齐服务器上的 Neovim (LazyVim)
+//
+// 部署: ln -sf ~/dotfiles/editors/zed/keymap.json ~/.config/zed/keymap.json
+//
+// leader = space,注释里的 <leader> 即 space。
+// Zed 默认 Vim 键位已覆盖 gd / gy / K(悬浮)/ grr(引用)/ ys ds cs(surround)
+// / ]d [d(诊断)/ ]b [b(缓冲区)等,无需重复定义。
+[
+  // ===== 普通模式 =====
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // -- 来自 config/keymaps.lua --
+      "space w": "workspace::Save",                  // <leader>w 保存
+      "space q": "pane::CloseActiveItem",            // <leader>q 关闭 (:q)
+      "space shift-q": "workspace::CloseWindow",     // <leader>Q 退出窗口 (:qa)
+      "space \\": "pane::SplitRight",                // <leader>\ 垂直分屏
+      "space -": "pane::SplitDown",                  // <leader>- 水平分屏
+      "space o": "vim::InsertEmptyLineBelow",        // <leader>o 下方插入空行
+      "space shift-o": "vim::InsertEmptyLineAbove",  // <leader>O 上方插入空行
+      "space z": "workspace::ToggleZoom",            // <leader>z 最大化窗格
+      "ctrl-w z": "workspace::ToggleZoom",           // <c-w>z  最大化窗格
+
+      // -- LazyVim 默认键位 --
+      "space space": "file_finder::Toggle",          // <leader><space> 查找文件
+      "space f f": "file_finder::Toggle",            // <leader>ff 查找文件
+      "space f n": "workspace::NewFile",             // <leader>fn 新建文件
+      "space ,": "tab_switcher::Toggle",             // <leader>,  切换缓冲区
+      "space /": "pane::DeploySearch",               // <leader>/  全局搜索
+      "space e": "project_panel::ToggleFocus",       // <leader>e  文件树
+      "space b d": "pane::CloseActiveItem",          // <leader>bd 关闭缓冲区
+      "space g g": "git_panel::ToggleFocus",         // <leader>gg Git 面板
+      "space s s": "outline::Toggle",                // <leader>ss 文档符号
+      "space x x": "diagnostics::Deploy",            // <leader>xx 诊断列表
+      "space l": "zed::Extensions",                  // <leader>l  扩展管理(对应 Lazy)
+      "space ;": "command_palette::Toggle",          // <leader>;  命令面板
+      "space :": "command_palette::Toggle",          // <leader>:  命令面板
+      "shift-h": "pane::ActivatePreviousItem",       // <S-h> 上一个缓冲区
+      "shift-l": "pane::ActivateNextItem",           // <S-l> 下一个缓冲区
+      "ctrl-/": "terminal_panel::Toggle",            // <C-/> 切换终端
+
+      // -- LSP (来自 lsp.lua servers["*"].keys) --
+      "space r n": "editor::Rename",                 // <leader>rn 重命名
+      "g i": "editor::GoToImplementation",           // gi 跳转实现
+      "g f": "editor::ToggleCodeActions",            // gf 代码动作
+      "g \\": "editor::GoToDefinitionSplit",         // g\ 分屏跳转定义
+      "g -": "editor::GoToDefinitionSplit"           // g- 分屏跳转定义
+    }
+  },
+
+  // ===== 窗格导航 (对应 vim-tmux-navigator) =====
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight"
+    }
+  },
+
+  // ===== 插入模式 =====
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "j k": "vim::NormalBefore"                     // jk 退出到普通模式
+    }
+  },
+
+  // ===== Copilot 内联建议 =====
+  {
+    "context": "Editor && edit_prediction",
+    "bindings": {
+      "ctrl-\\": "editor::AcceptEditPrediction"      // <C-\> 接受 Copilot 建议
+    }
+  },
+
+  // ===== 补全菜单 (对应 blink.cmp 的 Tab / S-Tab) =====
+  {
+    "context": "Editor && showing_completions",
+    "bindings": {
+      "tab": "editor::ContextMenuNext",
+      "shift-tab": "editor::ContextMenuPrevious"
+    }
+  }
+]

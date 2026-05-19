@@ -1,0 +1,64 @@
+// Zed 配置 — 对齐服务器上的 Neovim (LazyVim)
+//
+// 部署 (在 Mac 上):
+//   mkdir -p ~/.config/zed
+//   ln -sf ~/dotfiles/editors/zed/settings.json ~/.config/zed/settings.json
+//   ln -sf ~/dotfiles/editors/zed/keymap.json   ~/.config/zed/keymap.json
+//
+// 远程开发说明: 本文件(主题/字体/Vim/键位)在本地 Mac 生效;
+// 语言服务器、格式化程序运行在远程服务器上。
+{
+  // ===== Vim =====
+  "vim_mode": true,
+  "vim": {
+    // nvim 里 yank 经 OSC52 同步到系统剪贴板;delete/paste 仍用 vim 寄存器
+    "use_system_clipboard": "on_yank",
+    "highlight_on_yank_duration": 150
+  },
+
+  // ===== 主题 (nightfox.nvim 的 dayfox) =====
+  "theme": "Dayfox",
+  "auto_install_extensions": {
+    // 首次启动自动安装 Nightfox 主题扩展(含 Dayfox 浅色变体)
+    "nvim-nightfox": true
+  },
+
+  // ===== 外观 =====
+  "buffer_font_size": 14,
+  "ui_font_size": 15,
+  // "buffer_font_family": "JetBrainsMono Nerd Font",  // 按需取消注释
+  "relative_line_numbers": false,   // 对应 opt.relativenumber = false
+  "soft_wrap": "editor_width",      // 对应 opt.wrap = true
+  "show_wrap_guides": false,        // nvim 没有 colorcolumn 竖线
+  "vertical_scroll_margin": 4,      // 对应 LazyVim scrolloff = 4
+  "git": {
+    "inline_blame": { "enabled": false }  // nvim 不显示行内 git blame
+  },
+
+  // ===== 缩进 (LazyVim 默认 2 空格) =====
+  "tab_size": 2,
+  "hard_tabs": false,               // 对应 expandtab
+
+  // ===== 诊断 =====
+  "diagnostics": {
+    "inline": { "enabled": true }   // 行内诊断,近似 tiny-inline-diagnostic.nvim
+  },
+  "inlay_hints": { "enabled": false },  // 对应 nvim inlay_hints.enabled = false
+
+  // ===== 格式化 =====
+  // LazyVim 默认保存即格式化;Python 被显式关闭(见 autocmds.lua)
+  "format_on_save": "on",
+  "languages": {
+    "Python": {
+      "format_on_save": "off"
+      // 如需 black 手动格式化(要求远程 PATH 里有 black),取消下面注释:
+      // "formatter": { "external": { "command": "black", "arguments": ["-q", "-"] } }
+    }
+  },
+
+  // ===== AI 补全 =====
+  // 服务器用 GitHub Copilot;Zed 内置 Copilot,需在 Zed 里登录一次
+  "features": {
+    "edit_prediction_provider": "copilot"
+  }
+}
