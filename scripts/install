@@ -246,7 +246,7 @@ echo "=== Installing Fonts ==="
 #   cd - > /dev/null
 #   echo "Source Code Pro installed"
 # fi
-# 
+#
 # # Fira Code
 # if [ ! -e ~/.fonts/FiraCode ]; then
 #   mkdir -p ~/.fonts/FiraCode
@@ -258,17 +258,17 @@ echo "=== Installing Fonts ==="
 #   cd - > /dev/null
 #   echo "Fira Code installed"
 # fi
-# 
+#
 # fc-cache -rv > /dev/null 2>&1
 # echo "Font cache updated"
-# 
+#
 # # ====================================================================
 # # Software Installation
 # # ====================================================================
-# 
+#
 # echo
 # echo "=== Software Installation ==="
-# 
+#
 # if [ -f "$DOTFILES_ROOT/scripts/install_software.sh" ]; then
 #   read -p "Do you want to install software packages? (y/N) " -n 1 -r
 #   echo
