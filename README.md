@@ -44,9 +44,6 @@ dotfiles/
 │   ├── install         # Main installation script
 │   └── install_software.sh
 │
-├── archive/            # Archived/backup files
-│   └── ...
-│
 ├── .gitignore
 └── README.md           # This file
 ```
@@ -64,7 +61,7 @@ bash scripts/install
 ```
 
 The installation script will:
-- ✅ Backup existing configurations to `archive/install-backup-YYYYMMDD-HHMMSS/`
+- ✅ Backup existing configurations to a local ignored `archive/install-backup-YYYYMMDD-HHMMSS/`
 - ✅ Create symbolic links to dotfiles
 - ✅ Install fonts (Source Code Pro, Fira Code)
 - ✅ Set up tmux plugin manager
@@ -199,7 +196,6 @@ export http_proxy=http://your-proxy:port
 ## 📚 Documentation
 
 - [Shell Configuration Guide](shell/README.md) - Detailed shell setup documentation
-- [Previous Fixes](archive/bashrc_update/修复总结.md) - History of improvements
 
 ## 🆘 Troubleshooting
 
@@ -230,7 +226,7 @@ bash ~/dotfiles/scripts/install
 
 ### Restore old configuration
 
-Backups are stored in `archive/install-backup-*`:
+Backups are stored locally in ignored `archive/install-backup-*` directories:
 ```bash
 cp ~/dotfiles/archive/install-backup-YYYYMMDD-HHMMSS/.bashrc ~/.bashrc
 ```
