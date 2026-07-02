@@ -207,6 +207,28 @@ if [ ! -e ~/.tmux/plugins/tpm ]; then
 fi
 
 # ====================================================================
+# Codex (OpenAI Codex CLI)
+# ====================================================================
+
+echo
+echo "=== Installing Codex Configuration ==="
+
+mkdir -p ~/.codex/skills
+
+# AGENTS.md
+[ -e ~/.codex/AGENTS.md ] && mv -v ~/.codex/AGENTS.md "$BACKUP_DIR/codex-AGENTS.md"
+ln -sfv "$DOTFILES_ROOT/codex/AGENTS.md" ~/.codex/AGENTS.md
+
+# algorithm-walkthrough skill
+[ -e ~/.codex/skills/algorithm-walkthrough ] && mv -v ~/.codex/skills/algorithm-walkthrough "$BACKUP_DIR/algorithm-walkthrough"
+ln -sfv "$DOTFILES_ROOT/codex/skills/algorithm-walkthrough" ~/.codex/skills/algorithm-walkthrough
+
+# Waza skill
+npx skills add tw93/Waza -a codex -g -y
+
+echo "Codex configuration installed successfully"
+
+# ====================================================================
 # Fonts
 # ====================================================================
 

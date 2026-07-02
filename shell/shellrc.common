@@ -47,7 +47,11 @@ DOTFILES_BASE="$HOME/dotfiles"
 export HISTSIZE=
 export HISTFILESIZE=
 export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
-[ -z "$TMPDIR" ] && TMPDIR=/tmp
+
+### Personal temporary directory
+export TMPDIR="$HOME/tmp"
+export TMP="$TMPDIR"
+export TEMP="$TMPDIR"
 
 ### coredump
 ulimit -c unlimited
@@ -638,7 +642,7 @@ gt() {
 }
 
 # Git history
-gh() {
+glog() {
   is_in_git_repo || return
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
     fzf-down --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \
